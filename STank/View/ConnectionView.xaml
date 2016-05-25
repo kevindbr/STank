@@ -1,0 +1,95 @@
+﻿<Controls:MetroWindow 
+    x:Class="ConnectionView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    Title="Create a new connection to panel" Height="500" Width="400"
+    BorderBrush="{DynamicResource AccentColorBrush}"
+                      BorderThickness="1"
+   WindowStartupLocation="CenterScreen">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem x:Name="Exit" Header="_Exit"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="100"></RowDefinition>
+                <RowDefinition Height="250"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30">Connect to HMI Port</Label>
+            <StackPanel Grid.Row="1">
+                <RadioButton GroupName="connectionOptions" 
+                             IsChecked="True" Margin="10 10 10 0" 
+                             BorderBrush="{DynamicResource AccentColorBrush}" 
+                             HorizontalAlignment="Left" VerticalAlignment="Center" 
+                             Height="20" Width="auto" Click="showTCPOptions">
+                    TCP/IP</RadioButton>
+                
+                <RadioButton GroupName="connectionOptions" IsChecked="{Binding IsChecked}" 
+                             Margin="10 10 10 0"  BorderBrush="{DynamicResource AccentColorBrush}" 
+                             HorizontalAlignment="Left" VerticalAlignment="Center" 
+                             Height="20" Width="auto" Click="showSerialOptions">Serial</RadioButton>
+                <Label  HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="18">Configuration Options</Label>
+  </StackPanel>
+            <StackPanel Grid.Row="2">
+
+                <StackPanel Name="serialStackPanel" Height="0" Visibility="Hidden">
+                    <Label Margin="0 0 0 10">Serial Port Options</Label>
+                    <Label>Please select the comm port you would like to use:</Label>
+                    <ListBox Name="serialPortList" SelectionChanged="serialPortChanged"></ListBox>
+                </StackPanel>
+
+                <StackPanel Name="tcpStackPanel"  Visibility="Visible" >
+                    <Label Margin="0 0 0 10">TCP/IP Options</Label>
+                    <Label>Host Address:</Label>
+                    <TextBox  x:Name="hostString" HorizontalAlignment="Left" Margin="10 0 0 0" Width="250" Text="{Binding HostString}"></TextBox>
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton GroupName="tcpServiceType" 
+                             IsChecked="True" Margin="10 10 10 0" 
+                             BorderBrush="{DynamicResource AccentColorBrush}" 
+                             HorizontalAlignment="Left" VerticalAlignment="Center" 
+                             Height="20" Width="auto" Click="tcpServiceTypeChanged">Telnet</RadioButton>
+                    <RadioButton GroupName="tcpServiceType" 
+                             IsChecked="False" Margin="10 10 10 0" 
+                             BorderBrush="{DynamicResource AccentColorBrush}" 
+                             HorizontalAlignment="Left" VerticalAlignment="Center" 
+                             Height="20" Width="auto" Click="tcpServiceTypeChanged">SSH</RadioButton>
+                    <RadioButton GroupName="tcpServiceType" 
+                             IsChecked="False" Margin="10 10 10 0" 
+                             BorderBrush="{DynamicResource AccentColorBrush}" 
+                             HorizontalAlignment="Left" VerticalAlignment="Center" 
+                             Height="20" Width="auto" Click="tcpServiceTypeChanged">Other</RadioButton>
+                    </StackPanel>
+                    <StackPanel Margin="10 10 0 0" Orientation="Horizontal">
+                        <Label>TCP Port Number:</Label>
+                        <TextBox x:Name="tcpPort" HorizontalAlignment="Left" Width="50" Text="{Binding TcpPort}"></TextBox>
+                    </StackPanel>
+                    <StackPanel Margin="10 10 0 0" Orientation="Horizontal">
+                        <Label>SSH Version:</Label>
+                        <ComboBox Name="sshVersion" SelectionChanged="sshVersionChanged" Width="100">
+                            <ComboBoxItem>SSH1</ComboBoxItem>
+                            <ComboBoxItem>SSH2</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Margin="10 10 0 0" Orientation="Horizontal">
+                        <Label>Protocol:</Label>
+                        <ComboBox Name="tcpProtocol"  SelectionChanged="protocolChanged" Width="100">
+                            <ComboBoxItem>IPv4</ComboBoxItem>
+                            <ComboBoxItem>IPv6</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="3">
+                <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="auto" Click="saveNewConnection">Ok</Button>
+                <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="auto" Click="saveNewConnection">Test Connection</Button>
+                <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="auto" Click="exitView">Cancel</Button>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</Controls:MetroWindow>
