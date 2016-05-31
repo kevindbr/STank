@@ -1,4 +1,6 @@
 ﻿Imports System.ComponentModel
+Imports System.Array
+Imports System.Text.RegularExpressions
 
 Public Class CommPort
     Implements INotifyPropertyChanged
@@ -113,17 +115,26 @@ Public Class CommPort
     End Sub
 
 
-    Sub ReadLines(ByVal sp As IO.Ports.SerialPort)
+    Function ReadLines(ByVal sp As IO.Ports.SerialPort) As String
+
+
+        Dim returnStr As String = ""
+        Dim str As String
 
         Try
             Do
-                Console.WriteLine(sp.ReadLine())
+                str = sp.ReadLine()
+                returnStr += str '+ vbCr
+                'file.WriteLine(str)
             Loop
         Catch ex As TimeoutException
         End Try
 
+        Return returnStr
 
-    End Sub
+
+
+    End Function
 
 
 
@@ -142,14 +153,18 @@ Public Class CommPort
 
         Try
             Do
-                str = com1.ReadLine() + vbCr
-                returnStr += str
+                str = com1.ReadLine()
+                returnStr += str '+ vbCr
                 'file.WriteLine(str)
             Loop
         Catch ex As TimeoutException
         End Try
 
-        'file.Close()
+
+        'Dim matches As MatchCollection = Regex.Matches(returnStr, "\s*" + "[a-zA-Z]+" + "\s*" + "\d+" + ".*" + vbNullChar)
+
+        'Dim matches As MatchCollection = Regex.Matches(returnStr, ".*" + vbNullChar)
+
 
         Return returnStr
 
@@ -164,7 +179,7 @@ Public Class CommPort
         Dim returnStr = ""
 
         Dim sp As IO.Ports.SerialPort = My.Computer.Ports.OpenSerialPort(mPortName)
-        sp.ReadTimeout = 500
+        sp.ReadTimeout = 200
         sp.NewLine = vbCr
         sp.BaudRate = 115200
 
@@ -196,7 +211,15 @@ Public Class CommPort
         sp.WriteLine("")  'Last line #
         ReadLines(sp)
         sp.WriteLine("")  'Here, Printer
-        sp.ReadLine() 'clear out buffer before program is read
+
+        Try
+
+            sp.ReadLine() 'clear out buffer before program is read
+
+        Catch ex As TimeoutException
+        End Try
+
+
 
         returnStr = GetLines(sp)
 
@@ -215,10 +238,80 @@ Public Class CommPort
         sp.Write("Y")     'Yes
         ReadLines(sp)
 
+        sp.Close()
+
         Return returnStr
 
 
     End Function
+
+
+
+
+
+
+    Sub ReplaceProgram(ByVal lines As List(Of String))
+
+
+        Dim sp As IO.Ports.SerialPort = My.Computer.Ports.OpenSerialPort(mPortName)
+        sp.ReadTimeout = 200
+        sp.NewLine = vbCr
+        sp.BaudRate = 115200
+
+        'Console.WriteLine(sp.ReadLine)
+
+        sp.WriteLine("")  'get initial response from panel
+        ReadLines(sp)
+        sp.Write("h")     'Hello
+        ReadLines(sp)
+        sp.WriteLine("high")  'Username
+        ReadLines(sp)
+        sp.WriteLine("high1") 'Password
+        ReadLines(sp)
+        sp.WriteLine("")
+        ReadLines(sp)
+        sp.Write("a")   'Application
+        ReadLines(sp)
+        sp.Write("p")   'Ppcl
+        ReadLines(sp)
+
+        sp.Write("e")   'Edit
+        ReadLines(sp)
+        sp.WriteLine("AHU5")  'Program name (shouldn't be hard-coded)
+        ReadLines(sp)
+        sp.Write("d")   'Delete
+        ReadLines(sp)
+        sp.Write("y")   'Yes
+        ReadLines(sp)
+        sp.Write("y")   'Yes
+        ReadLines(sp)
+
+        sp.Write("e")   'Edit
+        ReadLines(sp)
+        sp.WriteLine("AHU5")  'Program name (shouldn't be hard-coded)
+        ReadLines(sp)
+        sp.WriteLine("")  'Field Panel
+        ReadLines(sp)
+        sp.WriteLine("16")  'Writing Priority
+        ReadLines(sp)
+        sp.Write("a")   'Add
+        ReadLines(sp)
+
+
+        For Each str As String In lines
+            sp.WriteLine(str)
+            Dim st = ReadLines(sp)
+        Next
+
+        sp.Close()
+
+
+
+    End Sub
+
+
+
+
 
 
 End Class
