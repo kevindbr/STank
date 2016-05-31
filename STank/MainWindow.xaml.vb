@@ -73,4 +73,32 @@ Class MainWindow
         End If
     End Sub
 
+    Private Sub findAndReplaceClicked(sender As Object, e As RoutedEventArgs)
+
+        'Dim commPort = serialPortList.SelectedItem      'shouldn't this be retrieved from panel object instead?
+
+
+        Dim panel As Panel = mMainViewModel.getPanels().Item(0)     'for now there's only one panel
+
+        Dim program = New Program(panel.Port.RetrieveProgram)
+
+
+
+
+        panel.Program = program
+
+        Dim st As String = panel.Program.Text
+
+
+        Dim folderDialog = New FolderBrowserDialog()
+        folderDialog.SelectedPath = "C:\"
+
+        Dim result = folderDialog.ShowDialog()
+        If (result.ToString() = "OK") Then
+            mMainViewModel.getProj().Directory.Path = folderDialog.SelectedPath
+        End If
+    End Sub
+
+
+
 End Class

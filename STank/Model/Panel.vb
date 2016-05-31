@@ -13,6 +13,7 @@ Public Class Panel
     Private mName As String
     Private mDatabase As PanelDatabase
     Private mCommPort As CommPort
+    Private mProgram As Program
 
     Public Event PropertyChanged As PropertyChangedEventHandler _
 Implements INotifyPropertyChanged.PropertyChanged
@@ -53,5 +54,20 @@ Implements INotifyPropertyChanged.PropertyChanged
             NotifyPropertyChanged("Port")
         End Set
     End Property
+
+    Public Property Program As Program
+        Get
+            Return mProgram
+        End Get
+
+        Set(value As Program)
+            mProgram = value
+            NotifyPropertyChanged("Program")
+        End Set
+    End Property
+
+
+
+
 
 End Class

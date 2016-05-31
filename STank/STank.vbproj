@@ -139,7 +139,7 @@
     <Compile Include="Model\PanelAttributesDoc.vb" />
     <Compile Include="Model\PanelDatabase.vb" />
     <Compile Include="Model\Point.vb" />
-    <Compile Include="Model\ProgramText.vb" />
+    <Compile Include="Model\Program.vb" />
     <Compile Include="Model\STankProj.vb" />
     <Compile Include="My Project\AssemblyInfo.vb">
       <SubType>Code</SubType>
