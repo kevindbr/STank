@@ -6,13 +6,17 @@ STank
 </name>
 </assembly>
 <members>
-<member name="M:STank.HomePage.InitializeComponent">
+<member name="M:STank.Application.InitializeComponent">
 	<summary>
 InitializeComponent
 </summary>
-</member><member name="T:STank.HomePage">
+</member><member name="M:STank.Application.Main">
 	<summary>
-HomePage
+Application Entry Point.
+</summary>
+</member><member name="T:STank.Application">
+	<summary>
+Application
 </summary>
 </member><member name="M:STank.MainWindow.InitializeComponent">
 	<summary>
@@ -30,18 +34,34 @@ InitializeComponent
 	<summary>
 ConnectionView
 </summary>
-</member><member name="M:STank.Application.InitializeComponent">
+</member><member name="M:STank.HomePage.InitializeComponent">
 	<summary>
 InitializeComponent
 </summary>
-</member><member name="M:STank.Application.Main">
+</member><member name="T:STank.HomePage">
 	<summary>
-Application Entry Point.
+HomePage
 </summary>
-</member><member name="T:STank.Application">
+</member><member name="P:STank.My.Resources.Resources.ResourceManager">
 	<summary>
-Application
+  Returns the cached ResourceManager instance used by this class.
 </summary>
+</member><member name="P:STank.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:STank.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="M:STank.MainWindow.IntializeMainWindow">
+	<summary>
+ This gets called once the window has loaded
+ At first, the user has two options, load and existing project or begin a new project
+ 
+ </summary>
+	<remarks></remarks>
 </member><member name="M:STank.MainViewModel.IntializeProject">
 	<summary>
  Create new project with at least one panel
@@ -53,13 +73,6 @@ Application
  We will need to add logic to cleanly handle panel to comm port logic
  </summary>
 	<param name="commPort"></param>
-	<remarks></remarks>
-</member><member name="M:STank.MainWindow.IntializeMainWindow">
-	<summary>
- This gets called once the window has loaded
- At first, the user has two options, load and existing project or begin a new project
- 
- </summary>
 	<remarks></remarks>
 </member><member name="M:STank.ConnectionView.#ctor(STank.MainViewModel@)">
 	<summary>
@@ -119,19 +132,6 @@ Application
  Update comm port object depending on information received from UI
  </summary>
 	<remarks></remarks>
-</member><member name="P:STank.My.Resources.Resources.ResourceManager">
-	<summary>
-  Returns the cached ResourceManager instance used by this class.
-</summary>
-</member><member name="P:STank.My.Resources.Resources.Culture">
-	<summary>
-  Overrides the current thread's CurrentUICulture property for all
-  resource lookups using this strongly typed resource class.
-</summary>
-</member><member name="T:STank.My.Resources.Resources">
-	<summary>
-  A strongly-typed resource class, for looking up localized strings, etc.
-</summary>
 </member>
 </members>
 </doc>

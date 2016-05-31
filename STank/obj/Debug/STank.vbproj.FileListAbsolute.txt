@@ -1,60 +1,24 @@
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\bin\Debug\STank.exe.config
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\bin\Debug\STank.exe
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\bin\Debug\STank.pdb
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\bin\Debug\STank.xml
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\bin\Debug\Caliburn.Micro.dll
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\bin\Debug\Caliburn.Micro.Platform.Core.dll
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\bin\Debug\Caliburn.Micro.Platform.dll
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\bin\Debug\MahApps.Metro.dll
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\bin\Debug\System.Windows.Interactivity.dll
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\bin\Debug\Caliburn.Micro.xml
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\bin\Debug\Caliburn.Micro.Platform.xml
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\bin\Debug\Caliburn.Micro.Platform.Core.xml
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\bin\Debug\MahApps.Metro.pdb
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\bin\Debug\MahApps.Metro.xml
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\obj\Debug\MainWindow.baml
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\obj\Debug\View\ConnectionView.baml
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\obj\Debug\View\HomePage.baml
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\obj\Debug\Application.baml
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\obj\Debug\MainWindow.g.vb
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\obj\Debug\View\ConnectionView.g.vb
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\obj\Debug\View\HomePage.g.vb
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\obj\Debug\Application.g.vb
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\obj\Debug\STank_MarkupCompile.cache
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\obj\Debug\STank.g.resources
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\obj\Debug\STank.Resources.resources
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\obj\Debug\STank.vbproj.GenerateResource.Cache
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\obj\Debug\STank.exe
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\obj\Debug\STank.xml
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\obj\Debug\STank.pdb
-C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\obj\Debug\STank.vbprojResolveAssemblyReference.cache
-C:\Users\kevindbr\Downloads\STank\STank\STank\bin\Debug\STank.exe.config
-C:\Users\kevindbr\Downloads\STank\STank\STank\obj\Debug\STank.exe
-C:\Users\kevindbr\Downloads\STank\STank\STank\obj\Debug\STank.xml
-C:\Users\kevindbr\Downloads\STank\STank\STank\obj\Debug\STank.pdb
-C:\Users\kevindbr\Downloads\STank\STank\STank\bin\Debug\STank.exe
-C:\Users\kevindbr\Downloads\STank\STank\STank\bin\Debug\STank.pdb
-C:\Users\kevindbr\Downloads\STank\STank\STank\bin\Debug\STank.xml
-C:\Users\kevindbr\Downloads\STank\STank\STank\bin\Debug\Caliburn.Micro.dll
-C:\Users\kevindbr\Downloads\STank\STank\STank\bin\Debug\Caliburn.Micro.Platform.Core.dll
-C:\Users\kevindbr\Downloads\STank\STank\STank\bin\Debug\Caliburn.Micro.Platform.dll
-C:\Users\kevindbr\Downloads\STank\STank\STank\bin\Debug\MahApps.Metro.dll
-C:\Users\kevindbr\Downloads\STank\STank\STank\bin\Debug\System.Windows.Interactivity.dll
-C:\Users\kevindbr\Downloads\STank\STank\STank\bin\Debug\Caliburn.Micro.xml
-C:\Users\kevindbr\Downloads\STank\STank\STank\bin\Debug\Caliburn.Micro.Platform.xml
-C:\Users\kevindbr\Downloads\STank\STank\STank\bin\Debug\Caliburn.Micro.Platform.Core.xml
-C:\Users\kevindbr\Downloads\STank\STank\STank\bin\Debug\MahApps.Metro.pdb
-C:\Users\kevindbr\Downloads\STank\STank\STank\bin\Debug\MahApps.Metro.xml
-C:\Users\kevindbr\Downloads\STank\STank\STank\obj\Debug\STank.vbprojResolveAssemblyReference.cache
-C:\Users\kevindbr\Downloads\STank\STank\STank\obj\Debug\MainWindow.baml
-C:\Users\kevindbr\Downloads\STank\STank\STank\obj\Debug\View\ConnectionView.baml
-C:\Users\kevindbr\Downloads\STank\STank\STank\obj\Debug\View\HomePage.baml
-C:\Users\kevindbr\Downloads\STank\STank\STank\obj\Debug\Application.baml
-C:\Users\kevindbr\Downloads\STank\STank\STank\obj\Debug\MainWindow.g.vb
-C:\Users\kevindbr\Downloads\STank\STank\STank\obj\Debug\View\ConnectionView.g.vb
-C:\Users\kevindbr\Downloads\STank\STank\STank\obj\Debug\View\HomePage.g.vb
-C:\Users\kevindbr\Downloads\STank\STank\STank\obj\Debug\Application.g.vb
-C:\Users\kevindbr\Downloads\STank\STank\STank\obj\Debug\STank_MarkupCompile.cache
-C:\Users\kevindbr\Downloads\STank\STank\STank\obj\Debug\STank.g.resources
-C:\Users\kevindbr\Downloads\STank\STank\STank\obj\Debug\STank.Resources.resources
-C:\Users\kevindbr\Downloads\STank\STank\STank\obj\Debug\STank.vbproj.GenerateResource.Cache
+C:\Users\kevindbr\Documents\GitHub\STank\STank\bin\Debug\STank.exe.config
+C:\Users\kevindbr\Documents\GitHub\STank\STank\bin\Debug\STank.exe
+C:\Users\kevindbr\Documents\GitHub\STank\STank\bin\Debug\STank.pdb
+C:\Users\kevindbr\Documents\GitHub\STank\STank\bin\Debug\STank.xml
+C:\Users\kevindbr\Documents\GitHub\STank\STank\bin\Debug\MahApps.Metro.dll
+C:\Users\kevindbr\Documents\GitHub\STank\STank\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\kevindbr\Documents\GitHub\STank\STank\bin\Debug\MahApps.Metro.pdb
+C:\Users\kevindbr\Documents\GitHub\STank\STank\bin\Debug\MahApps.Metro.xml
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\MainWindow.baml
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\View\ConnectionView.baml
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\View\HomePage.baml
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\Application.baml
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\MainWindow.g.vb
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\View\ConnectionView.g.vb
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\View\HomePage.g.vb
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\Application.g.vb
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\STank_MarkupCompile.cache
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\STank.g.resources
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\STank.Resources.resources
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\STank.vbproj.GenerateResource.Cache
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\STank.exe
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\STank.xml
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\STank.pdb
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\STank.vbprojResolveAssemblyReference.cache
