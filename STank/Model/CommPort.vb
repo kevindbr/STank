@@ -294,11 +294,13 @@ Public Class CommPort
         ReadLines(sp)
         sp.WriteLine("16")  'Writing Priority
         ReadLines(sp)
-        sp.Write("a")   'Add
-        ReadLines(sp)
+
 
 
         For Each str As String In lines
+
+            sp.Write("a")   'Add
+            Dim st2 = ReadLines(sp)
             sp.WriteLine(str)
             Dim st = ReadLines(sp)
         Next
