@@ -10,6 +10,10 @@ Class MainWindow
     Public mMainViewModel As MainViewModel
 
 
+
+
+
+
     ''' <summary>
     ''' This gets called once the window has loaded
     ''' At first, the user has two options, load and existing project or begin a new project
@@ -72,5 +76,44 @@ Class MainWindow
             mMainViewModel.getProj().Directory.PanelAttributesDocument.Path = dlg.FileName
         End If
     End Sub
+
+    Private Sub findAndReplaceClicked(sender As Object, e As RoutedEventArgs)
+
+        'Dim commPort = serialPortList.SelectedItem      'shouldn't this be retrieved from panel object instead?
+
+        ' Mouse.OverrideCursor = Cursors.
+
+
+
+        'Cursor
+
+
+
+        Dim panel As Panel = mMainViewModel.getPanels().Item(0)     'for now there's only one panel
+        Dim program = New Program(panel.Port.RetrieveProgram)
+        program.changeNames(mMainViewModel.getProj().Directory.NameChangeDocument.getReplacementValues)
+
+
+        panel.Port.ReplaceProgram(program.NewLines)
+
+        Dim timeStamp As String = DateTime.Now.ToString("MMddyyyyhhmmss")
+        Dim cwd As String = mMainViewModel.getProj().Directory.Path
+
+        System.IO.File.WriteAllText(cwd + System.IO.Path.DirectorySeparatorChar + "program_old_" + timeStamp + ".pcl", program.Text)
+        System.IO.File.WriteAllText(cwd + System.IO.Path.DirectorySeparatorChar + "program_new_" + timeStamp + ".pcl", program.NewText)
+
+
+        Return
+
+        Dim folderDialog = New FolderBrowserDialog()
+        folderDialog.SelectedPath = "C:\"
+
+        Dim result = folderDialog.ShowDialog()
+        If (result.ToString() = "OK") Then
+            mMainViewModel.getProj().Directory.Path = folderDialog.SelectedPath
+        End If
+    End Sub
+
+
 
 End Class

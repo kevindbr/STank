@@ -87,7 +87,7 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="3">
                 <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="auto" Click="saveNewConnection">Ok</Button>
-                <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="auto" Click="saveNewConnection">Test Connection</Button>
+                <!-- <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="auto" Click="saveNewConnection">Test Connection</Button> -->
                 <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="auto" Click="exitView">Cancel</Button>
             </StackPanel>
         </Grid>

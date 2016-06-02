@@ -75,6 +75,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\Program.vb" />
     <Compile Include="Model\WorkingDirectory.vb" />
     <Compile Include="ViewModel\ConnectionViewModel.vb" />
     <Compile Include="ViewModel\MainViewModel.vb" />
@@ -169,6 +170,9 @@
     <Resource Include="Images\Siemens_Icons\Complete.png" />
     <Resource Include="Images\Siemens_Icons\Notice.png" />
     <Resource Include="Images\Siemens_Icons\Siemens_Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\NewFolder1\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

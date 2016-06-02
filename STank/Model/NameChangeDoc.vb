@@ -1,10 +1,13 @@
 ﻿Imports System.ComponentModel
+Imports System.IO
 
 Public Class NameChangeDoc
     Implements INotifyPropertyChanged
 
     Private mPanel As Panel
     Private mPath As String
+    'Private mReplacementValues As Dictionary(Of String, String)
+
 
 
     Public Event PropertyChanged As PropertyChangedEventHandler _
@@ -25,5 +28,22 @@ Public Class NameChangeDoc
             NotifyPropertyChanged("Path")
         End Set
     End Property
+
+
+    Public Function getReplacementValues() As Dictionary(Of String, String)
+        Dim mReplacementValues = New Dictionary(Of String, String)
+        Dim lines() As String = File.ReadAllLines(mPath)
+        For Each line As String In lines
+            Dim vals() As String = line.Split(","c)
+            If (vals(0) <> "" And vals(1) <> "") Then
+                Try
+                    mReplacementValues.Add(vals(0), vals(1))
+                Catch
+                    MsgBox("Please check columns in csv file")
+                End Try
+            End If
+        Next line
+        Return mReplacementValues
+    End Function
 
 End Class
