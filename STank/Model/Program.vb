@@ -138,7 +138,9 @@ Implements INotifyPropertyChanged.PropertyChanged
 
             'Dim matches As MatchCollection = Regex.Matches(returnStr, "\s*" + "([a-zA-Z]+)" + "\s*" + "\d+" + ".*")
 
-            Dim matches As MatchCollection = Regex.Matches(str, "^\s*" + "([a-zA-Z]+)" + "\s*" + "(.*)")
+            'Dim matches As MatchCollection = Regex.Matches(str, "^\s*" + "([a-zA-Z]+)" + "\s*" + "(.*\s*.*)")
+
+            Dim matches As MatchCollection = Regex.Matches(str, "^\s*" + "([a-zA-Z]+)" + "\s*" + "(.*\s*.*)")
 
             'Dim matches As MatchCollection = Regex.Matches(str, "\s*" + "([a-zA-Z]+)" + "\s*" + "([0-9]+)" + "\s*" + "(.*)")
 
@@ -157,8 +159,18 @@ Implements INotifyPropertyChanged.PropertyChanged
 
                 'lines.Add(New KeyValuePair(Of String, String)(m.Groups(2).ToString, m.Groups(3).ToString))
 
+                Dim l As String = m.Groups(2).ToString      'whole line, including line breaks
 
-                mNewLines.Add(m.Groups(2).ToString)
+                l = Regex.Replace(l, "(\r\n|\n|\r)", "")
+
+                l = Regex.Replace(l, "\s+", " ")
+
+                l = l.Replace(Environment.NewLine, "") ' Equals CR
+                l = l.Replace(ControlChars.CrLf, "") ' CR and LF
+                l = l.Replace(ControlChars.Cr, "") ' Carriage Return (CR)
+                l = l.Replace(ControlChars.Lf, "") ' Line Feed (LF)
+
+                mNewLines.Add(l)
 
                 'For Each g As Group In m.Groups
 

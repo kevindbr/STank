@@ -290,6 +290,8 @@ Public Class CommPort
         ReadLines(sp)
         sp.WriteLine("AHU5")  'Program name (shouldn't be hard-coded)
         ReadLines(sp)
+
+        'How come sometimes it doesn't ask for these?
         sp.WriteLine("")  'Field Panel
         ReadLines(sp)
         sp.WriteLine("16")  'Writing Priority
@@ -297,13 +299,26 @@ Public Class CommPort
 
 
 
-        For Each str As String In lines
+        For Each str As String In lines.Take(20)
 
             sp.Write("a")   'Add
-            Dim st2 = ReadLines(sp)
+            'Dim st2 = ReadLines(sp)
             sp.WriteLine(str)
             Dim st = ReadLines(sp)
         Next
+
+
+        sp.Write("q")     'Quit
+        ReadLines(sp)
+        sp.Write("q")     'Quit
+        ReadLines(sp)
+        sp.Write("q")     'Quit
+        ReadLines(sp)
+        sp.Write("b")     'Bye
+        ReadLines(sp)
+        sp.Write("Y")     'Yes
+        ReadLines(sp)
+
 
         sp.Close()
 

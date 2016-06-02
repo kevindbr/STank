@@ -173,9 +173,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Siemens_Icons\Complete.png" />
-    <Resource Include="Images\Siemens_Icons\Notice.png" />
-    <Resource Include="Images\Siemens_Icons\Siemens_Logo.png" />
+    <Folder Include="Images\Siemens_Icons\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
