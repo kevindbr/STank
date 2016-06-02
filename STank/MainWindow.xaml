@@ -3,7 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-    Title="Siemens Shark Tank Find and Replace Tool" Height="auto" Width="auto"
+    FontSize="12"
+    FontFamily="Siemens Sans Roman"
+    Title="SIEMENS | Shark Tank Find and Replace Tool" Height="750" Width="1000"
     BorderBrush="{DynamicResource AccentColorBrush}"
                       BorderThickness="1"
    WindowStartupLocation="CenterScreen"
@@ -35,20 +37,24 @@
     
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="90"></RowDefinition>
                 <RowDefinition Height="150"></RowDefinition>
                 <RowDefinition Height="200"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition Height="200"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="500"></ColumnDefinition>
-                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition  Width="500">                    
+                </ColumnDefinition>
+                
+                <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
+            <Border BorderThickness="0 0 1 0" BorderBrush="#788791" >
+                <Image Width="auto" HorizontalAlignment="Right" Height="60" Margin="0 10 50 0" Source="Images/Siemens_Icons/Siemens_Logo.png" />
+            </Border>
 
-
-            <Label Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30">Shark Tank Find and Replace Tool</Label>
+            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="30">Shark Tank and Replace Tool</Label>
             <StackPanel Grid.Row="1" Grid.Column="0">
                 <StackPanel Orientation="Horizontal" Margin="0 0 0 20">
                     <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="auto" Click="browseDirectoryClicked">Set Working Directory</Button>
@@ -73,11 +79,8 @@
             </StackPanel>
 
             <StackPanel Grid.Row="1" Grid.Column="1">
-                <Label HorizontalAlignment="Right" Width="Auto">Missing Dependancies</Label>
+                <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="30" Width="Auto">Activity Log</Label>
             </StackPanel>
-
-            <Rectangle Grid.Row="4" Grid.ColumnSpan="2" Fill="AliceBlue" Margin="0,0.4,-158.4,0.4" />
-
 
             <ScrollViewer Grid.Row="2">
                 <StackPanel Grid.Row="2">
@@ -90,9 +93,27 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="auto" Click="findAndReplaceClicked">Run Find and Replace</Button>
+              
                 </StackPanel>
             </ScrollViewer>
+
+            <StackPanel Grid.Row="3" Grid.Column="0">
+                <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Width="Auto">Project Status</Label>
+            </StackPanel>
+
+            <Button Grid.Row="2" Grid.Column="1" Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="auto" Click="findAndReplaceClicked">Run Find and Replace</Button>
+
+            <StackPanel Height="30" Background="#dfe6ed"  Orientation="Horizontal" Grid.Row="4" Grid.ColumnSpan="2" VerticalAlignment="Bottom" >
+                <Label>Siemens.com</Label>
+                <Label>© Siemens AG, 1996 – 2016</Label>
+                <Label>Corporate Information</Label>
+                <Label>Privacy Policy</Label>
+                <Label>Cookie Policy</Label>
+                <Label>Terms of Use</Label>
+                <Label>Digital ID</Label>
+            </StackPanel>
+
+
         </Grid>
     </DockPanel>
 </Controls:MetroWindow>

@@ -17,6 +17,7 @@ Application Entry Point.
 </member><member name="T:STank.Application">
 	<summary>
 Application
+<<<<<<< HEAD
 </summary>
 </member><member name="M:STank.HomePage.InitializeComponent">
 	<summary>
@@ -25,6 +26,8 @@ InitializeComponent
 </member><member name="T:STank.HomePage">
 	<summary>
 HomePage
+=======
+>>>>>>> d7eb3859157e89e321639471bec583aec54f2fe9
 </summary>
 </member><member name="M:STank.MainWindow.InitializeComponent">
 	<summary>
@@ -35,6 +38,8 @@ InitializeComponent
 MainWindow
 </summary>
 </member><member name="M:STank.ConnectionView.InitializeComponent">
+<<<<<<< HEAD
+=======
 	<summary>
 InitializeComponent
 </summary>
@@ -42,6 +47,16 @@ InitializeComponent
 	<summary>
 ConnectionView
 </summary>
+</member><member name="M:STank.HomePage.InitializeComponent">
+>>>>>>> d7eb3859157e89e321639471bec583aec54f2fe9
+	<summary>
+InitializeComponent
+</summary>
+</member><member name="T:STank.ConnectionView">
+	<summary>
+ConnectionView
+</summary>
+<<<<<<< HEAD
 </member><member name="M:STank.ConnectionViewModel.validateCommPort">
 	<summary>
  Update comm port object depending on information received from UI
@@ -49,6 +64,10 @@ ConnectionView
 	<remarks></remarks>
 </member><member name="P:STank.My.Resources.Resources.ResourceManager">
 	<summary>
+=======
+</member><member name="P:STank.My.Resources.Resources.ResourceManager">
+	<summary>
+>>>>>>> d7eb3859157e89e321639471bec583aec54f2fe9
   Returns the cached ResourceManager instance used by this class.
 </summary>
 </member><member name="P:STank.My.Resources.Resources.Culture">
@@ -60,6 +79,7 @@ ConnectionView
 	<summary>
   A strongly-typed resource class, for looking up localized strings, etc.
 </summary>
+<<<<<<< HEAD
 </member><member name="M:STank.ConnectionView.#ctor(STank.MainViewModel@)">
 	<summary>
  Bring in mainViewModel to update and change project data
@@ -86,6 +106,14 @@ ConnectionView
  </summary>
 	<param name="sender"></param>
 	<param name="e"></param>
+=======
+</member><member name="M:STank.MainWindow.IntializeMainWindow">
+	<summary>
+ This gets called once the window has loaded
+ At first, the user has two options, load and existing project or begin a new project
+ 
+ </summary>
+>>>>>>> d7eb3859157e89e321639471bec583aec54f2fe9
 	<remarks></remarks>
 </member><member name="M:STank.MainViewModel.IntializeProject">
 	<summary>
@@ -99,13 +127,36 @@ ConnectionView
  </summary>
 	<param name="commPort"></param>
 	<remarks></remarks>
-</member><member name="M:STank.MainWindow.IntializeMainWindow">
+</member><member name="M:STank.ConnectionView.#ctor(STank.MainViewModel@)">
 	<summary>
- This gets called once the window has loaded
- At first, the user has two options, load and existing project or begin a new project
- 
+ Bring in mainViewModel to update and change project data
  </summary>
+	<param name="mainViewModel"></param>
 	<remarks></remarks>
+<<<<<<< HEAD
+=======
+</member><member name="M:STank.ConnectionView.showTCPOptions(System.Object,System.Windows.RoutedEventArgs)">
+	<summary>
+ Show the tcp options
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:STank.ConnectionView.showSerialOptions(System.Object,System.Windows.RoutedEventArgs)">
+	<summary>
+ Show the serial options
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:STank.ConnectionView.saveNewConnection(System.Object,System.Windows.RoutedEventArgs)">
+	<summary>
+ Save connection that was defined
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+>>>>>>> d7eb3859157e89e321639471bec583aec54f2fe9
 </member><member name="P:STank.My.MyWpfExtension.Application">
 	<summary>
  Returns the application object for the running application
@@ -132,6 +183,14 @@ ConnectionView
  Module used to define the properties that are available in the My Namespace for WPF
  </summary>
 	<remarks></remarks>
+<<<<<<< HEAD
+=======
+</member><member name="M:STank.ConnectionViewModel.validateCommPort">
+	<summary>
+ Update comm port object depending on information received from UI
+ </summary>
+	<remarks></remarks>
+>>>>>>> d7eb3859157e89e321639471bec583aec54f2fe9
 </member>
 </members>
 </doc>

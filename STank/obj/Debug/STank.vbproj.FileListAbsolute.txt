@@ -1,3 +1,29 @@
+<<<<<<< HEAD
+C:\Users\kevindbr\Documents\GitHub\STank\STank\bin\Debug\STank.exe.config
+C:\Users\kevindbr\Documents\GitHub\STank\STank\bin\Debug\STank.exe
+C:\Users\kevindbr\Documents\GitHub\STank\STank\bin\Debug\STank.pdb
+C:\Users\kevindbr\Documents\GitHub\STank\STank\bin\Debug\STank.xml
+C:\Users\kevindbr\Documents\GitHub\STank\STank\bin\Debug\MahApps.Metro.dll
+C:\Users\kevindbr\Documents\GitHub\STank\STank\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\kevindbr\Documents\GitHub\STank\STank\bin\Debug\MahApps.Metro.pdb
+C:\Users\kevindbr\Documents\GitHub\STank\STank\bin\Debug\MahApps.Metro.xml
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\MainWindow.baml
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\View\ConnectionView.baml
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\View\HomePage.baml
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\Application.baml
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\MainWindow.g.vb
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\View\ConnectionView.g.vb
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\View\HomePage.g.vb
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\Application.g.vb
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\STank_MarkupCompile.cache
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\STank.g.resources
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\STank.Resources.resources
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\STank.vbproj.GenerateResource.Cache
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\STank.exe
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\STank.xml
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\STank.pdb
+C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\STank.vbprojResolveAssemblyReference.cache
+=======
 C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\bin\Debug\STank.exe.config
 C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\bin\Debug\STank.exe
 C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\bin\Debug\STank.pdb
@@ -88,3 +114,4 @@ C:\Users\Axios\Desktop\STank-master\STank\obj\Debug\STank_MarkupCompile.cache
 C:\Users\Axios\Desktop\STank-master\STank\obj\Debug\STank.g.resources
 C:\Users\Axios\Desktop\STank-master\STank\obj\Debug\STank.Resources.resources
 C:\Users\Axios\Desktop\STank-master\STank\obj\Debug\STank.vbproj.GenerateResource.Cache
+>>>>>>> 590e7c738b645763d3f5aa6295d797bc2f3af67b
