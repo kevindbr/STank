@@ -14,10 +14,13 @@ Public Class MainViewModel
         mSTankProj = New STankProj()
         mSTankProj.Name = "New Project"
         mSTankProj.Panels = New List(Of Panel)
-        mSTankProj.Directory = New WorkingDirectory()
-        mSTankProj.Directory.IntializeData()
+        'mSTankProj.Directory = New WorkingDirectory()
+        'mSTankProj.Directory.IntializeData()
 
         Dim panel = New Panel()
+        panel.InitializeData()
+
+
         panel.Name = "New Panel"
         panel.Database = New PanelDatabase()
         panel.Database.IntializeData()
@@ -25,6 +28,20 @@ Public Class MainViewModel
         panel.Port.IntializeData()
 
         mSTankProj.Panels.Add(panel)
+
+        mSTankProj.Panel = panel
+
+
+        'DimnameChangeDoc = New NameChangeDoc()
+        'mNameChangeDoc.Path = "C:\"
+
+        'mPanelAttributesDoc = New PanelAttributesDoc()
+        'mPanelAttributesDoc.Path = "C:\"
+        'mPath = "C:\"
+
+
+
+
     End Sub
 
     ''' <summary>

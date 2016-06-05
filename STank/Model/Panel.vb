@@ -13,7 +13,9 @@ Public Class Panel
     Private mName As String
     Private mDatabase As PanelDatabase
     Private mCommPort As CommPort
-    Private mProgram As Program
+    Private mNameChangeDoc As NameChangeDoc
+    Private mPanelAttributesDoc As PanelAttributesDoc
+    Private mPpcl As Ppcl
 
     Public Event PropertyChanged As PropertyChangedEventHandler _
 Implements INotifyPropertyChanged.PropertyChanged
@@ -55,18 +57,57 @@ Implements INotifyPropertyChanged.PropertyChanged
         End Set
     End Property
 
-    Public Property Program As Program
+    Public Property Ppcl As Ppcl
         Get
-            Return mProgram
+            Return mPpcl
         End Get
 
-        Set(value As Program)
-            mProgram = value
-            NotifyPropertyChanged("Program")
+        Set(value As Ppcl)
+            mPpcl = value
+            NotifyPropertyChanged("Ppcl")
         End Set
     End Property
 
+    Public Property NameChangeDocument As NameChangeDoc
+        Get
+            Return mNameChangeDoc
+        End Get
 
+        Set(value As NameChangeDoc)
+            mNameChangeDoc = value
+            NotifyPropertyChanged("NameChangeDocument")
+        End Set
+    End Property
+
+    Public Property PanelAttributesDocument As PanelAttributesDoc
+        Get
+            Return mPanelAttributesDoc
+        End Get
+
+        Set(value As PanelAttributesDoc)
+            mPanelAttributesDoc = value
+            NotifyPropertyChanged("PanelAttributesDocument")
+        End Set
+    End Property
+
+    Public Sub InitializeData()
+
+        mName = "New Panel"
+        mDatabase = New PanelDatabase()
+        mDatabase.IntializeData()
+        mCommPort = New CommPort()
+        mCommPort.IntializeData()
+
+        mPpcl = New Ppcl()
+        mPpcl.Path = "C:\Users\Axios\Desktop\testWorkingDir\PPCL_MBC45.pcl"
+
+        mNameChangeDoc = New NameChangeDoc()
+        mNameChangeDoc.Path = "C:\Users\Axios\Desktop\testWorkingDir\EPMAHU05_NewNames.csv"
+
+        mPanelAttributesDoc = New PanelAttributesDoc()
+        mPanelAttributesDoc.Path = "C:\"
+
+    End Sub
 
 
 

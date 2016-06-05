@@ -4,28 +4,16 @@
 winexe
 VB
 .vb
-<<<<<<< HEAD
 C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\obj\Debug\
-=======
-C:\Users\kevindbr\Documents\GitHub\STank\STank\obj\Debug\
->>>>>>> d7eb3859157e89e321639471bec583aec54f2fe9
 STank
 none
 false
 
-<<<<<<< HEAD
 C:\Users\Axios\Documents\Visual Studio 2012\Projects\STank\STank\Application.xaml
 32031891659
-
-20991169686
-16323111257
-=======
-C:\Users\kevindbr\Documents\GitHub\STank\STank\Application.xaml
-32031891659
-
-21-781767785
-13-1811713724
->>>>>>> d7eb3859157e89e321639471bec583aec54f2fe9
+11386952559
+222120848881
+15-1074602386
 MainWindow.xaml;View\ConnectionView.xaml;View\HomePage.xaml;
 
 False

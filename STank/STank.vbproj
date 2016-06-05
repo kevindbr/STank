@@ -66,6 +66,8 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -75,6 +77,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\Ppcl.vb" />
     <Compile Include="Model\Program.vb" />
     <Compile Include="Model\WorkingDirectory.vb" />
     <Compile Include="ViewModel\ConnectionViewModel.vb" />
@@ -168,9 +171,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\Siemens_Icons\" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Model\NewFolder1\" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="ChangeSystemName.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

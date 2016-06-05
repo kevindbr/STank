@@ -299,7 +299,7 @@ Public Class CommPort
 
 
 
-        For Each str As String In lines.Take(20)
+        For Each str As String In lines '.Take(20)
 
             sp.Write("a")   'Add
             'Dim st2 = ReadLines(sp)

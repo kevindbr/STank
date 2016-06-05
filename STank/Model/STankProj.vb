@@ -11,6 +11,7 @@ Public Class STankProj
     ' mName, name of STankProj
     ' mPanels, list of Panel objects
 
+    Private mPanel As Panel
 
     Private mName As String
     Private mPanels As List(Of Panel)
@@ -23,16 +24,18 @@ Public Class STankProj
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(info))
     End Sub
 
-    Public Property Name As String
+    Public Property Panel As Panel
         Get
-            Return mName
+            Return mPanel
         End Get
 
-        Set(value As String)
-            mName = value
-            NotifyPropertyChanged("Name")
+        Set(value As Panel)
+            mPanel = value
+            NotifyPropertyChanged("Panel")
         End Set
     End Property
+
+    'For now just assume a single panel - was having trouble with forms data binding using multiple panels
 
     Public Property Panels As List(Of Panel)
         Get
@@ -45,15 +48,27 @@ Public Class STankProj
         End Set
     End Property
 
-    Public Property Directory As WorkingDirectory
+    Public Property Name As String
         Get
-            Return mWorkingDirectory
+            Return mName
         End Get
 
-        Set(value As WorkingDirectory)
-            mWorkingDirectory = value
-            NotifyPropertyChanged("Directory")
+        Set(value As String)
+            mName = value
+            NotifyPropertyChanged("Name")
         End Set
     End Property
+
+
+    'Public Property Directory As WorkingDirectory
+    '    Get
+    '        Return mWorkingDirectory
+    '    End Get
+
+    '    Set(value As WorkingDirectory)
+    '        mWorkingDirectory = value
+    '        NotifyPropertyChanged("Directory")
+    '    End Set
+    'End Property
 
 End Class
