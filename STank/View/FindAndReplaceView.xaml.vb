@@ -33,17 +33,18 @@ Public Class FindAndReplaceView
         Dim worker As BackgroundWorker = CType(sender, BackgroundWorker)
         Dim replacementValues As Dictionary(Of String, String) = mMainViewModel.getProj.Panel.NameChangeDocument.ReplacementValues
         Dim ppcl As Ppcl = mMainViewModel.getProj.Panel.Ppcl
-        Dim newDefinitions As Collection = New Collection()
+        'Dim newDefinitions As Collection = New Collection()
 
         'For Each row As DataRowView In defineGrid.ItemsSource
         '    newDefinitions.Add(row.Item(2))
         'Next
 
-        For Each kvp As KeyValuePair(Of String, String) In mMainViewModel.getProj.Panel.Ppcl.Variables
-            newDefinitions.Add(kvp.Value)
-        Next
+        'For Each kvp As KeyValuePair(Of String, String) In mMainViewModel.getProj.Panel.Ppcl.Variables
+        '    newDefinitions.Add(kvp.Value)
+        'Next
 
-        ppcl.findAndReplaceInFile(replacementValues, newDefinitions)    'TODO: logging
+        ppcl.findAndReplaceInFile2(replacementValues)    'TODO: logging
+        'ppcl.findAndReplaceInFile(replacementValues, newDefinitions)    'TODO: logging
 
         Dim i As Integer = 1
 

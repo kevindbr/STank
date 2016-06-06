@@ -15,6 +15,12 @@ Public Class Ppcl
 
     'Private mContents As String
     Private mVariables As New Dictionary(Of String, String)
+
+
+    Private mNewVariables As New Dictionary(Of String, String)
+
+
+
     Private mOldDefinitions As New Collection   'entire DEFINE statements
 
     Private mPath As String
@@ -38,8 +44,8 @@ Implements INotifyPropertyChanged.PropertyChanged
             mPath = value
 
             If isValidDocument(mPath) Then
-                findAndReplaceNoQuotes()    'reads file contents into mText, doing some basic error checking along the way
-                'mText = File.ReadAllText(mPath)
+                'findAndReplaceNoQuotes()    'reads file contents into mText, doing some basic error checking along the way
+                mText = File.ReadAllText(mPath)
                 getVariables()
                 getOldDefine()
             End If
@@ -98,6 +104,19 @@ Implements INotifyPropertyChanged.PropertyChanged
             NotifyPropertyChanged("Variables")
         End Set
     End Property
+
+
+    Public Property NewVariables As Dictionary(Of String, String)
+        Get
+            Return mNewVariables
+        End Get
+
+        Set(value As Dictionary(Of String, String))
+            mNewVariables = value
+            NotifyPropertyChanged("NewVariables")
+        End Set
+    End Property
+
 
 
     Public Sub findAndReplaceNoQuotes()
@@ -161,6 +180,44 @@ Implements INotifyPropertyChanged.PropertyChanged
     End Sub
 
 
+
+
+    Public Sub findAndReplaceInFile2(ByVal replacementValues As Dictionary(Of String, String))
+
+        mNewText = mText
+
+        ' First, go through and expand all variables so that the full names are in the file and will be matched by the entries in the name change document
+        For Each kvp As KeyValuePair(Of String, String) In mVariables
+            mNewText = mNewText.Replace("%" + kvp.Key + "%", kvp.Value)
+        Next
+
+        ' Replace old full names with new full names
+        For Each kvp As KeyValuePair(Of String, String) In replacementValues
+            mNewText = mNewText.Replace(kvp.Key, kvp.Value)
+        Next
+
+        ' Replace old variable definitions with new variable definitions
+        'For i As Integer = 0 To mVariables.Count - 1
+        '    Dim variable = mVariables.Keys(i)
+        '    Dim strReplaceVal = "%" & variable & "%"
+        '    mNewText = mNewText.Replace(mNewVariables(variable), strReplaceVal)
+        'Next
+        For Each kvp As KeyValuePair(Of String, String) In mNewVariables
+            mNewText = mNewText.Replace(kvp.Value, "%" + kvp.Key + "%")
+        Next
+
+        ' However, this will also affect DEFINE statements and cause them to read like DEFINE(X, "%X"), so this must be corrected
+        Dim matches As MatchCollection = Regex.Matches(mNewText, Regex.Escape("DEFINE(") & "(.*)" & Regex.Escape(",""") & "(.*)" & """" & "(.*)")
+        For Each m As Match In matches
+            Dim variable As String = m.Groups(1).ToString
+            Dim val As String = m.Groups(2).ToString
+            mNewText = mNewText.Replace(m.ToString, "DEFINE(" + variable + ",""" + mNewVariables(variable) + """)")
+        Next m
+
+
+        File.WriteAllText(mPath & ".new", mNewText)
+
+    End Sub
 
 
     Public Sub findAndReplaceInFile(ByVal replacementValues As Dictionary(Of String, String), ByVal newDefinitions As Collection)

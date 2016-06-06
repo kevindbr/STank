@@ -153,6 +153,12 @@ Class MainWindow
 
 
 
+
+
+
+
+
+
     'Private Sub updateDefineGrid(sender As Object, e As System.ComponentModel.PropertyChangedEventArgs)
 
     '    If (e.PropertyName <> "Path") Then Return
