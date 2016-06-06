@@ -76,7 +76,7 @@ Public Class MainViewModel
 
         Dim error1 = "No Panel Attributes Document Specified"
         Dim error2 = "No Active Comm Ports"
-        Dim error3 = "Set Define Statements for PPCL"
+
 
         If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.PanelAttributesDocument.Path) Then
             allErrors.Add(error1)
@@ -86,7 +86,7 @@ Public Class MainViewModel
             allErrors.Add(error2)
         End If
 
-        allErrors.Add(error3)
+
 
         Return allErrors
     End Function
@@ -101,6 +101,7 @@ Public Class MainViewModel
         Dim allErrors As List(Of String) = New List(Of String)
         Dim error1 = "No PPCL document provided"
         Dim error2 = "No Name Change Document Path Specified"
+        Dim error3 = "Set Define Statements for PPCL"
 
         If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.Ppcl.Path) Then
             allErrors.Add(error1)
@@ -111,7 +112,9 @@ Public Class MainViewModel
             allErrors.Add(error2)
         End If
 
-
+        If mSTankProj.Panel.Ppcl.Variables.Count > 0 Then
+            allErrors.Add(error3)
+        End If
 
         Return allErrors
     End Function

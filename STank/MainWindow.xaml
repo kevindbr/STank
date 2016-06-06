@@ -68,7 +68,7 @@
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <Label  HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12">Name Change Document Path:</Label>
+                    <Label  HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12">Name Change Document:</Label>
                     <TextBox x:Name="nameChangeDocument" IsEnabled="False" Text="{Binding Path=Panel.NameChangeDocument.Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0"></TextBox>
                 </StackPanel>
                 
@@ -81,7 +81,7 @@
             <ScrollViewer Grid.Row="1" Grid.Column="1">
                 <StackPanel Grid.Row="1" Grid.Column="1">
                     <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Width="Auto">Activity Log</Label>
-                    <TextBlock Padding="20 20 20 20" FontSize="14" Background="#dfe6ed" x:Name="activityLog" Height="Auto" Width="Auto" Margin="20 0 0 0"></TextBlock>
+                    <TextBlock Padding="20 20 20 20" FontSize="14" Background="#dfe6ed" x:Name="activityLog" HorizontalAlignment="Left" Height="Auto" MaxWidth="600" MinWidth="400" Width="Auto" Margin="20 0 0 0"></TextBlock>
                 </StackPanel>
             </ScrollViewer>
 
@@ -131,8 +131,18 @@
                 </StackPanel>
             </ScrollViewer>
 
-            <Button x:Name="runFnRButton" Grid.Row="2" Grid.Column="1" Style="{StaticResource AccentedSquareButtonStyle}" Margin="20 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Width="auto" Click="findAndReplaceClicked">Run Find and Replace</Button>
+            <StackPanel Grid.Row="2" Grid.Column="1">
+                <StackPanel Margin="0 0 0 20" Orientation="Horizontal">
+                <Image HorizontalAlignment="Left" Height="20" Width="20" Margin="20 10 0 0" Source="Images/Siemens_Icons/Notice.png" />
+                    <Label VerticalAlignment="Bottom">Critical for Find and Replace</Label>
+                    <Image HorizontalAlignment="Left" Height="20" Width="20" Margin="20 10 0 0" Source="Images/Siemens_Icons/Warning.png" />
+                    <Label VerticalAlignment="Bottom">Critical component for Bacnet Conversion</Label>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" >
+                <Button x:Name="runFnRButton" Grid.Row="2" Grid.Column="1" Style="{StaticResource AccentedSquareButtonStyle}" Margin="20 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Width="auto" Click="findAndReplaceClicked">Run Find and Replace</Button>
             <Button x:Name="bacnetConversionButton" Grid.Row="2" Grid.Column="1" Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="30" Width="auto" Click="findAndReplaceClicked">Run Bacnet Conversion</Button>
+            </StackPanel>
+            </StackPanel>
 
             <StackPanel Height="30" Background="#dfe6ed"  Orientation="Horizontal" Grid.Row="4" Grid.ColumnSpan="2" VerticalAlignment="Bottom" >
                 <Label>Siemens.com</Label>
@@ -143,13 +153,6 @@
                 <Label>Terms of Use</Label>
                 <Label>Digital ID</Label>
             </StackPanel>
-            <ListBox Grid.Column="1" HorizontalAlignment="Left" Height="105" Margin="36,199,0,0" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Top" Width="402" x:Name="log">
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListBoxItem}">
-                        <Setter Property="Focusable" Value="False"/>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-            </ListBox>
         </Grid>
     </DockPanel>
 </Controls:MetroWindow>

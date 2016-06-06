@@ -283,27 +283,44 @@ Class MainWindow
 
         Dim listOfErrors As List(Of String) = mMainViewModel.getActivityErrorLogs()
         Dim listOfWarnings As List(Of String) = mMainViewModel.getActivityWarningLogs()
-        Dim noticeImage As Image = New Image()
-
-        Dim bi3 As New BitmapImage
-        bi3.BeginInit()
-        bi3.UriSource = New Uri(My.Application.Info.DirectoryPath + "\Resoures\Notice.png", UriKind.Relative)
-        bi3.EndInit()
-        noticeImage.Stretch = Stretch.Fill
-        noticeImage.Source = bi3
-
-        Dim container As InlineUIContainer = New InlineUIContainer(noticeImage)
-        activityLog.Inlines.Add(container)
 
         For Each notification As String In listOfErrors
-            Dim newLine As Run = New Run(notification)
+            Dim noticeImage As Image = New Image()
+            noticeImage.Width = 20
+            noticeImage.Height = 20
+
+            Dim bi3 As New BitmapImage
+            bi3.BeginInit()
+            bi3.UriSource = New Uri("Resources/Notice.png", UriKind.Relative)
+            bi3.EndInit()
+            noticeImage.Stretch = Stretch.Fill
+            noticeImage.Source = bi3
+
+            Dim container As InlineUIContainer = New InlineUIContainer(noticeImage)
+            activityLog.Inlines.Add(container)
+
+            Dim newLine As Run = New Run(" " + notification)
             newLine.Foreground = Brushes.Red
             activityLog.Inlines.Add(newLine)
             activityLog.Inlines.Add(New LineBreak)
         Next
 
         For Each notification As String In listOfWarnings
-            Dim newLine As Run = New Run(notification)
+            Dim noticeImage As Image = New Image()
+            noticeImage.Width = 20
+            noticeImage.Height = 20
+
+            Dim bi3 As New BitmapImage
+            bi3.BeginInit()
+            bi3.UriSource = New Uri("Resources/Warning.png", UriKind.Relative)
+            bi3.EndInit()
+            noticeImage.Stretch = Stretch.Fill
+            noticeImage.Source = bi3
+
+            Dim container As InlineUIContainer = New InlineUIContainer(noticeImage)
+            activityLog.Inlines.Add(container)
+
+            Dim newLine As Run = New Run(" " + notification)
             newLine.Foreground = Brushes.DarkOrange
             activityLog.Inlines.Add(newLine)
             activityLog.Inlines.Add(New LineBreak)

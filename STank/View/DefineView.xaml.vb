@@ -42,4 +42,8 @@ Public Class DefineView
                           End Sub)
     End Sub
 
+    Private Sub exitView(sender As Object, e As RoutedEventArgs)
+        Close()
+    End Sub
+
 End Class
