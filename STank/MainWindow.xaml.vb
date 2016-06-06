@@ -35,7 +35,7 @@ Class MainWindow
         AddHandler bw.DoWork, AddressOf bw_RunFindAndReplace
         'AddHandler bw.ProgressChanged, AddressOf bw_ProgressChanged
         'AddHandler bw.RunWorkerCompleted, AddressOf bw_RunWorkerCompleted
-
+        updateAllLogs()
 
     End Sub
 
@@ -215,6 +215,38 @@ Class MainWindow
 
                           End Sub)
 
+
+    End Sub
+
+    Private Sub updateAllLogs()
+        Dim listOfErrors As List(Of String) = mMainViewModel.getActivityErrorLogs()
+        Dim listOfWarnings As List(Of String) = mMainViewModel.getActivityWarningLogs()
+        Dim noticeImage As Image = New Image()
+
+        Dim bi3 As New BitmapImage
+        bi3.BeginInit()
+        bi3.UriSource = New Uri(My.Application.Info.DirectoryPath + "\Resoures\Notice.png", UriKind.Relative)
+        bi3.EndInit()
+        noticeImage.Stretch = Stretch.Fill
+        noticeImage.Source = bi3
+
+        Dim container As InlineUIContainer = New InlineUIContainer(noticeImage)
+        activityLog.Inlines.Add(container)
+
+
+        For Each notification As String In listOfErrors
+            Dim newLine As Run = New Run(notification)
+            newLine.Foreground = Brushes.Red
+            activityLog.Inlines.Add(newLine)
+            activityLog.Inlines.Add(New LineBreak)
+        Next
+
+        For Each notification As String In listOfWarnings
+            Dim newLine As Run = New Run(notification)
+            newLine.Foreground = Brushes.DarkOrange
+            activityLog.Inlines.Add(newLine)
+            activityLog.Inlines.Add(New LineBreak)
+        Next
 
     End Sub
 

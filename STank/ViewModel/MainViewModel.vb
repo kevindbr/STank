@@ -64,4 +64,50 @@ Public Class MainViewModel
         Return mSTankProj
     End Function
 
+    ''' <summary>
+    ''' Warnings are notifications that won't effect the user's ability to perform a find and replace
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Function getActivityWarningLogs() As List(Of String)
+
+        Dim allErrors As List(Of String) = New List(Of String)
+
+        Dim error1 = "No Panel Attributes Document Specified"
+        Dim error2 = "No Active Comm Ports"
+
+        If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.PanelAttributesDocument.Path) Then
+            allErrors.Add(error1)
+        End If
+
+        If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.Ppcl.Path) Then
+            allErrors.Add(error2)
+        End If
+
+        Return allErrors
+    End Function
+
+    ''' <summary>
+    ''' Notifications that will hinder the user from being able to use the find and replace
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Function getActivityErrorLogs() As List(Of String)
+
+        Dim allErrors As List(Of String) = New List(Of String)
+        Dim error1 = "No PPCL document provided"
+        Dim error2 = "No Name Change Document Path Specified"
+
+        If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.Ppcl.Path) Then
+            allErrors.Add(error1)
+        End If
+
+        If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.NameChangeDocument.Path) Then
+            allErrors.Add(error2)
+        End If
+
+        Return allErrors
+    End Function
+
+
 End Class

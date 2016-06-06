@@ -77,10 +77,12 @@
                 </StackPanel>
                 
             </StackPanel>
-
-            <StackPanel Grid.Row="1" Grid.Column="1">
-                <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="30" Width="Auto">Activity Log</Label>
-            </StackPanel>
+            <ScrollViewer Grid.Row="1" Grid.Column="1">
+                <StackPanel Grid.Row="1" Grid.Column="1">
+                    <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="30" Width="Auto">Activity Log</Label>
+                    <TextBlock Padding="20 20 20 20" FontSize="14" Background="#dfe6ed" x:Name="activityLog" Height="Auto" Width="Auto" Margin="20 0 0 0"></TextBlock>
+                </StackPanel>
+            </ScrollViewer>
 
             <ScrollViewer Grid.Row="2">
                 <StackPanel Grid.Row="2">
@@ -97,9 +99,11 @@
                 </StackPanel>
             </ScrollViewer>
 
-            <StackPanel Grid.Row="3" Grid.Column="0">
-                <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Width="Auto">Project Status</Label>
-            </StackPanel>
+            <ScrollViewer Grid.Row="3" Grid.Column="0">
+                <StackPanel Grid.Row="3" Grid.Column="0">
+                    <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Width="Auto">Project Status</Label>
+                </StackPanel>
+            </ScrollViewer>
 
             <Button Grid.Row="2" Grid.Column="1" Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="auto" Click="findAndReplaceClicked">Run Find and Replace</Button>
 
