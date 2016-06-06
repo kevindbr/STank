@@ -120,6 +120,10 @@ Public Class FindAndReplaceView
 
     End Sub
 
+    Private Sub exitView(sender As Object, e As RoutedEventArgs)
+        Close()
+    End Sub
+
     'Private Sub updateDefineGrid()
     '    Dim dt As New DataTable
 
