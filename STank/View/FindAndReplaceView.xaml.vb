@@ -21,7 +21,7 @@ Public Class FindAndReplaceView
     End Sub
 
     Private Sub IntializeWindow()
-        updateDefineGrid()
+        ' updateDefineGrid()
         bw.WorkerReportsProgress = True
         bw.WorkerSupportsCancellation = True
         AddHandler bw.DoWork, AddressOf bw_RunFindAndReplace
@@ -34,8 +34,13 @@ Public Class FindAndReplaceView
         Dim replacementValues As Dictionary(Of String, String) = mMainViewModel.getProj.Panel.NameChangeDocument.ReplacementValues
         Dim ppcl As Ppcl = mMainViewModel.getProj.Panel.Ppcl
         Dim newDefinitions As Collection = New Collection()
-        For Each row As DataRowView In defineGrid.ItemsSource
-            newDefinitions.Add(row.Item(2))
+
+        'For Each row As DataRowView In defineGrid.ItemsSource
+        '    newDefinitions.Add(row.Item(2))
+        'Next
+
+        For Each kvp As KeyValuePair(Of String, String) In mMainViewModel.getProj.Panel.Ppcl.Variables
+            newDefinitions.Add(kvp.Value)
         Next
 
         ppcl.findAndReplaceInFile(replacementValues, newDefinitions)    'TODO: logging
@@ -114,29 +119,27 @@ Public Class FindAndReplaceView
 
     End Sub
 
-    Private Sub updateDefineGrid()
-        Dim dt As New DataTable
+    'Private Sub updateDefineGrid()
+    '    Dim dt As New DataTable
 
-        dt.Columns.Add("Variable")
-        dt.Columns.Add("Current Def")
-        dt.Columns.Add("New Def")
+    '    dt.Columns.Add("Variable")
+    '    dt.Columns.Add("Current Def")
+    '    dt.Columns.Add("New Def")
 
-        For Each kvp As KeyValuePair(Of String, String) In mMainViewModel.getProj.Panel.Ppcl.Variables
-            dt.Rows.Add(kvp.Key, kvp.Value, kvp.Value)
-        Next
-
-
-        'defineGrid.DataContext = data.DefaultView
-
-        Dispatcher.Invoke(Sub()
-                              defineGrid.ItemsSource = dt.AsDataView
-
-                              defineGrid.Columns(0).IsReadOnly = True
-                              defineGrid.Columns(1).IsReadOnly = True
-                              defineGrid.Columns(2).IsReadOnly = False
-                          End Sub)
+    '    For Each kvp As KeyValuePair(Of String, String) In mMainViewModel.getProj.Panel.Ppcl.Variables
+    '        dt.Rows.Add(kvp.Key, kvp.Value, kvp.Value)
+    '    Next
 
 
-    End Sub
+    '    'defineGrid.DataContext = data.DefaultView
+
+    '    Dispatcher.Invoke(Sub()
+    '                          defineGrid.ItemsSource = dt.AsDataView
+
+    '                          defineGrid.Columns(0).IsReadOnly = True
+    '                          defineGrid.Columns(1).IsReadOnly = True
+    '                          defineGrid.Columns(2).IsReadOnly = False
+    '                      End Sub)
+    'End Sub
 
 End Class

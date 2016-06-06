@@ -76,6 +76,7 @@ Public Class MainViewModel
 
         Dim error1 = "No Panel Attributes Document Specified"
         Dim error2 = "No Active Comm Ports"
+        Dim error3 = "Set Define Statements for PPCL"
 
         If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.PanelAttributesDocument.Path) Then
             allErrors.Add(error1)
@@ -84,6 +85,8 @@ Public Class MainViewModel
         If mSTankProj.Panel.Port.PortName = portNameDefault Then
             allErrors.Add(error2)
         End If
+
+        allErrors.Add(error3)
 
         Return allErrors
     End Function
@@ -101,11 +104,14 @@ Public Class MainViewModel
 
         If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.Ppcl.Path) Then
             allErrors.Add(error1)
+
         End If
 
         If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.NameChangeDocument.Path) Then
             allErrors.Add(error2)
         End If
+
+
 
         Return allErrors
     End Function
