@@ -96,6 +96,9 @@ Public Class DefineView
     End Sub
 
     Private Sub exitView(sender As Object, e As RoutedEventArgs)
+
+        'mMainViewModel.
+
         Close()
     End Sub
 

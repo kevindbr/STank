@@ -112,9 +112,9 @@ Public Class MainViewModel
             allErrors.Add(error2)
         End If
 
-        If mSTankProj.Panel.Ppcl.Variables.Count > 0 Then
-            allErrors.Add(error3)
-        End If
+        'If mSTankProj.Panel.Ppcl.NewVariables.Count > 0 Then
+        '    allErrors.Add(error3)
+        'End If
 
         Return allErrors
     End Function

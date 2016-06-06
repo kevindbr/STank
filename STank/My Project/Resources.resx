@@ -127,4 +127,27 @@
   <data name="Siemens_Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\Siemens_Icons\Siemens_Logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="Warning" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAEQAAABECAYAAAA4E5OyAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAZdEVYdFNvZnR3YXJlAEFkb2JlIEltYWdlUmVhZHlxyWU8AAADvUlEQVR4Xu1cO24UQRDdI/gI
+        lriAOQE+AIFjIoeEjoh9A8sn2BMgRyQEOCBxgGSREDjZAFLLcgJmMV7e09SsZ2drfrtdXTUrnvSk9Ux1
+        dfejP9WfYeKNXx9e7IOHFR7Iq92GVPYUvACvwUUP0o72THcorsYJVGAPPJYK3YFahTch/dHvnmQVGygo
+        u8AUTCmCRvpnPjG7GApWCqEV3pqXYAxhUBB2jTMpmDf5D+LXlZA5B8qZFCYK2ZWOpIj5gEyjtIom5mkt
+        zATsO216k+Xcl6KnB5wfSCZa5lHJLpR+wKVTca5lGp1pRYEzdpOxilEyjShwMqYxo4sUZbuBFg4YKmvO
+        x8prqdpwIDEXVZrTsfNMqtgfSMRBVHO2Kxy2ekYC83Hj4dOrxe+rN838/FpNl4iMsPuNJzA8qSQ045+b
+        80Ub/t5eqekS8lSq3AwYZZtiAwjCerZHsjDINpAGEIScStV1wCBbABZEEFIfS/CCW3NaAhMGEkQfS/Ai
+        a0QaSJCZSPAMPOQWoGZsxkCCkKvrHDzIMtVWGUyQ1egVD7hRqxmaMZggq2scxcCcwQQhi9kGP1zWLQEF
+        KdY3+JF1ui05//JWqq7jcTZV0xmymH75o/YiC7mAawNbkJbOkEXUih8um0Bc7bZh/vWdms6Ql6Ug2WeY
+        km1gC9LSGDKAIPN7qf46jPdDVLoLwpmkCZq9Nf8LUqO7IJxaNTzdf1PtrekuSFNw5hCUkcWqFz/cBOHU
+        quHx+3vV3pjLWcbtakNTcOYQlJFLQdwOpIIJsgzdeRNIM8hCDQ5BGXlcCsKjB80gCzU4CfK8a4Y/3E74
+        OcXW8fDxpWpryDuRogAeuA2sWnCm2RnzQqQogAdHNYNs5BRbxdPPH6qdMYvxowo8zHZIVSVjEbaSkg4b
+        Q+T6YRUeRr9qaUX9OBMvsp/NBGHzXRG83LUrVF0sotMmwCBbkNYUpVahpUvM7ptEMMryVUMAQdpbRwkY
+        ciwxn3ECCNL/3iqMzRd8zoJsdBPRdJ/EURAuU4Zf4EUi067jJAjrs/kVbyQ2m3WcBFkP0YeCTmpOk5Dn
+        LtWQXaOWbgt2X8PsCzhzORBPyPbbhpsATscqSnoxSsD52ETZfszoAjIZw9dVLF++rzORGfdhoy4EGT/Z
+        fXzYBmTMLhSltbAcJ1I0P6AQbC3em0u+X3VrQIEY2VKYnC2GQvh0j75AAdli2JWsjjbolxeNY7WIPkCh
+        2WooDgfgTf+fALY4pqcIsVvDUKBCbD1cH1EkbjE0kZWnXcZWMJn8A37NcjjQSiauAAAAAElFTkSuQmCC
+</value>
+  </data>
 </root>

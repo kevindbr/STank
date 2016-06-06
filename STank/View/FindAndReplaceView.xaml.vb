@@ -53,8 +53,8 @@ Public Class FindAndReplaceView
             Dim oldName As String = kvp.Key
             Dim newName As String = kvp.Value
             Dim sysName As String = newName
-            Dim cmd As String = "ChangeSystemName2 " + oldName + " " + newName + " " + sysName
-            cmd = "ChangeSystemName " 'shouldn't run without arguments
+            Dim cmd As String = "ChangeSystemName " + oldName + " " + newName + " " + sysName
+            'cmd = "ChangeSystemName " 'shouldn't run without arguments
 
             Dim process = New System.Diagnostics.Process()
             Dim startInfo = New System.Diagnostics.ProcessStartInfo
