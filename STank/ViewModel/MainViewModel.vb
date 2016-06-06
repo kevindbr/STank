@@ -4,6 +4,7 @@
 Public Class MainViewModel
 
     Private mSTankProj As STankProj
+    Private portNameDefault = "No Active Comm Ports"
 
 
     ''' <summary>
@@ -20,12 +21,12 @@ Public Class MainViewModel
         Dim panel = New Panel()
         panel.InitializeData()
 
-
         panel.Name = "New Panel"
         panel.Database = New PanelDatabase()
         panel.Database.IntializeData()
         panel.Port = New CommPort()
         panel.Port.IntializeData()
+        panel.Port.PortName = portNameDefault
 
         mSTankProj.Panels.Add(panel)
 
@@ -80,7 +81,7 @@ Public Class MainViewModel
             allErrors.Add(error1)
         End If
 
-        If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.Ppcl.Path) Then
+        If mSTankProj.Panel.Port.PortName = portNameDefault Then
             allErrors.Add(error2)
         End If
 

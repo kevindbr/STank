@@ -36,11 +36,17 @@ Implements INotifyPropertyChanged.PropertyChanged
 
         Set(value As String)
             mPath = value
-            findAndReplaceNoQuotes()    'reads file contents into mText, doing some basic error checking along the way
-            'mText = File.ReadAllText(mPath)
-            getVariables()
-            getOldDefine()
+
+            If isValidDocument(mPath) Then
+                findAndReplaceNoQuotes()    'reads file contents into mText, doing some basic error checking along the way
+                'mText = File.ReadAllText(mPath)
+                getVariables()
+                getOldDefine()
+            End If
+
             NotifyPropertyChanged("Path")
+
+
         End Set
     End Property
 
@@ -334,6 +340,22 @@ Implements INotifyPropertyChanged.PropertyChanged
         Next
 
     End Sub
+
+    ''' <summary>
+    ''' Check file extension here
+    ''' </summary>
+    ''' <param name="mPath"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function isValidDocument(mPath As String) As Boolean
+        Dim isValidFile = True
+
+        If mPath = "No PPCL path Specified" Then
+            isValidFile = False
+        End If
+
+        Return isValidFile
+    End Function
 
 
 End Class

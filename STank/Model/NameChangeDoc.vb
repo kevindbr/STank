@@ -25,7 +25,11 @@ Public Class NameChangeDoc
 
         Set(value As String)
             mPath = value
-            getReplacementValues()
+
+            If isValidDocument(mPath) Then
+                getReplacementValues()
+            End If
+
             NotifyPropertyChanged("Path")
         End Set
     End Property
@@ -60,5 +64,21 @@ Public Class NameChangeDoc
         Next line
         'Return replacementValues
     End Sub
+
+    ''' <summary>
+    ''' Check file extension here
+    ''' </summary>
+    ''' <param name="mPath"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function isValidDocument(mPath As String) As Boolean
+        Dim isValidFile = True
+
+        If mPath = "No Name Change Document Path Specified" Then
+            isValidFile = False
+        End If
+
+        Return isValidFile
+    End Function
 
 End Class

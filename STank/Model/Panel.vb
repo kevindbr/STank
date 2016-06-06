@@ -91,7 +91,6 @@ Implements INotifyPropertyChanged.PropertyChanged
     End Property
 
     Public Sub InitializeData()
-
         mName = "New Panel"
         mDatabase = New PanelDatabase()
         mDatabase.IntializeData()
@@ -99,13 +98,15 @@ Implements INotifyPropertyChanged.PropertyChanged
         mCommPort.IntializeData()
 
         mPpcl = New Ppcl()
-        mPpcl.Path = "C:\Users\Axios\Desktop\testWorkingDir\PPCL_MBC45.pcl"
+        mPpcl.Path = "No PPCL path Specified"
+        'mPpcl.Path = "C:\Users\Axios\Desktop\testWorkingDir\PPCL_MBC45.pcl"
 
         mNameChangeDoc = New NameChangeDoc()
-        mNameChangeDoc.Path = "C:\Users\Axios\Desktop\testWorkingDir\EPMAHU05_NewNames.csv"
+        mNameChangeDoc.Path = "No Name Change Document Path Specified"
+        'mNameChangeDoc.Path = "C:\Users\Axios\Desktop\testWorkingDir\EPMAHU05_NewNames.csv"
 
         mPanelAttributesDoc = New PanelAttributesDoc()
-        mPanelAttributesDoc.Path = "C:\"
+        mPanelAttributesDoc.Path = "No Panel Attributes Document Specified"
 
     End Sub
 

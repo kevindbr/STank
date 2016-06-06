@@ -38,12 +38,17 @@ Class MainWindow
 		
         'AddHandler bw.ProgressChanged, AddressOf bw_ProgressChanged
         'AddHandler bw.RunWorkerCompleted, AddressOf bw_RunWorkerCompleted
-        updateAllLogs()
 
         AddHandler mMainViewModel.getProj.Panel.NameChangeDocument.PropertyChanged, AddressOf updateDefineGrid
         mMainViewModel.getProj.Panel.NameChangeDocument.Path = mMainViewModel.getProj.Panel.NameChangeDocument.Path
         'Gets event to trigger now that handler is in place
 
+        AddHandler mMainViewModel.getProj.Panel.Ppcl.PropertyChanged, AddressOf updateMainWindow
+        AddHandler mMainViewModel.getProj.Panel.NameChangeDocument.PropertyChanged, AddressOf updateMainWindow
+        AddHandler mMainViewModel.getProj.Panel.PanelAttributesDocument.PropertyChanged, AddressOf updateMainWindow
+        AddHandler mMainViewModel.getProj.Panel.Port.PropertyChanged, AddressOf updateMainWindow
+
+        updateMainWindow()
     End Sub
 
     Private Sub showConnectionView(sender As Object, e As RoutedEventArgs)
@@ -109,7 +114,10 @@ Class MainWindow
 
     Private Sub findAndReplaceClicked(sender As Object, e As RoutedEventArgs)
 
-        bw.RunWorkerAsync()     'Run find and replace on background thread.  Shouldn't need this if we are using a modal window instead
+        Dim fnrView As New FindAndReplaceView(mMainViewModel)
+        fnrView.Show()
+
+        'bw.RunWorkerAsync()     'Run find and replace on background thread.  Shouldn't need this if we are using a modal window instead
 
 
         'Dim panel As Panel = mMainViewModel.getPanels().Item(0)     'for now there's only one panel
@@ -171,11 +179,13 @@ Class MainWindow
 
 
     Private Sub bw_RunFindAndReplace(ByVal sender As Object, ByVal e As DoWorkEventArgs)
-        Dim worker As BackgroundWorker = CType(sender, BackgroundWorker)
 
+        Dim fnrView As New FindAndReplaceView(mMainViewModel)
+        fnrView.Show()
+
+        Dim worker As BackgroundWorker = CType(sender, BackgroundWorker)
         Dim replacementValues As Dictionary(Of String, String) = mMainViewModel.getProj.Panel.NameChangeDocument.ReplacementValues
         Dim ppcl As Ppcl = mMainViewModel.getProj.Panel.Ppcl
-
         Dim newDefinitions As Collection = New Collection()
         For Each row As DataRowView In defineGrid.ItemsSource
             newDefinitions.Add(row.Item(2))
@@ -265,7 +275,14 @@ Class MainWindow
 
     End Sub
 
+    Private Sub updateMainWindow()
+        updateAllLogs()
+        updateButtons()
+    End Sub
+
     Private Sub updateAllLogs()
+        activityLog.Text = ""
+
         Dim listOfErrors As List(Of String) = mMainViewModel.getActivityErrorLogs()
         Dim listOfWarnings As List(Of String) = mMainViewModel.getActivityWarningLogs()
         Dim noticeImage As Image = New Image()
@@ -280,7 +297,6 @@ Class MainWindow
         Dim container As InlineUIContainer = New InlineUIContainer(noticeImage)
         activityLog.Inlines.Add(container)
 
-
         For Each notification As String In listOfErrors
             Dim newLine As Run = New Run(notification)
             newLine.Foreground = Brushes.Red
@@ -294,6 +310,18 @@ Class MainWindow
             activityLog.Inlines.Add(newLine)
             activityLog.Inlines.Add(New LineBreak)
         Next
+
+    End Sub
+
+    Private Sub updateButtons()
+
+        Dim listOfErrors As List(Of String) = mMainViewModel.getActivityErrorLogs()
+
+        If listOfErrors.Count = 0 Then
+            runFnRButton.IsEnabled = True
+        Else
+            runFnRButton.IsEnabled = False
+        End If
 
     End Sub
 
