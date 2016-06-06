@@ -50,11 +50,11 @@
                 
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Border BorderThickness="0 0 1 0" BorderBrush="#788791" >
-                <Image Width="auto" HorizontalAlignment="Right" Height="60" Margin="0 10 50 0" Source="Images/Siemens_Icons/Siemens_Logo.png" />
+            <Border BorderThickness="0 0 1 0" BorderBrush="#788791" Margin="0 15 0 15" >
+                <Image Width="auto" HorizontalAlignment="Right" Height="45" Margin="20 10 100 0" Source="Images/Siemens_Icons/Siemens_Logo.png" />
             </Border>
 
-            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="30">Shark Tank and Replace Tool</Label>
+            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24">Shark Tank and Replace Tool</Label>
             <StackPanel Grid.Row="1" Grid.Column="0">
                 <StackPanel Orientation="Horizontal" Margin="0 0 0 20">
                     <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="auto" Click="browseProgramClicked">Set PPCL Program</Button>
@@ -79,7 +79,7 @@
             </StackPanel>
             <ScrollViewer Grid.Row="1" Grid.Column="1">
                 <StackPanel Grid.Row="1" Grid.Column="1">
-                    <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="30" Width="Auto">Activity Log</Label>
+                    <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Width="Auto">Activity Log</Label>
                     <TextBlock Padding="20 20 20 20" FontSize="14" Background="#dfe6ed" x:Name="activityLog" Height="Auto" Width="Auto" Margin="20 0 0 0"></TextBlock>
                 </StackPanel>
             </ScrollViewer>
@@ -87,7 +87,7 @@
             <ScrollViewer Grid.Row="2">
                 <StackPanel Grid.Row="2">
                     <StackPanel Orientation="Horizontal" >
-                        <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Width="Auto">Active Comm Ports</Label>
+                        <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="18" Width="Auto">Active Comm Ports</Label>
                     <Button Margin="50 0 0 0" Style="{StaticResource AccentedSquareButtonStyle}"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="30" Click="showConnectionView">Add New Connection</Button>
                     </StackPanel>
                     <ListBox x:Name="serialPortList" SelectionChanged="LoadData_Click_1" ItemsSource="{Binding }">
@@ -103,7 +103,7 @@
 
             <ScrollViewer Grid.Row="3" Grid.Column="0">
                 <StackPanel Grid.Row="3" Grid.Column="0">
-                    <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Width="Auto">Project Status</Label>
+                    <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="18" Width="Auto">Project Status</Label>
                     <StackPanel Orientation="Horizontal" Margin=" 10 10 10 10" >
                         <Label>PPCL Document</Label>
                         <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" FontSize=" 10" Height="20" Click="showConnectionView">View Details</Button>
