@@ -8,6 +8,8 @@ Imports System.ComponentModel
 Imports System.Windows.Automation.Peers
 Imports System.Windows.Automation.Provider
 Imports System.Windows.Automation
+Imports System.Data
+Imports System.Collections.ObjectModel
 
 Class MainWindow
 
@@ -33,9 +35,14 @@ Class MainWindow
         bw.WorkerReportsProgress = True
         bw.WorkerSupportsCancellation = True
         AddHandler bw.DoWork, AddressOf bw_RunFindAndReplace
+		
         'AddHandler bw.ProgressChanged, AddressOf bw_ProgressChanged
         'AddHandler bw.RunWorkerCompleted, AddressOf bw_RunWorkerCompleted
         updateAllLogs()
+
+        AddHandler mMainViewModel.getProj.Panel.NameChangeDocument.PropertyChanged, AddressOf updateDefineGrid
+        mMainViewModel.getProj.Panel.NameChangeDocument.Path = mMainViewModel.getProj.Panel.NameChangeDocument.Path
+        'Gets event to trigger now that handler is in place
 
     End Sub
 
@@ -105,7 +112,6 @@ Class MainWindow
         bw.RunWorkerAsync()     'Run find and replace on background thread.  Shouldn't need this if we are using a modal window instead
 
 
-
         'Dim panel As Panel = mMainViewModel.getPanels().Item(0)     'for now there's only one panel
         'Dim program = New Program(panel.Port.RetrieveProgram)
         'program.changeNames(panel.NameChangeDocument.getReplacementValues)
@@ -134,19 +140,58 @@ Class MainWindow
 
 
 
+    Private Sub updateDefineGrid(sender As Object, e As System.ComponentModel.PropertyChangedEventArgs)
+
+        If (e.PropertyName <> "Path") Then Return
+
+
+        Dim dt As New DataTable
+
+        dt.Columns.Add("Variable")
+        dt.Columns.Add("Current Def")
+        dt.Columns.Add("New Def")
+
+        For Each kvp As KeyValuePair(Of String, String) In mMainViewModel.getProj.Panel.Ppcl.Variables
+            dt.Rows.Add(kvp.Key, kvp.Value, kvp.Value)
+        Next
+
+
+        'defineGrid.DataContext = data.DefaultView
+
+        Dispatcher.Invoke(Sub()
+                              defineGrid.ItemsSource = dt.AsDataView
+
+                              defineGrid.Columns(0).IsReadOnly = True
+                              defineGrid.Columns(1).IsReadOnly = True
+                              defineGrid.Columns(2).IsReadOnly = False
+                          End Sub)
+
+
+    End Sub
+
+
     Private Sub bw_RunFindAndReplace(ByVal sender As Object, ByVal e As DoWorkEventArgs)
         Dim worker As BackgroundWorker = CType(sender, BackgroundWorker)
 
-        Dim replacementValues As Dictionary(Of String, String) = mMainViewModel.getProj.Panel.NameChangeDocument.getReplacementValues()
+        Dim replacementValues As Dictionary(Of String, String) = mMainViewModel.getProj.Panel.NameChangeDocument.ReplacementValues
+        Dim ppcl As Ppcl = mMainViewModel.getProj.Panel.Ppcl
+
+        Dim newDefinitions As Collection = New Collection()
+        For Each row As DataRowView In defineGrid.ItemsSource
+            newDefinitions.Add(row.Item(2))
+        Next
+
+        ppcl.findAndReplaceInFile(replacementValues, newDefinitions)    'TODO: logging
 
         Dim i As Integer = 1
 
-        For Each kvp As KeyValuePair(Of String, String) In mMainViewModel.getProj.Panel.NameChangeDocument.getReplacementValues()
+        For Each kvp As KeyValuePair(Of String, String) In replacementValues
 
             Dim oldName As String = kvp.Key
             Dim newName As String = kvp.Value
             Dim sysName As String = newName
-            Dim cmd As String = "ChangeSysName2 " + oldName + " " + newName + " " + sysName     'don't use actual name yet
+            Dim cmd As String = "ChangeSystemName2 " + oldName + " " + newName + " " + sysName
+            cmd = "ChangeSystemName " 'shouldn't run without arguments
 
             Dim process = New System.Diagnostics.Process()
             Dim startInfo = New System.Diagnostics.ProcessStartInfo
@@ -156,6 +201,8 @@ Class MainWindow
             startInfo.RedirectStandardOutput = True
             startInfo.RedirectStandardError = True
             startInfo.UseShellExecute = False
+
+            startInfo.CreateNoWindow = True
 
             process.StartInfo = startInfo
             process.Start()
