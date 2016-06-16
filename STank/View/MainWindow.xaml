@@ -1,0 +1,158 @@
+﻿<Controls:MetroWindow 
+    x:Class="MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    Controls:ButtonHelper.PreserveTextCase="True"
+    FontSize="12"
+    FontFamily="Siemens Sans Roman"
+    Title="SIEMENS | Shark Tank Find and Replace Tool" Height="620" Width="1000"
+    BorderBrush="{DynamicResource AccentColorBrush}"
+                      BorderThickness="1"
+   WindowStartupLocation="CenterScreen"
+    Loaded="IntializeMainWindow"
+    Cursor="{Binding Cursor}">
+    
+    
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+            <MenuItem x:Name="LoadData" Header="_Open" Click="LoadData_Click_1"></MenuItem>
+                <MenuItem x:Name="SaveData" Header="_Save" Click="LoadData_Click_1"></MenuItem>
+                <MenuItem x:Name="Exit" Header="_Exit" Click="LoadData_Click_1"></MenuItem>
+            </MenuItem>
+
+            <MenuItem Header="_Documentation">
+                <MenuItem x:Name="ShowDocumentation" Header="_Documentation" Click="LoadData_Click_1"></MenuItem>
+            </MenuItem>
+
+            <MenuItem Header="_Help">
+                <MenuItem x:Name="Help" Header="_Help" Click="LoadData_Click_1"></MenuItem>
+            </MenuItem>
+
+            <MenuItem Header="_About">
+                <MenuItem x:Name="About" Header="_About" Click="LoadData_Click_1"></MenuItem>
+            </MenuItem>
+        </Menu>
+
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90"></RowDefinition>
+                <RowDefinition Height="180"></RowDefinition>
+                <RowDefinition Height="100"></RowDefinition>
+                <RowDefinition Height="150"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition  Width="500">                    
+                </ColumnDefinition>
+                
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Border BorderThickness="0 0 1 0" BorderBrush="#788791" Margin="0 15 0 15" >
+                <Image Width="auto" HorizontalAlignment="Right" Height="45" Margin="20 10 100 0" Source="Images/Siemens_Icons/Siemens_Logo.png" />
+            </Border>
+
+            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Content="Shark Tank Find and Replace Tool"/>
+            <StackPanel Grid.Row="1" Grid.Column="0">
+                <StackPanel Orientation="Horizontal" Margin="0 0 0 20">
+                    <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="auto" Click="browseProgramClicked">Set PPCL Program</Button>
+                    <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="auto" Click="browseNameClicked">Set Name Change Document</Button>
+                    <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="auto" Click="browseAttributeClicked">Set Panel Attribute Document</Button>
+                </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                <Label  HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12">PPCL Document:</Label>
+                    <TextBox x:Name="workingDirectory" IsEnabled="False" Text="{Binding Path=Panel.Ppcl.Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0"></TextBox>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <Label  HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12">Name Change Document:</Label>
+                    <TextBox x:Name="nameChangeDocument" IsEnabled="False" Text="{Binding Path=Panel.NameChangeDocument.Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0"></TextBox>
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal">
+                <Label  HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12">Panel Attributes Document:</Label>
+                <TextBox x:Name="panelAttributesDocument" IsEnabled="False" Text="{Binding Path=Panel.PanelAttributesDocument.Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0"></TextBox>
+                </StackPanel>
+                
+            </StackPanel>
+            <ScrollViewer Grid.Row="1" Grid.Column="1">
+                <StackPanel Grid.Row="1" Grid.Column="1">
+                    <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Width="Auto">Activity Log</Label>
+                    <TextBlock Padding="20 20 20 20" FontSize="14" Background="#dfe6ed" x:Name="activityLog" HorizontalAlignment="Left" Height="Auto" MaxWidth="600" MinWidth="400" Width="Auto" Margin="20 0 0 0"></TextBlock>
+                </StackPanel>
+            </ScrollViewer>
+
+            <ScrollViewer Grid.Row="2">
+                <StackPanel Grid.Row="2">
+                    <StackPanel Orientation="Horizontal" >
+                        <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="18" Width="Auto">Active Comm Ports</Label>
+                    <Button Margin="50 0 0 0" Style="{StaticResource AccentedSquareButtonStyle}"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="30" Click="showConnectionView">Add New Connection</Button>
+                    </StackPanel>
+                    <ListBox x:Name="serialPortList" SelectionChanged="LoadData_Click_1" ItemsSource="{Binding }">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Port.PortName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+              
+                </StackPanel>
+            </ScrollViewer>
+
+            <ScrollViewer Grid.Row="3" Grid.Column="0">
+                <StackPanel Grid.Row="3" Grid.Column="0">
+                    <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="18" Width="Auto">Project Status</Label>
+                    <StackPanel Orientation="Horizontal" Margin=" 10 5 0 0" >
+                        <Button Margin="0 0 0 0" Style="{StaticResource AccentedSquareButtonStyle}" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Right" FontSize="10" Height="20" Click="showDefineView">View Details</Button>
+                        <Label Margin="0 0 0 0" >PPCL Document</Label>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin=" 10 5 0 0" >
+                        <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Right" FontSize=" 10" Height="20" >View Details</Button>
+                        <Label>Name Change Document</Label>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin=" 10 5 0 0" >
+                        <Button Margin="0 0 0 0" Style="{StaticResource AccentedSquareButtonStyle}" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" FontSize=" 10" Height="20" >View Details</Button>
+                        <Label Margin="0 0 0 0">Panel Attributes Document</Label>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin=" 10 5 0 0" >
+                        <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" FontSize=" 10" Height="20" >View Details</Button>
+                        <Label>Comm Port Connections</Label>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" ></StackPanel>
+                    <StackPanel Orientation="Horizontal" ></StackPanel>
+                    <StackPanel Orientation="Horizontal" ></StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+
+            <StackPanel Grid.Row="2" Grid.Column="1">
+                <StackPanel Margin="0 0 0 20" Orientation="Horizontal">
+                <Image HorizontalAlignment="Left" Height="20" Width="20" Margin="20 10 0 0" Source="Images/Siemens_Icons/Notice.png" />
+                    <Label VerticalAlignment="Bottom">Critical for Find and Replace</Label>
+                    <Image HorizontalAlignment="Left" Height="20" Width="20" Margin="20 10 0 0" Source="Images/Siemens_Icons/Warning.png" />
+                    <Label VerticalAlignment="Bottom">Critical component for Bacnet Conversion</Label>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" >
+                <Button x:Name="runFnRButton" Grid.Row="2" Grid.Column="1" Style="{StaticResource AccentedSquareButtonStyle}" Margin="20 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Width="auto" Click="findAndReplaceClicked">Run Find and Replace</Button>
+            <Button x:Name="bacnetConversionButton" Grid.Row="2" Grid.Column="1" Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="30" Width="auto" Click="findAndReplaceClicked">Run Bacnet Conversion</Button>
+            </StackPanel>
+            </StackPanel>
+
+            <StackPanel Height="30" Background="#dfe6ed"  Orientation="Horizontal" Grid.Row="4" Grid.ColumnSpan="2" VerticalAlignment="Bottom" >
+                <Label>Siemens.com</Label>
+                <Label>© Siemens AG, 1996 – 2016</Label>
+                <Label>Corporate Information</Label>
+                <Label>Privacy Policy</Label>
+                <Label>Cookie Policy</Label>
+                <Label>Terms of Use</Label>
+                <Label>Digital ID</Label>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</Controls:MetroWindow>
