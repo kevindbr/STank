@@ -27,11 +27,6 @@ Class MainWindow
     Private Sub IntializeMainWindow()
         mMainViewModel = New MainViewModel()
         mMainViewModel.IntializeProject()
-        serialPortList.ItemsSource = mMainViewModel.getPanels()
-        workingDirectory.DataContext = mMainViewModel.getProj()
-        nameChangeDocument.DataContext = mMainViewModel.getProj()
-        panelAttributesDocument.DataContext = mMainViewModel.getProj()
-
         bw.WorkerReportsProgress = True
         bw.WorkerSupportsCancellation = True
         ' AddHandler bw.DoWork, AddressOf bw_RunFindAndReplace
@@ -116,48 +111,6 @@ Class MainWindow
             mMainViewModel.getProj().Panel.PanelAttributesDocument.Path = dlg.FileName
         End If
     End Sub
-
-    Private Sub findAndReplaceClicked(sender As Object, e As RoutedEventArgs)
-
-        Dim fnrView As New FindAndReplaceView(mMainViewModel)
-        fnrView.Show()
-
-        'bw.RunWorkerAsync()     'Run find and replace on background thread.  Shouldn't need this if we are using a modal window instead
-
-
-        'Dim panel As Panel = mMainViewModel.getPanels().Item(0)     'for now there's only one panel
-        'Dim program = New Program(panel.Port.RetrieveProgram)
-        'program.changeNames(panel.NameChangeDocument.getReplacementValues)
-
-
-        'panel.Port.ReplaceProgram(program.NewLines)
-
-
-        'Dim timeStamp As String = DateTime.Now.ToString("MMddyyyyhhmmss")
-        'Dim cwd As String = mMainViewModel.getProj().Directory.Path
-
-        'System.IO.File.WriteAllText(cwd + System.IO.Path.DirectorySeparatorChar + "program_old_" + timeStamp + ".pcl", program.Text)
-        'System.IO.File.WriteAllText(cwd + System.IO.Path.DirectorySeparatorChar + "program_new_" + timeStamp + ".pcl", program.NewText)
-
-
-        'Return
-
-        'Dim folderDialog = New FolderBrowserDialog()
-        'folderDialog.SelectedPath = "C:\"
-
-        'Dim result = folderDialog.ShowDialog()
-        'If (result.ToString() = "OK") Then
-        '    mMainViewModel.getProj().Directory.Path = folderDialog.SelectedPath
-        'End If
-    End Sub
-
-
-
-
-
-
-
-
 
     'Private Sub updateDefineGrid(sender As Object, e As System.ComponentModel.PropertyChangedEventArgs)
 
@@ -285,12 +238,15 @@ Class MainWindow
     End Sub
 
     Private Sub updateAllLogs()
-        activityLog.Text = ""
+        activityLog.Items.Clear()
 
-        Dim listOfErrors As List(Of String) = mMainViewModel.getActivityErrorLogs()
-        Dim listOfWarnings As List(Of String) = mMainViewModel.getActivityWarningLogs()
+        Dim listOfIncomplete As List(Of String) = mMainViewModel.getIncompleteSteps()
+        Dim listOfPartial As List(Of String) = mMainViewModel.getPartialSteps()
+        Dim listOfComplete As List(Of String) = mMainViewModel.getCompleteSteps()
 
-        For Each notification As String In listOfErrors
+        For Each notification As String In listOfIncomplete
+            Dim newItem As TextBlock = New TextBlock()
+
             Dim noticeImage As Image = New Image()
             noticeImage.Width = 20
             noticeImage.Height = 20
@@ -302,16 +258,18 @@ Class MainWindow
             noticeImage.Stretch = Stretch.Fill
             noticeImage.Source = bi3
 
+            newItem.Inlines.Add(New LineBreak)
             Dim container As InlineUIContainer = New InlineUIContainer(noticeImage)
-            activityLog.Inlines.Add(container)
+            newItem.Inlines.Add(container)
 
             Dim newLine As Run = New Run(" " + notification)
             newLine.Foreground = Brushes.Red
-            activityLog.Inlines.Add(newLine)
-            activityLog.Inlines.Add(New LineBreak)
+            newItem.Inlines.Add(newLine)
+            activityLog.Items.Add(newItem)
         Next
 
-        For Each notification As String In listOfWarnings
+        For Each notification As String In listOfPartial
+            Dim newItem As TextBlock = New TextBlock()
             Dim noticeImage As Image = New Image()
             noticeImage.Width = 20
             noticeImage.Height = 20
@@ -323,36 +281,131 @@ Class MainWindow
             noticeImage.Stretch = Stretch.Fill
             noticeImage.Source = bi3
 
+
+            newItem.Inlines.Add(New LineBreak)
             Dim container As InlineUIContainer = New InlineUIContainer(noticeImage)
-            activityLog.Inlines.Add(container)
+            newItem.Inlines.Add(container)
 
             Dim newLine As Run = New Run(" " + notification)
             newLine.Foreground = Brushes.DarkOrange
-            activityLog.Inlines.Add(newLine)
-            activityLog.Inlines.Add(New LineBreak)
+            newItem.Inlines.Add(newLine)
+            activityLog.Items.Add(newItem)
+        Next
+
+        For Each notification As String In listOfComplete
+            Dim newItem As TextBlock = New TextBlock()
+            Dim noticeImage As Image = New Image()
+            noticeImage.Width = 20
+            noticeImage.Height = 20
+
+            Dim bi3 As New BitmapImage
+            bi3.BeginInit()
+            bi3.UriSource = New Uri("Resources/Complete.png", UriKind.Relative)
+            bi3.EndInit()
+            noticeImage.Stretch = Stretch.Fill
+            noticeImage.Source = bi3
+
+            newItem.Inlines.Add(New LineBreak)
+            Dim container As InlineUIContainer = New InlineUIContainer(noticeImage)
+            newItem.Inlines.Add(container)
+
+            Dim newLine As Run = New Run(" " + notification)
+            newLine.Foreground = Brushes.DarkOrange
+            newItem.Inlines.Add(newLine)
+
+            activityLog.Items.Add(newItem)
         Next
 
     End Sub
 
     Private Sub updateButtons()
 
-        Dim listOfErrors As List(Of String) = mMainViewModel.getActivityErrorLogs()
-        Dim listOfWarnings As List(Of String) = mMainViewModel.getActivityWarningLogs()
 
-        If listOfErrors.Count = 0 Then
-            runFnRButton.IsEnabled = True
-        Else
-            runFnRButton.IsEnabled = False
+
+    End Sub
+
+    Private Sub nextStepClicked(sender As Object, e As RoutedEventArgs)
+
+        Dim nextStep As Integer = mMainViewModel.getNextStep()
+
+        If nextStep = 1 Then
+            Dim nextView As FindAndReplaceMainView = New FindAndReplaceMainView(mMainViewModel)
+            nextView.Show()
         End If
 
-        If listOfErrors.Count = 0 And listOfWarnings.Count = 0 Then
-            bacnetConversionButton.IsEnabled = True
-        Else
-            bacnetConversionButton.IsEnabled = False
+        If nextStep = 2 Then
+            Dim nextView As EngineeringUnitsView = New EngineeringUnitsView(mMainViewModel)
+            nextView.Show()
+        End If
+
+        If nextStep = 3 Then
+            Dim nextView As StateTextView = New StateTextView(mMainViewModel)
+            nextView.Show()
+        End If
+
+        If nextStep = 4 Then
+            Dim nextView As EnhancedAlarmsView = New EnhancedAlarmsView(mMainViewModel)
+            nextView.Show()
+        End If
+
+        If nextStep = 5 Then
+            Dim nextView As SSTOView = New SSTOView(mMainViewModel)
+            nextView.Show()
+        End If
+
+        If nextStep = 6 Then
+            Dim nextView As SchedulesView = New SchedulesView(mMainViewModel)
+            nextView.Show()
+        End If
+
+        If nextStep = 0 Then
+            Dim nextView As MessageView = New MessageView()
+            nextView.Show()
         End If
 
     End Sub
 
+    Private Sub stepClicked(sender As Object, e As RoutedEventArgs)
 
+        Dim selectedItem = activityLog.SelectedValue.Inlines.LastInline.Text
+
+        Dim nextStep As Integer = mMainViewModel.getNumericalEquvialent(selectedItem)
+
+        If nextStep = 1 Then
+            Dim nextView As FindAndReplaceMainView = New FindAndReplaceMainView(mMainViewModel)
+            nextView.Show()
+        End If
+
+        If nextStep = 2 Then
+            Dim nextView As EngineeringUnitsView = New EngineeringUnitsView(mMainViewModel)
+            nextView.Show()
+        End If
+
+        If nextStep = 3 Then
+            Dim nextView As StateTextView = New StateTextView(mMainViewModel)
+            nextView.Show()
+        End If
+
+        If nextStep = 4 Then
+            Dim nextView As EnhancedAlarmsView = New EnhancedAlarmsView(mMainViewModel)
+            nextView.Show()
+        End If
+
+        If nextStep = 5 Then
+            Dim nextView As SSTOView = New SSTOView(mMainViewModel)
+            nextView.Show()
+        End If
+
+        If nextStep = 6 Then
+            Dim nextView As SchedulesView = New SchedulesView(mMainViewModel)
+            nextView.Show()
+        End If
+
+        If nextStep = 0 Then
+            Dim nextView As MessageView = New MessageView()
+            nextView.Show()
+        End If
+
+    End Sub
 
 End Class

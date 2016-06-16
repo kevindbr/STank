@@ -113,6 +113,7 @@
     <Compile Include="Model\Program.vb" />
     <Compile Include="Model\WorkingDirectory.vb" />
     <Compile Include="ViewModel\ConnectionViewModel.vb" />
+    <Compile Include="ViewModel\FindAndReplaceMainViewModel.vb" />
     <Compile Include="ViewModel\MainViewModel.vb" />
     <Compile Include="View\ConnectionView.xaml.vb">
       <DependentUpon>ConnectionView.xaml</DependentUpon>
@@ -120,11 +121,32 @@
     <Compile Include="View\DefineView.xaml.vb">
       <DependentUpon>DefineView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\EngineeringUnitsView.xaml.vb">
+      <DependentUpon>EngineeringUnitsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EnhancedAlarmsView.xaml.vb">
+      <DependentUpon>EnhancedAlarmsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\FindAndReplaceMainView.xaml.vb">
+      <DependentUpon>FindAndReplaceMainView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\FindAndReplaceView.xaml.vb">
       <DependentUpon>FindAndReplaceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\HomePage.xaml.vb">
       <DependentUpon>HomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MessageView.xaml.vb">
+      <DependentUpon>MessageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SchedulesView.xaml.vb">
+      <DependentUpon>SchedulesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SSTOView.xaml.vb">
+      <DependentUpon>SSTOView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StateTextView.xaml.vb">
+      <DependentUpon>StateTextView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -146,11 +168,39 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\EngineeringUnitsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EnhancedAlarmsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\FindAndReplaceMainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\FindAndReplaceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\HomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MessageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SchedulesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SSTOView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\StateTextView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

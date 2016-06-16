@@ -20,6 +20,13 @@ Public Class STankProj
     Public Event PropertyChanged As PropertyChangedEventHandler _
       Implements INotifyPropertyChanged.PropertyChanged
 
+    Public Property NameChangeStatus As String
+    Public Property EngineeringUnitsStatus As String
+    Public Property StateTextStatus As String
+    Public Property EnhancedAlarmsStatus As String
+    Public Property StartStopStatus As String
+    Public Property SchedulesStatus As String
+
     Private Sub NotifyPropertyChanged(ByVal info As String)
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(info))
     End Sub
@@ -70,5 +77,19 @@ Public Class STankProj
     '        NotifyPropertyChanged("Directory")
     '    End Set
     'End Property
+
+    Sub InitializeData()
+        mName = "New Project"
+        Panels = New List(Of Panel)
+
+        NameChangeStatus = "incomplete" 
+        EngineeringUnitsStatus = "incomplete"
+        StateTextStatus = "incomplete"
+        EnhancedAlarmsStatus = "incomplete"
+        StartStopStatus = "incomplete"
+        SchedulesStatus = "incomplete"
+
+    End Sub
+
 
 End Class
