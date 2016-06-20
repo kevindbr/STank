@@ -39,27 +39,27 @@ Class EnhancedAlarmsView
         mMainViewModel = New MainViewModel()
         mMainViewModel.IntializeProject()
         '  serialPortList.ItemsSource = mMainViewModel.getPanels()
-        workingDirectory.DataContext = mMainViewModel.getProj()
-        nameChangeDocument.DataContext = mMainViewModel.getProj()
-        '   panelAttributesDocument.DataContext = mMainViewModel.getProj()
+        'workingDirectory.DataContext = mMainViewModel.getProj()
+        'nameChangeDocument.DataContext = mMainViewModel.getProj()
+        ''   panelAttributesDocument.DataContext = mMainViewModel.getProj()
 
-        bw.WorkerReportsProgress = True
-        bw.WorkerSupportsCancellation = True
-        ' AddHandler bw.DoWork, AddressOf bw_RunFindAndReplace
+        'bw.WorkerReportsProgress = True
+        'bw.WorkerSupportsCancellation = True
+        '' AddHandler bw.DoWork, AddressOf bw_RunFindAndReplace
 
-        'AddHandler bw.ProgressChanged, AddressOf bw_ProgressChanged
-        'AddHandler bw.RunWorkerCompleted, AddressOf bw_RunWorkerCompleted
+        ''AddHandler bw.ProgressChanged, AddressOf bw_ProgressChanged
+        ''AddHandler bw.RunWorkerCompleted, AddressOf bw_RunWorkerCompleted
 
-        ' AddHandler mMainViewModel.getProj.Panel.NameChangeDocument.PropertyChanged, AddressOf updateDefineGrid
-        mMainViewModel.getProj.Panel.NameChangeDocument.Path = mMainViewModel.getProj.Panel.NameChangeDocument.Path
-        'Gets event to trigger now that handler is in place
+        '' AddHandler mMainViewModel.getProj.Panel.NameChangeDocument.PropertyChanged, AddressOf updateDefineGrid
+        'mMainViewModel.getProj.Panel.NameChangeDocument.Path = mMainViewModel.getProj.Panel.NameChangeDocument.Path
+        ''Gets event to trigger now that handler is in place
 
-        AddHandler mMainViewModel.getProj.Panel.Ppcl.PropertyChanged, AddressOf updateMainWindow
-        AddHandler mMainViewModel.getProj.Panel.NameChangeDocument.PropertyChanged, AddressOf updateMainWindow
-        AddHandler mMainViewModel.getProj.Panel.PanelAttributesDocument.PropertyChanged, AddressOf updateMainWindow
-        AddHandler mMainViewModel.getProj.Panel.Port.PropertyChanged, AddressOf updateMainWindow
+        'AddHandler mMainViewModel.getProj.Panel.Ppcl.PropertyChanged, AddressOf updateMainWindow
+        'AddHandler mMainViewModel.getProj.Panel.NameChangeDocument.PropertyChanged, AddressOf updateMainWindow
+        'AddHandler mMainViewModel.getProj.Panel.PanelAttributesDocument.PropertyChanged, AddressOf updateMainWindow
+        'AddHandler mMainViewModel.getProj.Panel.Port.PropertyChanged, AddressOf updateMainWindow
 
-        updateMainWindow()
+        'updateMainWindow()
     End Sub
 
     Private Sub showConnectionView(sender As Object, e As RoutedEventArgs)
@@ -290,73 +290,73 @@ Class EnhancedAlarmsView
     '                      End Sub)
     'End Sub
 
-    Private Sub updateMainWindow()
-        updateAllLogs()
-        updateButtons()
-    End Sub
+    ''Private Sub updateMainWindow()
+    ''    updateAllLogs()
+    ''    updateButtons()
+    ''End Sub
 
-    Private Sub updateAllLogs()
-        activityLog.Text = ""
+    'Private Sub updateAllLogs()
+    '    activityLog.Text = ""
 
-        Dim listOfErrors As List(Of String) = mMainViewModel.getActivityErrorLogs()
-        Dim listOfWarnings As List(Of String) = mMainViewModel.getActivityWarningLogs()
+    '    Dim listOfErrors As List(Of String) = mMainViewModel.getActivityErrorLogs()
+    '    Dim listOfWarnings As List(Of String) = mMainViewModel.getActivityWarningLogs()
 
-        For Each notification As String In listOfErrors
-            Dim noticeImage As Image = New Image()
-            noticeImage.Width = 20
-            noticeImage.Height = 20
+    '    For Each notification As String In listOfErrors
+    '        Dim noticeImage As Image = New Image()
+    '        noticeImage.Width = 20
+    '        noticeImage.Height = 20
 
-            Dim bi3 As New BitmapImage
-            bi3.BeginInit()
-            bi3.UriSource = New Uri("Resources/Notice.png", UriKind.Relative)
-            bi3.EndInit()
-            noticeImage.Stretch = Stretch.Fill
-            noticeImage.Source = bi3
+    '        Dim bi3 As New BitmapImage
+    '        bi3.BeginInit()
+    '        bi3.UriSource = New Uri("Resources/Notice.png", UriKind.Relative)
+    '        bi3.EndInit()
+    '        noticeImage.Stretch = Stretch.Fill
+    '        noticeImage.Source = bi3
 
-            Dim container As InlineUIContainer = New InlineUIContainer(noticeImage)
-            activityLog.Inlines.Add(container)
+    '        Dim container As InlineUIContainer = New InlineUIContainer(noticeImage)
+    '        activityLog.Inlines.Add(container)
 
-            Dim newLine As Run = New Run(" " + notification)
-            newLine.Foreground = Brushes.Red
-            activityLog.Inlines.Add(newLine)
-            activityLog.Inlines.Add(New LineBreak)
-        Next
+    '        Dim newLine As Run = New Run(" " + notification)
+    '        newLine.Foreground = Brushes.Red
+    '        activityLog.Inlines.Add(newLine)
+    '        activityLog.Inlines.Add(New LineBreak)
+    '    Next
 
-        For Each notification As String In listOfWarnings
-            Dim noticeImage As Image = New Image()
-            noticeImage.Width = 20
-            noticeImage.Height = 20
+    '    For Each notification As String In listOfWarnings
+    '        Dim noticeImage As Image = New Image()
+    '        noticeImage.Width = 20
+    '        noticeImage.Height = 20
 
-            Dim bi3 As New BitmapImage
-            bi3.BeginInit()
-            bi3.UriSource = New Uri("Resources/Warning.png", UriKind.Relative)
-            bi3.EndInit()
-            noticeImage.Stretch = Stretch.Fill
-            noticeImage.Source = bi3
+    '        Dim bi3 As New BitmapImage
+    '        bi3.BeginInit()
+    '        bi3.UriSource = New Uri("Resources/Warning.png", UriKind.Relative)
+    '        bi3.EndInit()
+    '        noticeImage.Stretch = Stretch.Fill
+    '        noticeImage.Source = bi3
 
-            Dim container As InlineUIContainer = New InlineUIContainer(noticeImage)
-            activityLog.Inlines.Add(container)
+    '        Dim container As InlineUIContainer = New InlineUIContainer(noticeImage)
+    '        activityLog.Inlines.Add(container)
 
-            Dim newLine As Run = New Run(" " + notification)
-            newLine.Foreground = Brushes.DarkOrange
-            activityLog.Inlines.Add(newLine)
-            activityLog.Inlines.Add(New LineBreak)
-        Next
+    '        Dim newLine As Run = New Run(" " + notification)
+    '        newLine.Foreground = Brushes.DarkOrange
+    '        activityLog.Inlines.Add(newLine)
+    '        activityLog.Inlines.Add(New LineBreak)
+    '    Next
 
-    End Sub
+    'End Sub
 
-    Private Sub updateButtons()
+    'Private Sub updateButtons()
 
-        Dim listOfErrors As List(Of String) = mMainViewModel.getActivityErrorLogs()
-        Dim listOfWarnings As List(Of String) = mMainViewModel.getActivityWarningLogs()
+    '    Dim listOfErrors As List(Of String) = mMainViewModel.getActivityErrorLogs()
+    '    Dim listOfWarnings As List(Of String) = mMainViewModel.getActivityWarningLogs()
 
-        If listOfErrors.Count = 0 Then
-            runFnRButton.IsEnabled = True
-        Else
-            runFnRButton.IsEnabled = False
-        End If
+    '    If listOfErrors.Count = 0 Then
+    '        runFnRButton.IsEnabled = True
+    '    Else
+    '        runFnRButton.IsEnabled = False
+    '    End If
 
-    End Sub
+    'End Sub
 
     Private Sub exitView(sender As Object, e As RoutedEventArgs)
         Close()

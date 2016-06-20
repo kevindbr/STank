@@ -168,6 +168,24 @@ Class StateTextMainView
             activityLog.Inlines.Add(New LineBreak)
         Next
 
+        Dim numberOfErrors As Integer = listOfErrors.Count + listOfWarnings.Count
+        Dim maxNumOfErrors As Integer = mStateTextMainViewModel.getMaxNumOfErrors()
+
+        If ((maxNumOfErrors - numberOfErrors) = maxNumOfErrors) Then
+            mStateTextMainViewModel.setComplete()
+        End If
+
+        If ((maxNumOfErrors - numberOfErrors) = 0) Then
+            mStateTextMainViewModel.setIncomplete()
+        End If
+
+        If ((maxNumOfErrors - numberOfErrors) > 0 And (maxNumOfErrors - numberOfErrors) < maxNumOfErrors) Then
+            mStateTextMainViewModel.setPartial()
+        End If
+
+
+
+
     End Sub
 
     Private Sub updateButtons()

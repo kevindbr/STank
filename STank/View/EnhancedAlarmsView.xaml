@@ -31,59 +31,9 @@
 
 
         <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Content="Enhanced Alarms"/>
-        <StackPanel Grid.Row="1" Grid.Column="0">
-            <StackPanel Orientation="Horizontal" Margin="0 0 0 20">
-                <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="auto" Click="browseProgramClicked">Set PPCL Program</Button>
-                <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="auto" Click="browseNameClicked">Set Name Change Document</Button>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label  HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12">PPCL Document:</Label>
-                <TextBox x:Name="workingDirectory" IsEnabled="False" Text="{Binding Path=Panel.Ppcl.Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0"></TextBox>
-            </StackPanel>
+        <Label Grid.Row="1" Grid.ColumnSpan="2" FontSize="32" HorizontalAlignment="Center" >TBD</Label>
 
-            <StackPanel Orientation="Horizontal">
-                <Label  HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12">Name Change Document:</Label>
-                <TextBox x:Name="nameChangeDocument" IsEnabled="False" Text="{Binding Path=Panel.NameChangeDocument.Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0"></TextBox>
-            </StackPanel>
-
-        </StackPanel>
-        <ScrollViewer Grid.Row="1" Grid.Column="1">
-            <StackPanel Grid.Row="1" Grid.Column="1">
-                <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Width="Auto">Activity Log</Label>
-                <TextBlock Padding="20 20 20 20" FontSize="14" Background="#dfe6ed" x:Name="activityLog" HorizontalAlignment="Left" Height="Auto" MaxWidth="600" MinWidth="400" Width="Auto" Margin="20 0 0 0"></TextBlock>
-            </StackPanel>
-        </ScrollViewer>
-
-
-        <ScrollViewer Grid.Row="2" Grid.Column="0">
-            <StackPanel Grid.Row="2" Grid.Column="0">
-                <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="18" Width="Auto">Project Status</Label>
-                <StackPanel Orientation="Horizontal" Margin=" 10 5 0 0" >
-                    <Button Margin="0 0 0 0" Style="{StaticResource AccentedSquareButtonStyle}" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Right" FontSize="10" Height="20" Click="showDefineView">View Details</Button>
-                    <Label Margin="0 0 0 0" >PPCL Document</Label>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal" Margin=" 10 5 0 0" >
-                    <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Right" FontSize=" 10" Height="20" >View Details</Button>
-                    <Label>Name Change Document</Label>
-                </StackPanel>
-            </StackPanel>
-        </ScrollViewer>
-
-        <StackPanel Grid.Row="2" Grid.Column="1">
-            <StackPanel Margin="0 0 0 20" Orientation="Horizontal">
-                <Image HorizontalAlignment="Left" Height="20" Width="20" Margin="20 10 0 0" Source="../Images/Siemens_Icons/Notice.png" />
-                <Label VerticalAlignment="Bottom">Critical for name change</Label>
-                <Image HorizontalAlignment="Left" Height="20" Width="20" Margin="20 10 0 0" Source="../Images/Siemens_Icons/Warning.png" />
-                <Label VerticalAlignment="Bottom">Warning</Label>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" >
-                <Button x:Name="runFnRButton" Grid.Row="2" Grid.Column="1" Style="{StaticResource AccentedSquareButtonStyle}" Margin="20 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Width="auto" Click="findAndReplaceClicked">Run Find and Replace</Button>
-                <Button Grid.Row="2" Style="{StaticResource AccentedSquareButtonStyle}" Margin="20 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="100" Click="exitView">Exit</Button>
-            </StackPanel>
-        </StackPanel>
-
-        <StackPanel Height="30" Background="#dfe6ed"  Orientation="Horizontal" Grid.Row="4" Grid.ColumnSpan="2" VerticalAlignment="Bottom" >
+            <StackPanel Height="30" Background="#dfe6ed"  Orientation="Horizontal" Grid.Row="4" Grid.ColumnSpan="2" VerticalAlignment="Bottom" >
             <Label>Siemens.com</Label>
             <Label>© Siemens AG, 1996 – 2016</Label>
             <Label>Corporate Information</Label>

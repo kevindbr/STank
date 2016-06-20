@@ -50,7 +50,7 @@
             <ScrollViewer Grid.Row="1" Grid.Column="1">
                 <StackPanel Grid.Row="1" Grid.Column="1">
                     <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Width="Auto">Activity Log</Label>
-                    <TextBlock Padding="20 20 20 20" FontSize="14" Background="#dfe6ed" x:Name="activityLog" HorizontalAlignment="Left" Height="Auto" MaxWidth="600" MinWidth="400" Width="Auto" Margin="20 0 0 0"></TextBlock>
+                <TextBlock Padding="20 20 20 20" FontSize="14" Background="#f5f5f5" x:Name="activityLog" HorizontalAlignment="Left" Height="Auto" MaxWidth="600" MinWidth="400" Width="Auto" Margin="20 0 0 0"></TextBlock>
                 </StackPanel>
             </ScrollViewer>
 

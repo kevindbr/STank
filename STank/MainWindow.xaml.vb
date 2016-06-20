@@ -42,7 +42,7 @@ Class MainWindow
         AddHandler mMainViewModel.getProj.Panel.NameChangeDocument.PropertyChanged, AddressOf updateMainWindow
         AddHandler mMainViewModel.getProj.Panel.PanelAttributesDocument.PropertyChanged, AddressOf updateMainWindow
         AddHandler mMainViewModel.getProj.Panel.Port.PropertyChanged, AddressOf updateMainWindow
-
+        AddHandler mMainViewModel.getProj.PropertyChanged, AddressOf updateMainWindow
         updateMainWindow()
     End Sub
 
@@ -310,7 +310,7 @@ Class MainWindow
             newItem.Inlines.Add(container)
 
             Dim newLine As Run = New Run(" " + notification)
-            newLine.Foreground = Brushes.DarkOrange
+
             newItem.Inlines.Add(newLine)
 
             activityLog.Items.Add(newItem)

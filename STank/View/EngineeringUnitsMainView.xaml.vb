@@ -169,6 +169,23 @@ Class EngineeringUnitsMainView
             activityLog.Inlines.Add(New LineBreak)
         Next
 
+        Dim numberOfErrors As Integer = listOfErrors.Count + listOfWarnings.Count
+        Dim maxNumOfErrors As Integer = mEngineeringUnitsMainViewModel.getMaxNumOfErrors()
+
+        If ((maxNumOfErrors - numberOfErrors) = maxNumOfErrors) Then
+            mEngineeringUnitsMainViewModel.setComplete()
+        End If
+
+        If ((maxNumOfErrors - numberOfErrors) = 0) Then
+            mEngineeringUnitsMainViewModel.setIncomplete()
+        End If
+
+        If ((maxNumOfErrors - numberOfErrors) > 0 And (maxNumOfErrors - numberOfErrors) < maxNumOfErrors) Then
+            mEngineeringUnitsMainViewModel.setPartial()
+        End If
+
+
+
     End Sub
 
     Private Sub updateButtons()

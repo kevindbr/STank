@@ -6,7 +6,7 @@
     Controls:ButtonHelper.PreserveTextCase="True"
     FontSize="12"
     FontFamily="Siemens Sans Roman"
-    Title="SIEMENS | Shark Tank Find and Replace Tool" Height="620" Width="900"
+    Title="SIEMENS | Shark Tank Find and Replace Tool" Height="560" Width="900"
     BorderBrush="{DynamicResource AccentColorBrush}"
                       BorderThickness="1"
    WindowStartupLocation="CenterScreen"
@@ -40,7 +40,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="100"></RowDefinition>
                 <RowDefinition Height="300"></RowDefinition>
-                <RowDefinition Height="100"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
 
@@ -55,32 +55,38 @@
             </Border>
 
             <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Content="Shark Tank Find and Replace Tool"/>
- 
-            <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-                <StackPanel >
-                    
+
+
+            <StackPanel Grid.Row="1"  Grid.ColumnSpan="2">
                     <Label HorizontalAlignment="Center"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Width="Auto">Activity Log</Label>
                     <Label HorizontalAlignment="Center" >(Please select activity from list to open corresponding workflow)</Label>
-                    <ListBox Padding="5 5 5 5" FontSize="12" Background="#dfe6ed" x:Name="activityLog" SelectionChanged="stepClicked" HorizontalAlignment="Left" Height="Auto" MinHeight="200" MaxWidth="1000" MinWidth="900" Width="Auto" Margin="20 0 0 0"></ListBox>
-                  
+                
+                <StackPanel Orientation="Horizontal">
+                <ScrollViewer >
+                    <ListBox Padding="5 5 5 5" FontSize="12" Background="#f5f5f5" x:Name="activityLog" SelectionChanged="stepClicked" HorizontalAlignment="Left" Height="Auto" MinHeight="200" MaxWidth="600" MinWidth="500" Width="Auto" Margin="20 0 0 0"></ListBox>
+                </ScrollViewer>
+
+                    <StackPanel Margin="20 0 0 20" Orientation="Vertical">
+
+                        <Image HorizontalAlignment="Left" Height="20" Width="20" Margin="20 10 0 0" Source="Images/Siemens_Icons/Notice.png" />
+                        <Label VerticalAlignment="Bottom">Incomplete</Label>
+                        <Image HorizontalAlignment="Left" Height="20" Width="20" Margin="20 10 0 0" Source="Images/Siemens_Icons/Warning.png" />
+                        <Label VerticalAlignment="Bottom">Partially complete</Label>
+                        <Image HorizontalAlignment="Left" Height="20" Width="20" Margin="20 10 0 0" Source="Images/Siemens_Icons/Complete.png" />
+                        <Label VerticalAlignment="Bottom">Complete</Label>
+                        <Button x:Name="nextStepButton" Style="{StaticResource AccentedSquareButtonStyle}" Margin="0 20 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Width="auto" Click="nextStepClicked">Go To Next Incomplete Step</Button>
+                    </StackPanel>
+
                 </StackPanel>
-            </ScrollViewer>
+            </StackPanel>
+            
 
  
 
             <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
-                <StackPanel Margin="0 0 0 20" Orientation="Horizontal">
-                  
-                    <Image HorizontalAlignment="Left" Height="20" Width="20" Margin="20 10 0 0" Source="Images/Siemens_Icons/Notice.png" />
-                    <Label VerticalAlignment="Bottom">Incomplete</Label>
-                    <Image HorizontalAlignment="Left" Height="20" Width="20" Margin="20 10 0 0" Source="Images/Siemens_Icons/Warning.png" />
-                    <Label VerticalAlignment="Bottom">Partially complete</Label>
-                    <Image HorizontalAlignment="Left" Height="20" Width="20" Margin="20 10 0 0" Source="Images/Siemens_Icons/Complete.png" />
-                    <Label VerticalAlignment="Bottom">Complete</Label>
-                   
+                <StackPanel Margin="0 0 0 20" >
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" >
-                <Button x:Name="nextStepButton" Grid.Row="2" Grid.Column="1" Style="{StaticResource AccentedSquareButtonStyle}" Margin="20 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Width="auto" Click="nextStepClicked">Go To Next Incomplete Step</Button>
             </StackPanel>
             </StackPanel>
 

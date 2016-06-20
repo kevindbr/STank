@@ -44,15 +44,16 @@ Public Class FindAndReplaceMainViewModel
 
         Dim error1 = "No Panel Attributes Document Specified"
         Dim error2 = "No Active Comm Ports"
+        Dim error3 = "Set Define Statements for PPCL"
 
 
-        If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.PanelAttributesDocument.Path) Then
-            allErrors.Add(error1)
-        End If
+        'If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.PanelAttributesDocument.Path) Then
+        '    allErrors.Add(error3)
+        'End If
 
-        If mSTankProj.Panel.Port.PortName = portNameDefault Then
-            allErrors.Add(error2)
-        End If
+        'If mSTankProj.Panel.Port.PortName = portNameDefault Then
+        '    allErrors.Add(error2)
+        'End If
 
 
 
@@ -69,7 +70,6 @@ Public Class FindAndReplaceMainViewModel
         Dim allErrors As List(Of String) = New List(Of String)
         Dim error1 = "No PPCL document provided"
         Dim error2 = "No Name Change Document Path Specified"
-        Dim error3 = "Set Define Statements for PPCL"
 
         If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.Ppcl.Path) Then
             allErrors.Add(error1)
@@ -87,5 +87,20 @@ Public Class FindAndReplaceMainViewModel
         Return allErrors
     End Function
 
+    Function getMaxNumOfErrors() As Integer
+        Return 2
+    End Function
+
+    Sub setComplete()
+        mSTankProj.NameChangeStatus = "complete"
+    End Sub
+
+    Sub setIncomplete()
+        mSTankProj.NameChangeStatus = "incomplete"
+    End Sub
+
+    Sub setPartial()
+        mSTankProj.NameChangeStatus = "partial"
+    End Sub
 
 End Class
