@@ -15,6 +15,7 @@ Public Class Panel
     Private mCommPort As CommPort
     Private mNameChangeDoc As NameChangeDoc
     Private mPanelAttributesDoc As PanelAttributesDoc
+    Private mStateTextDoc As StateTextDoc
     Private mPpcl As Ppcl
 
     Public Event PropertyChanged As PropertyChangedEventHandler _
@@ -90,6 +91,19 @@ Implements INotifyPropertyChanged.PropertyChanged
         End Set
     End Property
 
+
+    Public Property StateTextDocument As StateTextDoc
+        Get
+            Return mStateTextDoc
+        End Get
+
+        Set(value As StateTextDoc)
+            mStateTextDoc = value
+            NotifyPropertyChanged("StateTextDocument")
+        End Set
+    End Property
+
+
     Public Sub InitializeData()
         mName = "New Panel"
         mDatabase = New PanelDatabase()
@@ -107,6 +121,10 @@ Implements INotifyPropertyChanged.PropertyChanged
 
         mPanelAttributesDoc = New PanelAttributesDoc()
         mPanelAttributesDoc.Path = "No Panel Attributes Document Specified"
+
+        mStateTextDoc = New StateTextDoc()
+        mStateTextDoc.Path = "No State Text Document Specified"
+
 
     End Sub
 

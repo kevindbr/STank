@@ -111,18 +111,24 @@
     </ApplicationDefinition>
     <Compile Include="Model\Ppcl.vb" />
     <Compile Include="Model\Program.vb" />
+    <Compile Include="Model\StateTextDoc.vb" />
     <Compile Include="Model\WorkingDirectory.vb" />
     <Compile Include="ViewModel\ConnectionViewModel.vb" />
+    <Compile Include="ViewModel\EngineeringUnitsMainViewModel.vb" />
     <Compile Include="ViewModel\FindAndReplaceMainViewModel.vb" />
     <Compile Include="ViewModel\MainViewModel.vb" />
+    <Compile Include="ViewModel\StateTextMainViewModel.vb" />
     <Compile Include="View\ConnectionView.xaml.vb">
       <DependentUpon>ConnectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EngineeringUnitsProgressView.xaml.vb">
+      <DependentUpon>EngineeringUnitsProgressView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DefineView.xaml.vb">
       <DependentUpon>DefineView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EngineeringUnitsView.xaml.vb">
-      <DependentUpon>EngineeringUnitsView.xaml</DependentUpon>
+    <Compile Include="View\EngineeringUnitsMainView.xaml.vb">
+      <DependentUpon>EngineeringUnitsMainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\EnhancedAlarmsView.xaml.vb">
       <DependentUpon>EnhancedAlarmsView.xaml</DependentUpon>
@@ -145,8 +151,11 @@
     <Compile Include="View\SSTOView.xaml.vb">
       <DependentUpon>SSTOView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\StateTextView.xaml.vb">
-      <DependentUpon>StateTextView.xaml</DependentUpon>
+    <Compile Include="View\StateTextMainView.xaml.vb">
+      <DependentUpon>StateTextMainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StateTextProgressView.xaml.vb">
+      <DependentUpon>StateTextProgressView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -164,11 +173,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\EngineeringUnitsProgressView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\DefineView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\EngineeringUnitsView.xaml">
+    <Page Include="View\EngineeringUnitsMainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -200,9 +213,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\StateTextView.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="View\StateTextMainView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\StateTextProgressView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -255,6 +272,9 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
     </EmbeddedResource>
+    <None Include="BACnet_unit_conversion_spreadsheet.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>

@@ -1,5 +1,5 @@
 ﻿<Controls:MetroWindow 
-    x:Class="EngineeringUnitsView"
+    x:Class="EngineeringUnitsMainView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
@@ -33,18 +33,13 @@
         <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Content="Engineering Units"/>
         <StackPanel Grid.Row="1" Grid.Column="0">
             <StackPanel Orientation="Horizontal" Margin="0 0 0 20">
-                <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="auto" Click="browseProgramClicked">Set PPCL Program</Button>
-                <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="auto" Click="browseNameClicked">Set Name Change Document</Button>
+                <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="auto" Click="browseAttributesClicked">Set Panel Attributes Document</Button>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label  HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12">PPCL Document:</Label>
-                <TextBox x:Name="workingDirectory" IsEnabled="False" Text="{Binding Path=Panel.Ppcl.Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0"></TextBox>
+                <Label  HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12">Panel Attributes Document:</Label>
+                <TextBox x:Name="panelAttributesDoc" IsEnabled="False" Text="{Binding Path=Panel.PanelAttributesDocument.Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0"></TextBox>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal">
-                <Label  HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12">Name Change Document:</Label>
-                <TextBox x:Name="nameChangeDocument" IsEnabled="False" Text="{Binding Path=Panel.NameChangeDocument.Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0"></TextBox>
-            </StackPanel>
 
         </StackPanel>
         <ScrollViewer Grid.Row="1" Grid.Column="1">
@@ -59,26 +54,22 @@
             <StackPanel Grid.Row="2" Grid.Column="0">
                 <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="18" Width="Auto">Project Status</Label>
                 <StackPanel Orientation="Horizontal" Margin=" 10 5 0 0" >
-                    <Button Margin="0 0 0 0" Style="{StaticResource AccentedSquareButtonStyle}" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Right" FontSize="10" Height="20" Click="showDefineView">View Details</Button>
-                    <Label Margin="0 0 0 0" >PPCL Document</Label>
+                    <Button Margin="0 0 0 0" Style="{StaticResource AccentedSquareButtonStyle}" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Right" FontSize="10" Height="20" Click="panelAttributeDetails">View Details</Button>
+                    <Label Margin="0 0 0 0" >Panel Attributes Document</Label>
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Margin=" 10 5 0 0" >
-                    <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Right" FontSize=" 10" Height="20" >View Details</Button>
-                    <Label>Name Change Document</Label>
-                </StackPanel>
             </StackPanel>
         </ScrollViewer>
 
         <StackPanel Grid.Row="2" Grid.Column="1">
             <StackPanel Margin="0 0 0 20" Orientation="Horizontal">
                 <Image HorizontalAlignment="Left" Height="20" Width="20" Margin="20 10 0 0" Source="../Images/Siemens_Icons/Notice.png" />
-                <Label VerticalAlignment="Bottom">Critical for name change</Label>
+                <Label VerticalAlignment="Bottom">Critical</Label>
                 <Image HorizontalAlignment="Left" Height="20" Width="20" Margin="20 10 0 0" Source="../Images/Siemens_Icons/Warning.png" />
                 <Label VerticalAlignment="Bottom">Warning</Label>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" >
-                <Button x:Name="runFnRButton" Grid.Row="2" Grid.Column="1" Style="{StaticResource AccentedSquareButtonStyle}" Margin="20 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Width="auto" Click="findAndReplaceClicked">Run Find and Replace</Button>
+                <Button x:Name="replaceButton" Grid.Row="2" Grid.Column="1" Style="{StaticResource AccentedSquareButtonStyle}" Margin="20 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Width="auto" Click="replaceClicked">Replace Engineering Units</Button>
                 <Button Grid.Row="2" Style="{StaticResource AccentedSquareButtonStyle}" Margin="20 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="100" Click="exitView">Exit</Button>
             </StackPanel>
         </StackPanel>

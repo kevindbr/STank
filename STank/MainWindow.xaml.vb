@@ -326,85 +326,102 @@ Class MainWindow
 
     Private Sub nextStepClicked(sender As Object, e As RoutedEventArgs)
 
-        Dim nextStep As Integer = mMainViewModel.getNextStep()
+        Try
+            Dim nextStep As Integer = mMainViewModel.getNextStep()
 
-        If nextStep = 1 Then
-            Dim nextView As FindAndReplaceMainView = New FindAndReplaceMainView(mMainViewModel)
-            nextView.Show()
-        End If
+            If nextStep = 1 Then
+                Dim nextView As FindAndReplaceMainView = New FindAndReplaceMainView(mMainViewModel)
+                nextView.Show()
+            End If
 
-        If nextStep = 2 Then
-            Dim nextView As EngineeringUnitsView = New EngineeringUnitsView(mMainViewModel)
-            nextView.Show()
-        End If
+            If nextStep = 2 Then
+                Dim nextView As EngineeringUnitsMainView = New EngineeringUnitsMainView(mMainViewModel)
+                nextView.Show()
+            End If
 
-        If nextStep = 3 Then
-            Dim nextView As StateTextView = New StateTextView(mMainViewModel)
-            nextView.Show()
-        End If
+            If nextStep = 3 Then
+                Dim nextView As StateTextMainView = New StateTextMainView(mMainViewModel)
+                nextView.Show()
+            End If
 
-        If nextStep = 4 Then
-            Dim nextView As EnhancedAlarmsView = New EnhancedAlarmsView(mMainViewModel)
-            nextView.Show()
-        End If
+            If nextStep = 4 Then
+                Dim nextView As EnhancedAlarmsView = New EnhancedAlarmsView(mMainViewModel)
+                nextView.Show()
+            End If
 
-        If nextStep = 5 Then
-            Dim nextView As SSTOView = New SSTOView(mMainViewModel)
-            nextView.Show()
-        End If
+            If nextStep = 5 Then
+                Dim nextView As SSTOView = New SSTOView(mMainViewModel)
+                nextView.Show()
+            End If
 
-        If nextStep = 6 Then
-            Dim nextView As SchedulesView = New SchedulesView(mMainViewModel)
-            nextView.Show()
-        End If
+            If nextStep = 6 Then
+                Dim nextView As SchedulesView = New SchedulesView(mMainViewModel)
+                nextView.Show()
+            End If
 
-        If nextStep = 0 Then
-            Dim nextView As MessageView = New MessageView()
-            nextView.Show()
-        End If
+            If nextStep = 0 Then
+                Dim nextView As MessageView = New MessageView()
+                nextView.Show()
+            End If
+        Catch ex As Exception
+
+        End Try
+
+
 
     End Sub
 
     Private Sub stepClicked(sender As Object, e As RoutedEventArgs)
 
-        Dim selectedItem = activityLog.SelectedValue.Inlines.LastInline.Text
+        'Return
 
-        Dim nextStep As Integer = mMainViewModel.getNumericalEquvialent(selectedItem)
 
-        If nextStep = 1 Then
-            Dim nextView As FindAndReplaceMainView = New FindAndReplaceMainView(mMainViewModel)
-            nextView.Show()
-        End If
+        Try
 
-        If nextStep = 2 Then
-            Dim nextView As EngineeringUnitsView = New EngineeringUnitsView(mMainViewModel)
-            nextView.Show()
-        End If
+            Dim selectedItem = activityLog.SelectedValue.Inlines.LastInline.Text
 
-        If nextStep = 3 Then
-            Dim nextView As StateTextView = New StateTextView(mMainViewModel)
-            nextView.Show()
-        End If
+            Dim nextStep As Integer = mMainViewModel.getNumericalEquvialent(selectedItem)
 
-        If nextStep = 4 Then
-            Dim nextView As EnhancedAlarmsView = New EnhancedAlarmsView(mMainViewModel)
-            nextView.Show()
-        End If
+            If nextStep = 1 Then
+                Dim nextView As FindAndReplaceMainView = New FindAndReplaceMainView(mMainViewModel)
+                nextView.Show()
+            End If
 
-        If nextStep = 5 Then
-            Dim nextView As SSTOView = New SSTOView(mMainViewModel)
-            nextView.Show()
-        End If
+            If nextStep = 2 Then
+                Dim nextView As EngineeringUnitsMainView = New EngineeringUnitsMainView(mMainViewModel)
+                nextView.Show()
+            End If
 
-        If nextStep = 6 Then
-            Dim nextView As SchedulesView = New SchedulesView(mMainViewModel)
-            nextView.Show()
-        End If
+            If nextStep = 3 Then
+                Dim nextView As StateTextMainView = New StateTextMainView(mMainViewModel)
+                nextView.Show()
+            End If
 
-        If nextStep = 0 Then
-            Dim nextView As MessageView = New MessageView()
-            nextView.Show()
-        End If
+            If nextStep = 4 Then
+                Dim nextView As EnhancedAlarmsView = New EnhancedAlarmsView(mMainViewModel)
+                nextView.Show()
+            End If
+
+            If nextStep = 5 Then
+                Dim nextView As SSTOView = New SSTOView(mMainViewModel)
+                nextView.Show()
+            End If
+
+            If nextStep = 6 Then
+                Dim nextView As SchedulesView = New SchedulesView(mMainViewModel)
+                nextView.Show()
+            End If
+
+            If nextStep = 0 Then
+                Dim nextView As MessageView = New MessageView()
+                nextView.Show()
+            End If
+
+        Catch ex As Exception
+
+        End Try
+
+
 
     End Sub
 

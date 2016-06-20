@@ -7,12 +7,11 @@ Public Class PanelAttributesDoc
     Implements INotifyPropertyChanged
 
     Private mPanel As Panel
-    Private mPath As String
+    Private mPath As String     'holds new path.  Whenever path set, make a copy of the old doc
+    Private Const sNewDocSuffix = "_new"
 
-    Private mReplacementValues As Dictionary(Of String, String)     'TODO: get these from a different file
-
-    Private mPanelAttributesData As DataTable
-
+    Private Const mEngineeringUnitsSpreadsheet = "BACnet_unit_conversion_spreadsheet.xlsx"
+    Private mEngineeringUnits As Dictionary(Of String, String)
 
     Public Event PropertyChanged As PropertyChangedEventHandler _
   Implements INotifyPropertyChanged.PropertyChanged
@@ -27,18 +26,34 @@ Public Class PanelAttributesDoc
         End Get
 
         Set(value As String)
-            mPath = value
 
-            If isValidDocument(mPath) Then
-                'mReplacementValues = mPanel.NameChangeDocument.ReplacementValues\
-                getReplacementValues()
-                readDoc()
-            End If
+            If Not isValidDocument(value) Then Return
+
+            Dim sNewPath = NewPath(value)
+            File.Copy(value, sNewPath, True)
+            mPath = sNewPath
+
+
 
             NotifyPropertyChanged("Path")
         End Set
     End Property
 
+
+    Public Property EngineeringUnits As Dictionary(Of String, String)
+        Get
+            getEngineeringUnits()
+
+            Return mEngineeringUnits
+        End Get
+
+        Set(value As Dictionary(Of String, String))
+
+            mEngineeringUnits = value
+
+            NotifyPropertyChanged("EngineeringUnits")
+        End Set
+    End Property
 
 
 
@@ -59,12 +74,19 @@ Public Class PanelAttributesDoc
     End Function
 
 
+    Private Function NewPath(ByVal sOriginalPath As String) As String
+        'make a copy of the original document and perform all change operations on that copy
+
+        Return System.IO.Path.Combine(System.IO.Path.GetDirectoryName(sOriginalPath),
+                                              System.IO.Path.GetFileNameWithoutExtension(sOriginalPath) + sNewDocSuffix + System.IO.Path.GetExtension(sOriginalPath))
+    End Function
+
+
     Private Sub readExcelIntoDataTable()
-        mPanelAttributesData = New DataTable
+        Dim mPanelAttributesData As New DataTable
 
         Dim strConnString As String
         strConnString = "Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};DBQ=" & mPath & ";"
-
 
         Dim sheetName = "Book1"
         Dim strSQL As String
@@ -74,109 +96,86 @@ Public Class PanelAttributesDoc
 
         y.Fill(mPanelAttributesData)
 
-
     End Sub
 
 
 
-    Private Sub readDoc()
+    Private Sub getEngineeringUnits()
 
-        mPanelAttributesData = New DataTable
-
-        Dim sSheetName As String
-        Dim sConnection As String
-        Dim dtTablesList As DataTable
-        Dim oleExcelCommand As OleDbCommand
-        Dim oleExcelReader As OleDbDataReader
-        Dim oleExcelConnection As OleDbConnection
+        mEngineeringUnits = New Dictionary(Of String, String)
 
         'sConnection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + mPath + ";Extended Properties=""Excel 12.0;HDR=No;IMEX=1"""
-        sConnection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + mPath + ";Extended Properties=""Excel 12.0;HDR=No;"""
+        'Dim sConnection = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source='{0}';Extended Properties=""Excel 12.0;HDR=Yes;""", System.IO.Path.Combine(Directory.GetCurrentDirectory, mEngineeringUnitsSpreadsheet))
+        'can we deploy this without the ACE OLEDB provider being installed on target machine?
 
-        oleExcelConnection = New OleDbConnection(sConnection)
+        Dim sConnection = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source='{0}';Extended Properties=""Excel 12.0;HDR=No;""", System.IO.Path.Combine(Directory.GetCurrentDirectory, mEngineeringUnitsSpreadsheet))
+
+
+        Dim oleExcelConnection = New OleDbConnection(sConnection)
         oleExcelConnection.Open()
 
-        dtTablesList = oleExcelConnection.GetSchema("Tables")
-
-        If dtTablesList.Rows.Count > 0 Then
-            sSheetName = dtTablesList.Rows(0)("TABLE_NAME").ToString
-        End If
-
-        dtTablesList.Clear()
-        dtTablesList.Dispose()
-
-        If sSheetName <> "" Then
-
-            oleExcelCommand = oleExcelConnection.CreateCommand()
-            oleExcelCommand.CommandText = "Select * From [" & sSheetName & "]"
-            oleExcelCommand.CommandType = CommandType.Text
-
-            oleExcelReader = oleExcelCommand.ExecuteReader
+        Dim t = oleExcelConnection.GetSchema("Tables")
 
 
-            mPanelAttributesData.Load(oleExcelReader)
+        Dim dtSheets As DataTable =
+          oleExcelConnection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, Nothing)
 
 
-            For Each kvp As KeyValuePair(Of String, String) In mReplacementValues
+        Dim sSheetName = oleExcelConnection.GetSchema("Tables").Rows(0)("TABLE_NAME").ToString      'just use name of first sheet
+        'Dim sSheetName = "BACnet Unit Conversion Spreadsh"
 
+        Dim oleExcelCommand As OleDbCommand = oleExcelConnection.CreateCommand()
+        oleExcelCommand.CommandType = CommandType.Text
+        oleExcelCommand.CommandText = String.Format("Select * From [{0}]", sSheetName)      'will this get only non-blank rows?
 
-                oleExcelCommand = oleExcelConnection.CreateCommand()
-                oleExcelCommand.CommandText = "UPDATE [" + sSheetName + "] SET F9 = '" + kvp.Value + "' WHERE F9 = '" + kvp.Key + "'"
-                oleExcelCommand.CommandType = CommandType.Text
+        Dim oleExcelReader As OleDbDataReader = oleExcelCommand.ExecuteReader
+        Dim engineeringUnitsData As New DataTable
+        engineeringUnitsData.Load(oleExcelReader)
+        For Each row As DataRow In engineeringUnitsData.Rows
+            If row.Item(0).ToString.Trim = "" Then Continue For
+            Try
+                mEngineeringUnits.Add(row.Item(0).ToString, row.Item(1).ToString)
+            Catch ex As ArgumentException
+            End Try
 
-                oleExcelCommand.ExecuteNonQuery()
+        Next
 
-
-
-            Next
-
-
-            'TODO: get list of column names from 1st row
-
-
-            'cmd.CommandText = "UPDATE [" + sSheetName + "] SET name = 'DDDD' WHERE id = 3;";
-            'cmd.ExecuteNonQuery();
-
-
-
-            'DataTable()
-
-            'nOutputRow = 0
-
-            'While oleExcelReader.Read
-
-            'oleExcelReader.
-
-            'End While
-
-            oleExcelReader.Close()
-
-        End If
-
+        oleExcelReader.Close()
         oleExcelConnection.Close()
 
-
     End Sub
 
 
 
+    'Public Sub ReplaceEngineeringUnits()
 
-    Private Sub getReplacementValues()
-        mReplacementValues = New Dictionary(Of String, String)
-        Dim lines() As String = File.ReadAllLines("unitConversions.csv")
-        For Each line As String In lines
-            Dim vals() As String = line.Split(","c)
-            If (vals(0) <> "" And vals(1) <> "") Then
-                Try
+    '    'TODO: copy original panel attributes document?  Or...just copy when first loaded...append "_new"
 
-                    mReplacementValues.Add(vals(0), vals(1))
-                Catch
-                    MsgBox("Please check columns in csv file")
-                End Try
-            End If
-        Next line
-        'Return replacementValues
-    End Sub
+    '    'mEngineeringUnits = New Dictionary(Of String, String)
+
+    '    'sConnection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + mPath + ";Extended Properties=""Excel 12.0;HDR=No;IMEX=1"""
+    '    Dim sConnection = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source='{0}';Extended Properties=""Excel 12.0;HDR=Yes;""", mPath)
+    '    'can we deploy this without the ACE OLEDB provider being installed on target machine?
+
+    '    Dim oleExcelConnection = New OleDbConnection(sConnection)
+    '    oleExcelConnection.Open()
+
+    '    Dim sSheetName = "Points$"  'Panel Attributes document always has same format
+    '    Dim oleExcelCommand As OleDbCommand
+
+    '    For Each kvp As KeyValuePair(Of String, String) In mEngineeringUnits
+    '        oleExcelCommand = oleExcelConnection.CreateCommand()
+    '        oleExcelCommand.CommandType = CommandType.Text
+    '        oleExcelCommand.CommandText = String.Format("UPDATE [{0}] SET [Eng units] = '{1}' WHERE [Eng units] = '{2}'", sSheetName, kvp.Value, kvp.Key)
+    '        oleExcelCommand.ExecuteNonQuery()
+    '    Next
+
+    '    oleExcelConnection.Close()
+
+    'End Sub
+
+
+
 
 
 

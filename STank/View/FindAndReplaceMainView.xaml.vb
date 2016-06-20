@@ -14,6 +14,7 @@ Imports System.Collections.ObjectModel
 Class FindAndReplaceMainView
 
     Public mMainViewModel As MainViewModel
+    Public mFindAndReplaceMainViewModel As FindAndReplaceMainViewModel
 
     Private bw As BackgroundWorker = New BackgroundWorker
 
@@ -25,6 +26,7 @@ Class FindAndReplaceMainView
     ''' <remarks></remarks>
     Sub New(ByRef mainViewModel As MainViewModel)
         mMainViewModel = mainViewModel
+        mFindAndReplaceMainViewModel = New FindAndReplaceMainViewModel(mMainViewModel.getProj)
         InitializeComponent()
 
     End Sub
@@ -36,11 +38,14 @@ Class FindAndReplaceMainView
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub IntializeMainWindow()
-        mMainViewModel = New MainViewModel()
-        mMainViewModel.IntializeProject()
+
+        ' this should have already been done...
+        'mMainViewModel = New MainViewModel()
+        'mMainViewModel.IntializeProject()
+
         '  serialPortList.ItemsSource = mMainViewModel.getPanels()
-        workingDirectory.DataContext = mMainViewModel.getProj()
-        nameChangeDocument.DataContext = mMainViewModel.getProj()
+        workingDirectory.DataContext = mFindAndReplaceMainViewModel.getProj()
+        nameChangeDocument.DataContext = mFindAndReplaceMainViewModel.getProj()
         '   panelAttributesDocument.DataContext = mMainViewModel.getProj()
 
         bw.WorkerReportsProgress = True
@@ -51,13 +56,17 @@ Class FindAndReplaceMainView
         'AddHandler bw.RunWorkerCompleted, AddressOf bw_RunWorkerCompleted
 
         ' AddHandler mMainViewModel.getProj.Panel.NameChangeDocument.PropertyChanged, AddressOf updateDefineGrid
-        mMainViewModel.getProj.Panel.NameChangeDocument.Path = mMainViewModel.getProj.Panel.NameChangeDocument.Path
+        'mMainViewModel.getProj.Panel.NameChangeDocument.Path = mMainViewModel.getProj.Panel.NameChangeDocument.Path
         'Gets event to trigger now that handler is in place
 
-        AddHandler mMainViewModel.getProj.Panel.Ppcl.PropertyChanged, AddressOf updateMainWindow
-        AddHandler mMainViewModel.getProj.Panel.NameChangeDocument.PropertyChanged, AddressOf updateMainWindow
-        AddHandler mMainViewModel.getProj.Panel.PanelAttributesDocument.PropertyChanged, AddressOf updateMainWindow
-        AddHandler mMainViewModel.getProj.Panel.Port.PropertyChanged, AddressOf updateMainWindow
+
+        'TODO: should store these in FindAndReplaceMainViewModel instead...?
+
+        AddHandler mFindAndReplaceMainViewModel.getProj.Panel.Ppcl.PropertyChanged, AddressOf updateMainWindow
+        AddHandler mFindAndReplaceMainViewModel.getProj.Panel.NameChangeDocument.PropertyChanged, AddressOf updateMainWindow
+        'AddHandler mMainViewModel.getProj.Panel.PanelAttributesDocument.PropertyChanged, AddressOf updateMainWindow
+
+        AddHandler mFindAndReplaceMainViewModel.getProj.Panel.Port.PropertyChanged, AddressOf updateMainWindow
 
         updateMainWindow()
     End Sub
@@ -298,8 +307,8 @@ Class FindAndReplaceMainView
     Private Sub updateAllLogs()
         activityLog.Text = ""
 
-        Dim listOfErrors As List(Of String) = mMainViewModel.getActivityErrorLogs()
-        Dim listOfWarnings As List(Of String) = mMainViewModel.getActivityWarningLogs()
+        Dim listOfErrors As List(Of String) = mFindAndReplaceMainViewModel.getActivityErrorLogs()
+        Dim listOfWarnings As List(Of String) = mFindAndReplaceMainViewModel.getActivityWarningLogs()
 
         For Each notification As String In listOfErrors
             Dim noticeImage As Image = New Image()
@@ -347,8 +356,8 @@ Class FindAndReplaceMainView
 
     Private Sub updateButtons()
 
-        Dim listOfErrors As List(Of String) = mMainViewModel.getActivityErrorLogs()
-        Dim listOfWarnings As List(Of String) = mMainViewModel.getActivityWarningLogs()
+        Dim listOfErrors As List(Of String) = mFindAndReplaceMainViewModel.getActivityErrorLogs()
+        Dim listOfWarnings As List(Of String) = mFindAndReplaceMainViewModel.getActivityWarningLogs()
 
         If listOfErrors.Count = 0 Then
             runFnRButton.IsEnabled = True
