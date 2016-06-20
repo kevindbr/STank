@@ -75,7 +75,7 @@ Public Class StateTextMainViewModel
         'Dim error2 = "No Name Change Document Path Specified"
         'Dim error3 = "Set Define Statements for PPCL"
 
-        If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.PanelAttributesDocument.Path) Then
+        If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.StateTextDocument.Path) Then
             allErrors.Add(error1)
         End If
 

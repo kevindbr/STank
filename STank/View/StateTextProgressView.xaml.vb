@@ -33,7 +33,7 @@ Public Class StateTextProgressView
     Private Sub bw_RunFindAndReplace(ByVal sender As Object, ByVal e As DoWorkEventArgs)
 
 
-        Return
+        'Return
 
         Dim worker As BackgroundWorker = CType(sender, BackgroundWorker)
 
@@ -43,34 +43,98 @@ Public Class StateTextProgressView
         'mEngineeringUnits = New Dictionary(Of String, String)
 
         'sConnection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + mPath + ";Extended Properties=""Excel 12.0;HDR=No;IMEX=1"""
-        Dim sConnection = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source='{0}';Extended Properties=""Excel 12.0;HDR=Yes;""", mMainViewModel.getProj.Panel.PanelAttributesDocument.Path)
+        Dim sConnection = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source='{0}';Extended Properties=""Excel 12.0;HDR=Yes""", mMainViewModel.getProj.Panel.StateTextDocument.Path)
         'can we deploy this without the ACE OLEDB provider being installed on target machine?
 
         Dim oleExcelConnection = New OleDbConnection(sConnection)
         oleExcelConnection.Open()
 
-        Dim sSheetName = "Points$"  'Panel Attributes document always has same format
+        Dim sSheetName = "'Text Table$'"  'Panel Attributes document always has same format
+        'Dim sSheetName = oleExcelConnection.GetSchema("Tables").Rows(0)("TABLE_NAME").ToString      'just use name of first sheet
         Dim oleExcelCommand As OleDbCommand
+        Dim oleExcelReader As OleDbDataReader
 
-        Dim engineeringUnits = mMainViewModel.getProj.Panel.PanelAttributesDocument.EngineeringUnits
-        Dim i As Integer = 1
-        For Each kvp As KeyValuePair(Of String, String) In engineeringUnits
+        For value As Integer = 0 To 16
+
+
+
+            'Try
+            '    oleExcelConnection.Open()
+            '    oleExcelCommand = oleExcelConnection.CreateCommand()
+            '    oleExcelCommand.CommandType = CommandType.Text
+            '    oleExcelCommand.CommandText = String.Format("Select * From [{0}] WHERE [Value{1}] = {1}", sSheetName, CStr(value))
+            '    oleExcelReader = oleExcelCommand.ExecuteReader
+            'Catch ex As Exception
+            '    oleExcelCommand = oleExcelConnection.CreateCommand()
+            '    oleExcelCommand.CommandType = CommandType.Text
+            '    oleExcelCommand.CommandText = String.Format("Select * From [{0}] WHERE [Value{1}] = '{1}'", sSheetName, CStr(value))
+            '    oleExcelReader = oleExcelCommand.ExecuteReader
+            'End Try
+
+            'oleExcelConnection.Open()
             oleExcelCommand = oleExcelConnection.CreateCommand()
             oleExcelCommand.CommandType = CommandType.Text
-            oleExcelCommand.CommandText = String.Format("UPDATE [{0}] SET [Eng units] = '{1}' WHERE [Eng units] = '{2}'", sSheetName, kvp.Value, kvp.Key)
-            oleExcelCommand.ExecuteNonQuery()
 
-            AddToLog(String.Format("Replacing unit '{0}' with '{1}'", kvp.Key, kvp.Value))
+
+            Dispatcher.Invoke(Sub(ByRef i As Integer)
+                                  progressBar.Value = i / 17 * 100
+                              End Sub, value + 1)
+
+
+            Try
+                If Not oleExcelConnection.State = ConnectionState.Open Then oleExcelConnection.Open()
+                oleExcelCommand.CommandText = String.Format("UPDATE [Text Table$] SET [Value{1}] = {2} WHERE [Value{1}] = {1}", sSheetName, CStr(value), CStr(value + 1))
+                oleExcelCommand.ExecuteNonQuery()
+            Catch ex As Exception
+                If Not oleExcelConnection.State = ConnectionState.Open Then oleExcelConnection.Open()
+                oleExcelCommand.CommandText = String.Format("UPDATE [Text Table$] SET [Value{1}] = '{2}' WHERE [Value{1}] = '{1}'", sSheetName, CStr(value), CStr(value + 1))
+                oleExcelCommand.ExecuteNonQuery()
+            End Try
+
+
+            AddToLog(String.Format("Modifying field 'Value{0}'", value))
+
+
+            'Dim stateTextData As New DataTable
+            'stateTextData.Load(oleExcelReader)
+            'For Each row As DataRow In stateTextData.Rows
+            '    If row.Item(0).ToString.Trim = "" Then Continue For
+            '    AddToLog(String.Format("Modifying record '{0}'", row.Item(1)))
+            'Next
+
+            'oleExcelReader.Close()
+
+
+
+
+
+            'oleExcelCommand.CommandText = String.Format("UPDATE [Text Table$] SET [Value{0}] = {1} WHERE [Value{0}] = {0}", CStr(value), CStr(value + 1))
+
+
+            'oleExcelCommand.CommandText = "UPDATE [Text Table$] SET [Value0] = '{2}' WHERE [Value{1}] = '{3}'"
+
+            'oleExcelCommand.CommandText = String.Format("UPDATE [Text Table$] SET [Value{0}] = 1 WHERE [Value{0}] = 0", "0")
+
+
+            'oleExcelCommand.CommandText = String.Format("UPDATE [{0}] SET [Value{1}] = {2} WHERE [Value{1}] = {3}", sSheetName, CStr(value), CStr(value + 1), CStr(value))
+            'oleExcelCommand.ExecuteNonQuery()
+
+            'AddToLog(String.Format("Replacing unit '{0}' with '{1}'", kvp.Key, kvp.Value))
 
             System.Threading.Thread.Sleep(100)  'just for debugging, to more easily see progress
 
-            Dispatcher.Invoke(Sub()
-                                  progressBar.Value = i / engineeringUnits.Count * 100
-                              End Sub)
 
-            i = i + 1
-
+            'Debug.Write(index.ToString & " ")
         Next
+
+
+        oleExcelConnection.Close()
+
+        'Dispatcher.Invoke(Sub()
+        '                      progressBar.Value = i / engineeringUnits.Count * 100
+        '                  End Sub)
+
+        'i = i + 1
 
         oleExcelConnection.Close()
 
