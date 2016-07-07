@@ -3,13 +3,12 @@ Imports System.Data
 Imports System.Data.OleDb
 Imports System.IO
 
-Public Class StateTextDoc
+Public Class SchedulerReport
     Implements INotifyPropertyChanged
 
     Private mPanel As Panel
-    Private mPath As String     'holds new path.  Whenever path set, make a copy of the old doc
-    Public Shared EmptyPath As String = "No State Text Document Specified"
-    Private Const sNewDocSuffix = "_new"
+    Private mPath As String
+    Public Shared EmptyPath As String = "No Scheduler Report Specified"
 
     'Private Const mEngineeringUnitsSpreadsheet = "BACnet_unit_conversion_spreadsheet.xlsx"
     'Private mEngineeringUnits As Dictionary(Of String, String)
@@ -27,14 +26,7 @@ Public Class StateTextDoc
         End Get
 
         Set(value As String)
-
-            If Not isValidDocument(value) Then Return
-
-            Dim sNewPath = NewPath(value)
-            File.Copy(value, sNewPath, True)
-            mPath = sNewPath
-
-
+            mPath = value
             NotifyPropertyChanged("Path")
         End Set
     End Property
@@ -73,30 +65,6 @@ Public Class StateTextDoc
         Return isValidFile
     End Function
 
-
-    Private Function NewPath(ByVal sOriginalPath As String) As String
-        'make a copy of the original document and perform all change operations on that copy
-
-        Return System.IO.Path.Combine(System.IO.Path.GetDirectoryName(sOriginalPath),
-                                              System.IO.Path.GetFileNameWithoutExtension(sOriginalPath) + sNewDocSuffix + System.IO.Path.GetExtension(sOriginalPath))
-    End Function
-
-
-    Private Sub readExcelIntoDataTable()
-        Dim mPanelAttributesData As New DataTable
-
-        Dim strConnString As String
-        strConnString = "Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};DBQ=" & mPath & ";"
-
-        Dim sheetName = "Book1"
-        Dim strSQL As String
-        strSQL = "SELECT * FROM [" & sheetName & "$]"
-
-        Dim y As New Odbc.OdbcDataAdapter(strSQL, strConnString)
-
-        y.Fill(mPanelAttributesData)
-
-    End Sub
 
 
 

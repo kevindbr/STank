@@ -24,6 +24,7 @@ Public Class Ppcl
     Private mOldDefinitions As New Collection   'entire DEFINE statements
 
     Private mPath As String
+    Public Shared EmptyPath As String = "No PPCL path Specified"
 
 
     Public Event PropertyChanged As PropertyChangedEventHandler _
@@ -116,6 +117,24 @@ Implements INotifyPropertyChanged.PropertyChanged
             NotifyPropertyChanged("NewVariables")
         End Set
     End Property
+
+
+    ''' <summary>
+    ''' Check file extension here
+    ''' </summary>
+    ''' <param name="mPath"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function isValidDocument(mPath As String) As Boolean
+        Dim isValidFile = True
+
+        If mPath = EmptyPath Then
+            isValidFile = False
+        End If
+
+        Return isValidFile
+    End Function
+
 
 
 
@@ -398,21 +417,6 @@ Implements INotifyPropertyChanged.PropertyChanged
 
     End Sub
 
-    ''' <summary>
-    ''' Check file extension here
-    ''' </summary>
-    ''' <param name="mPath"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Private Function isValidDocument(mPath As String) As Boolean
-        Dim isValidFile = True
-
-        If mPath = "No PPCL path Specified" Then
-            isValidFile = False
-        End If
-
-        Return isValidFile
-    End Function
 
 
 End Class

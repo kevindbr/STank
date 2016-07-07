@@ -17,6 +17,8 @@ Public Class Panel
     Private mPanelAttributesDoc As PanelAttributesDoc
     Private mStateTextDoc As StateTextDoc
     Private mPpcl As Ppcl
+    Private mSchedulerReport As SchedulerReport
+    Private mZoneDefinitionReport As ZoneDefinitionReport
 
     Public Event PropertyChanged As PropertyChangedEventHandler _
 Implements INotifyPropertyChanged.PropertyChanged
@@ -104,6 +106,30 @@ Implements INotifyPropertyChanged.PropertyChanged
     End Property
 
 
+    Public Property SchedulerReport As SchedulerReport
+        Get
+            Return mSchedulerReport
+        End Get
+
+        Set(value As SchedulerReport)
+            mSchedulerReport = value
+            NotifyPropertyChanged("SchedulerReport")
+        End Set
+    End Property
+
+
+    Public Property ZoneDefinitionReport As ZoneDefinitionReport
+        Get
+            Return mZoneDefinitionReport
+        End Get
+
+        Set(value As ZoneDefinitionReport)
+            mZoneDefinitionReport = value
+            NotifyPropertyChanged("ZoneDefinitionReport")
+        End Set
+    End Property
+
+
     Public Sub InitializeData()
         mName = "New Panel"
         mDatabase = New PanelDatabase()
@@ -112,18 +138,25 @@ Implements INotifyPropertyChanged.PropertyChanged
         mCommPort.IntializeData()
 
         mPpcl = New Ppcl()
-        mPpcl.Path = "No PPCL path Specified"
+        mPpcl.Path = Ppcl.EmptyPath
         'mPpcl.Path = "C:\Users\Axios\Desktop\testWorkingDir\PPCL_MBC45.pcl"
 
         mNameChangeDoc = New NameChangeDoc()
-        mNameChangeDoc.Path = "No Name Change Document Path Specified"
+        mNameChangeDoc.Path = NameChangeDoc.EmptyPath
         'mNameChangeDoc.Path = "C:\Users\Axios\Desktop\testWorkingDir\EPMAHU05_NewNames.csv"
 
         mPanelAttributesDoc = New PanelAttributesDoc()
-        mPanelAttributesDoc.Path = "No Panel Attributes Document Specified"
+        mPanelAttributesDoc.Path = PanelAttributesDoc.EmptyPath
 
         mStateTextDoc = New StateTextDoc()
-        mStateTextDoc.Path = "No State Text Document Specified"
+        mStateTextDoc.Path = StateTextDoc.EmptyPath
+
+        mSchedulerReport = New SchedulerReport()
+        mSchedulerReport.Path = SchedulerReport.EmptyPath
+
+        mZoneDefinitionReport = New ZoneDefinitionReport()
+        mZoneDefinitionReport.Path = ZoneDefinitionReport.EmptyPath
+
 
 
     End Sub

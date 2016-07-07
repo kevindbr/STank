@@ -109,6 +109,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\ZoneDefinitionReport.vb" />
+    <Compile Include="Model\SchedulerReport.vb" />
     <Compile Include="Model\Ppcl.vb" />
     <Compile Include="Model\Program.vb" />
     <Compile Include="Model\StateTextDoc.vb" />
@@ -136,8 +138,8 @@
     <Compile Include="View\FindAndReplaceMainView.xaml.vb">
       <DependentUpon>FindAndReplaceMainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\FindAndReplaceView.xaml.vb">
-      <DependentUpon>FindAndReplaceView.xaml</DependentUpon>
+    <Compile Include="View\FindAndReplaceProgressView.xaml.vb">
+      <DependentUpon>FindAndReplaceProgressView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\HomePage.xaml.vb">
       <DependentUpon>HomePage.xaml</DependentUpon>
@@ -193,7 +195,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\FindAndReplaceView.xaml">
+    <Page Include="View\FindAndReplaceProgressView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
