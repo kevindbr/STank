@@ -9,8 +9,8 @@ Public Class MainViewModel
     Private activity2 = "Convert Engineering Units to Bacnet"
     Private activity3 = "Update State Text Tables"
     Private activity4 = "Replace Enhanced Alarms"
-    Private activity5 = "Convert Create Start Stop Time Optimization Zones to Bacnet"
-    Private activity6 = "Convert Schedules to Bacnet"
+    Private activity6 = "Convert Create Start Stop Time Optimization Zones to Bacnet"
+    Private activity5 = "Convert Schedules to Bacnet"
 
 
     ''' <summary>

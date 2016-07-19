@@ -125,6 +125,12 @@
     <Compile Include="View\ConnectionView.xaml.vb">
       <DependentUpon>ConnectionView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\SchedulesProgressView.xaml.vb">
+      <DependentUpon>SchedulesProgressView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SSTOProgressView.xaml.vb">
+      <DependentUpon>SSTOProgressView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\EngineeringUnitsProgressView.xaml.vb">
       <DependentUpon>EngineeringUnitsProgressView.xaml</DependentUpon>
     </Compile>
@@ -176,6 +182,14 @@
     <Page Include="View\ConnectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SchedulesProgressView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SSTOProgressView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\EngineeringUnitsProgressView.xaml">
       <Generator>MSBuild:Compile</Generator>

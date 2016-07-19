@@ -78,6 +78,7 @@ Public Class ConnectionView
     Private Sub serialPortChanged(sender As Object, e As SelectionChangedEventArgs)
         Dim selectedItem = serialPortList.SelectedValue.Content
         mConnectionViewModel.mCommPort.PortName = selectedItem
+        mMainViewModel.getProj.Panel.Port.PortName = selectedItem
     End Sub
 
     Private Sub sshVersionChanged(sender As Object, e As SelectionChangedEventArgs)

@@ -349,12 +349,12 @@ Class MainWindow
                 nextView.Show()
             End If
 
-            If nextStep = 5 Then
+            If nextStep = 6 Then
                 Dim nextView As SSTOMainView = New SSTOMainView(mMainViewModel)
                 nextView.Show()
             End If
 
-            If nextStep = 6 Then
+            If nextStep = 5 Then
                 Dim nextView As SchedulesMainView = New SchedulesMainView(mMainViewModel)
                 nextView.Show()
             End If
@@ -402,12 +402,12 @@ Class MainWindow
                 nextView.Show()
             End If
 
-            If nextStep = 5 Then
+            If nextStep = 6 Then
                 Dim nextView As SSTOMainView = New SSTOMainView(mMainViewModel)
                 nextView.Show()
             End If
 
-            If nextStep = 6 Then
+            If nextStep = 5 Then
                 Dim nextView As SchedulesMainView = New SchedulesMainView(mMainViewModel)
                 nextView.Show()
             End If
@@ -420,6 +420,17 @@ Class MainWindow
         Catch ex As Exception
 
         End Try
+
+
+    End Sub
+
+
+    Private Sub connectionClicked(sender As Object, e As RoutedEventArgs)
+
+        'Return
+
+
+
 
 
 
