@@ -116,6 +116,8 @@
     <Compile Include="Model\StateTextDoc.vb" />
     <Compile Include="Model\WorkingDirectory.vb" />
     <Compile Include="ViewModel\ConnectionViewModel.vb" />
+    <Compile Include="ViewModel\SchedulesMainViewModel.vb" />
+    <Compile Include="ViewModel\SSTOMainViewModel.vb" />
     <Compile Include="ViewModel\EngineeringUnitsMainViewModel.vb" />
     <Compile Include="ViewModel\FindAndReplaceMainViewModel.vb" />
     <Compile Include="ViewModel\MainViewModel.vb" />
@@ -147,11 +149,11 @@
     <Compile Include="View\MessageView.xaml.vb">
       <DependentUpon>MessageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\SchedulesView.xaml.vb">
-      <DependentUpon>SchedulesView.xaml</DependentUpon>
+    <Compile Include="View\SchedulesMainView.xaml.vb">
+      <DependentUpon>SchedulesMainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\SSTOView.xaml.vb">
-      <DependentUpon>SSTOView.xaml</DependentUpon>
+    <Compile Include="View\SSTOMainView.xaml.vb">
+      <DependentUpon>SSTOMainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\StateTextMainView.xaml.vb">
       <DependentUpon>StateTextMainView.xaml</DependentUpon>
@@ -207,11 +209,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\SchedulesView.xaml">
+    <Page Include="View\SchedulesMainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\SSTOView.xaml">
+    <Page Include="View\SSTOMainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

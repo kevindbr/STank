@@ -350,12 +350,12 @@ Class MainWindow
             End If
 
             If nextStep = 5 Then
-                Dim nextView As SSTOView = New SSTOView(mMainViewModel)
+                Dim nextView As SSTOMainView = New SSTOMainView(mMainViewModel)
                 nextView.Show()
             End If
 
             If nextStep = 6 Then
-                Dim nextView As SchedulesView = New SchedulesView(mMainViewModel)
+                Dim nextView As SchedulesMainView = New SchedulesMainView(mMainViewModel)
                 nextView.Show()
             End If
 
@@ -403,12 +403,12 @@ Class MainWindow
             End If
 
             If nextStep = 5 Then
-                Dim nextView As SSTOView = New SSTOView(mMainViewModel)
+                Dim nextView As SSTOMainView = New SSTOMainView(mMainViewModel)
                 nextView.Show()
             End If
 
             If nextStep = 6 Then
-                Dim nextView As SchedulesView = New SchedulesView(mMainViewModel)
+                Dim nextView As SchedulesMainView = New SchedulesMainView(mMainViewModel)
                 nextView.Show()
             End If
 
