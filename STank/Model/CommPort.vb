@@ -335,12 +335,14 @@ Public Class CommPort
 
 
 
-    Public Function Login() As String
+    Public Function Login(Optional ByVal isFresh As Boolean = True) As String
 
         Me.sp = My.Computer.Ports.OpenSerialPort(mPortName)     'is this set whenever changed in Connection View?
         sp.ReadTimeout = 200
         sp.NewLine = vbCr
         sp.BaudRate = 115200
+
+        If Not isFresh Then Return ""
 
         Dim resp As String
 
@@ -386,9 +388,9 @@ Public Class CommPort
     Public Function SendCommand(ByVal command As String, Optional ByVal sendLineBreaks As Boolean = False) As String
 
         If sendLineBreaks Then
-            sp.Write(command)
-        Else
             sp.WriteLine(command)
+        Else
+            sp.Write(command)
         End If
         Return ReadLines(sp)
 

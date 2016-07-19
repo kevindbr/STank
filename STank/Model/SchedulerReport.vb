@@ -52,7 +52,7 @@ Public Class SchedulerReport
 
         Set(value As String)
             mScheduleId = value
-            NotifyPropertyChanged("ScheduleId")
+            'NotifyPropertyChanged("ScheduleId")
         End Set
     End Property
 

@@ -82,8 +82,8 @@ Class SSTOMainView
 
     Private Sub replaceClicked(sender As Object, e As RoutedEventArgs)
 
-        'Dim fnrView As New StateTextProgressView(mMainViewModel)
-        'fnrView.Show()
+        Dim fnrView As New SSTOProgressView(mMainViewModel)
+        fnrView.Show()
 
 
     End Sub

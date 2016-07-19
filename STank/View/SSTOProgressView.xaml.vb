@@ -68,10 +68,10 @@ Public Class SSTOProgressView
 
         Dim newNames As Dictionary(Of String, String) = mMainViewModel.getProj.Panel.NameChangeDocument.ReplacementValues     'TODO: make sure name change is done first
         Dim zoneData As Dictionary(Of String, String) = mMainViewModel.getProj.Panel.ZoneDefinitionReport.ZoneData
-        Dim scheduleId As String = ""
+        Dim scheduleId As String = mMainViewModel.getProj.Panel.SchedulerReport.ScheduleId
 
 
-        Dim fieldPanel As String = mMainViewModel.getProj.Panel.Port.Login()
+        Dim fieldPanel As String = mMainViewModel.getProj.Panel.Port.Login(False)       'already have connection
 
 
         'General SSTO settings
@@ -114,6 +114,9 @@ Public Class SSTOProgressView
             SendCommand(GetSstoData(mode, zoneData("Min Start Duration")), True)   'Min start duration-htg (min)
             SendCommand(GetSstoData(mode, zoneData("Max Start Duration")), True)   'Max start duration-htg (min)
             SendCommand(GetSstoData(mode, zoneData("Max Extension Time")), True)   'Max extension time-htg (min)
+
+            'missed a couple other options here...offset?
+
         Next
 
         'TODO: probably don't need to implement stop time optimization, they said...it wasn't in the example report anyway

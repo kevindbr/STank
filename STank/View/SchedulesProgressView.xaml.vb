@@ -109,9 +109,9 @@ Public Class SchedulesProgressView
         SendCommand("", True)   'Field panel
         SendCommand("", True)   'First Id
         resp = SendCommand("", True)   'Last Id
-        SendCommand(commandName, True)   'Command name
-        SendCommand("", True)   'Command instance
-        resp = SendCommand("", True)   'Description
+        'SendCommand(commandName, True)   'Command name
+        'SendCommand("", True)   'Command instance
+        'resp = SendCommand("", True)   'Description
         Dim commandInstance = Regex.Matches(resp, "([0-9]+)\s+" + commandName).Item(0).Groups(1).ToString()
 
         SendCommand("", True)
@@ -210,16 +210,23 @@ Public Class SchedulesProgressView
         SendCommand("a")        'Add
         SendCommand(pointName, True)   'Point system name
         SendCommand("", True)   'Instance Number     (does this refer back to command action?  Probably just linked by state text table)
-        SendCommand(pointName, True)   'Point name
-        SendCommand("12", True)   'Point type (12 = LENUM)
+        'can't send blank.  Needs to be a number?
+
+        SendCommand("", True)   'Point name          (already gets filled in from system name, so just press enter)
+        SendCommand("LENUM", True)   'Point type (12 = LENUM)      (enter LENUM)
         SendCommand("", True)   'Descriptor
         SendCommand(stateTextTableId, True)   'State text table.  Need to get ID for the one just added, based on State Text Table Log
         SendCommand("", True)   'Access group(s)
-        SendCommand("n", True)   'Alarmable (Y/N)       NOTE: these y/n commands may not require space to be sent
+        SendCommand("n")   'Alarmable (Y/N)       NOTE: these y/n commands may not require space to be sent
         SendCommand("", True)   'Field panel
         SendCommand("v", True)   'Physical, Virtual Point address
         SendCommand("", True)   'Point
-        resp = SendCommand("VAC", True)   'Relinquish Default
+
+
+        resp = SendCommand("VAC", True)   'Relinquish Default   (pre-fills in 2, maybe just leave)
+        'TODO: not sure what to send here
+
+
         'check that response contains "Command successful"
 
     End Sub
@@ -258,13 +265,15 @@ Public Class SchedulesProgressView
         SendCommand("s")        'Schedule
         SendCommand("l")        'Log    (or 'd' to Display - Schedule report - lets us see what was done above)
         SendCommand("", True)   'Field panel
+        SendCommand("", True)   'First Id
+        resp = SendCommand("", True)   'Last Id
         Dim scheduleId = Regex.Matches(resp, "([0-9]+)\s+" + scheduleName).Item(0).Groups(1).ToString()
-        mMainViewModel.getProj.Panel.SchedulerReport.ScheduleId = scheduleId
+        'mMainViewModel.getProj.Panel.SchedulerReport.ScheduleId = scheduleId
         SendCommand("", True)
 
         For Each kvp As KeyValuePair(Of String, Tuple(Of String, String)) In mMainViewModel.getProj.Panel.SchedulerReport.Schedules
             Dim weekday As String = kvp.Key
-            Dim v2 As Tuple(Of String, String) = kvp.Value
+            Dim times As Tuple(Of String, String) = kvp.Value
 
             SendCommand("#")        'Top of menu
             SendCommand("a")        'Application
@@ -275,36 +284,43 @@ Public Class SchedulesProgressView
             SendCommand("", True)   'Field panel
             SendCommand(scheduleId, True)   'Schedule Id
             SendCommand(WeekdayAbbrev(weekday), True)   'Weekday (m,tu,w,th,f,sa,su)
-            SendCommand("05:00:00", True)   'Time (HH:MM:SS)
-            resp = SendCommand("2", True)   'Value (can be NULL, but not sure what this signifies)
+            SendCommand(times.Item1 + ":00", True)   'Time (HH:MM:SS)
+            resp = SendCommand("2", True)   'Value (can be NULL, but not surle what this signifies)
+            'TODO: not sure what to send here.  2 for start, 1 for stop?
             'check that response contains "Command successful"
 
-            'Add target to link schedule object to command object.  One schedule can control one or more commands....
             SendCommand("#")        'Top of menu
             SendCommand("a")        'Application
             SendCommand("b")        'BacNet
             SendCommand("s")        'Schedule
-            SendCommand("t")        'Targets
+            SendCommand("w")        'Weekly
             SendCommand("a")        'Add
             SendCommand("", True)   'Field panel
             SendCommand(scheduleId, True)   'Schedule Id
-            SendCommand(commandEncodedName, True)   'Encoded Name
-            SendCommand("85", True)   'Property Id
-            resp = SendCommand("", True)   'Array Index
+            SendCommand(WeekdayAbbrev(weekday), True)   'Weekday (m,tu,w,th,f,sa,su)
+            SendCommand(times.Item2 + ":00", True)   'Time (HH:MM:SS)
+            resp = SendCommand("1", True)   'Value (can be NULL, but not surle what this signifies)
+            'TODO: not sure what to send here.  2 for start, 1 for stop?
             'check that response contains "Command successful"
 
-
-            SendCommand("m", True)   'Weekday (m,tu,w,th,f,sa,su)
-            SendCommand("05:00:00", True)   'Time (HH:MM:SS)
-            resp = SendCommand("2", True)   'Value (can be NULL, but not sure what this signifies)
-            'check that response contains "Command successful"
-
-            'Do whatever you want with v2:
-            'If v2.ImageID = .... Then
         Next
 
 
+        'Add target to link schedule object to command object.  One schedule can control one or more commands....
+        SendCommand("#")        'Top of menu
+        SendCommand("a")        'Application
+        SendCommand("b")        'BacNet
+        SendCommand("s")        'Schedule
+        SendCommand("t")        'Targets
+        SendCommand("a")        'Add
+        SendCommand("", True)   'Field panel
+        SendCommand(scheduleId, True)   'Schedule Id
+        SendCommand(commandEncodedName, True)   'Encoded Name
+        SendCommand("85", True)   'Property Id
+        resp = SendCommand("", True)   'Array Index
+        'check that response contains "Command successful"
 
+        mMainViewModel.getProj.Panel.SchedulerReport.ScheduleId = scheduleId
 
         Return ""
 

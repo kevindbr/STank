@@ -82,8 +82,8 @@ Class SchedulesMainView
 
     Private Sub replaceClicked(sender As Object, e As RoutedEventArgs)
 
-        'Dim fnrView As New StateTextProgressView(mMainViewModel)
-        'fnrView.Show()
+        Dim fnrView As New SchedulesProgressView(mMainViewModel)
+        fnrView.Show()
 
 
     End Sub
@@ -91,7 +91,7 @@ Class SchedulesMainView
 
 
 
-    Private Sub updateMainWindow()
+    Private Sub updateMainWindow(Optional sender As Object = Nothing, Optional e As PropertyChangedEventArgs = Nothing)     'hacky
         updateAllLogs()
         updateButtons()
     End Sub
