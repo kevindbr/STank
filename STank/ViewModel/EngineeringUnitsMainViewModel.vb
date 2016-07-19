@@ -90,5 +90,22 @@ Public Class EngineeringUnitsMainViewModel
         Return allErrors
     End Function
 
+    Function getMaxNumOfErrors() As Integer
+        Return 1
+    End Function
+
+    Sub setComplete()
+        mSTankProj.EngineeringUnitsStatus = "complete"
+    End Sub
+
+    Sub setIncomplete()
+        mSTankProj.EngineeringUnitsStatus = "incomplete"
+    End Sub
+
+    Sub setPartial()
+        mSTankProj.EngineeringUnitsStatus = "partial"
+    End Sub
+
+
 
 End Class

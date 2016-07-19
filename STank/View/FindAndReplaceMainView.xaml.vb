@@ -66,8 +66,6 @@ Class FindAndReplaceMainView
         AddHandler mFindAndReplaceMainViewModel.getProj.Panel.NameChangeDocument.PropertyChanged, AddressOf updateMainWindow
         'AddHandler mMainViewModel.getProj.Panel.PanelAttributesDocument.PropertyChanged, AddressOf updateMainWindow
 
-        AddHandler mFindAndReplaceMainViewModel.getProj.Panel.Port.PropertyChanged, AddressOf updateMainWindow
-
         updateMainWindow()
     End Sub
 
@@ -302,6 +300,7 @@ Class FindAndReplaceMainView
     Private Sub updateMainWindow()
         updateAllLogs()
         updateButtons()
+        'mMainViewModel.
     End Sub
 
     Private Sub updateAllLogs()
@@ -351,6 +350,22 @@ Class FindAndReplaceMainView
             activityLog.Inlines.Add(newLine)
             activityLog.Inlines.Add(New LineBreak)
         Next
+
+        Dim numberOfErrors As Integer = listOfErrors.Count + listOfWarnings.Count
+        Dim maxNumOfErrors As Integer = mFindAndReplaceMainViewModel.getMaxNumOfErrors()
+
+        If ((maxNumOfErrors - numberOfErrors) = maxNumOfErrors) Then
+            mFindAndReplaceMainViewModel.setComplete()
+        End If
+
+        If ((maxNumOfErrors - numberOfErrors) = 0) Then
+            mFindAndReplaceMainViewModel.setIncomplete()
+        End If
+
+        If ((maxNumOfErrors - numberOfErrors) > 0 AND (maxNumOfErrors - numberOfErrors) < maxNumOfErrors) Then
+            mFindAndReplaceMainViewModel.setPartial()
+        End If
+
 
     End Sub
 

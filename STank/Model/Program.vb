@@ -3,6 +3,9 @@ Imports System.Text.RegularExpressions
 Imports System.IO
 
 Public Class Program
+
+    'Not currently used; see class Ppcl
+
     Implements INotifyPropertyChanged
 
     Sub New(ByVal text As String)
@@ -18,12 +21,6 @@ Public Class Program
     Private folder As String
     Private log As List(Of String)
     Private replacementValues As Dictionary(Of String, String)
-
-
-
-
-
-
 
 
 

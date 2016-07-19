@@ -4,8 +4,12 @@ Imports System.IO
 Public Class NameChangeDoc
     Implements INotifyPropertyChanged
 
+
+
     Private mPanel As Panel
     Private mPath As String
+    Public Shared EmptyPath As String = "No Name Change Document Path Specified"
+
     Private mReplacementValues As Dictionary(Of String, String)
 
 
@@ -74,7 +78,7 @@ Public Class NameChangeDoc
     Private Function isValidDocument(mPath As String) As Boolean
         Dim isValidFile = True
 
-        If mPath = "No Name Change Document Path Specified" Then
+        If mPath = EmptyPath Then
             isValidFile = False
         End If
 

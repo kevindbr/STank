@@ -90,5 +90,22 @@ Public Class StateTextMainViewModel
         Return allErrors
     End Function
 
+    Function getMaxNumOfErrors() As Integer
+        Return 1
+    End Function
+
+    Sub setComplete()
+        mSTankProj.StateTextStatus = "complete"
+    End Sub
+
+    Sub setIncomplete()
+        mSTankProj.StateTextStatus = "incomplete"
+    End Sub
+
+    Sub setPartial()
+        mSTankProj.StateTextStatus = "partial"
+    End Sub
+
+
 
 End Class

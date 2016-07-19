@@ -8,6 +8,7 @@ Public Class PanelAttributesDoc
 
     Private mPanel As Panel
     Private mPath As String     'holds new path.  Whenever path set, make a copy of the old doc
+    Public Shared EmptyPath As String = "No Panel Attributes Document Specified"
     Private Const sNewDocSuffix = "_new"
 
     Private Const mEngineeringUnitsSpreadsheet = "BACnet_unit_conversion_spreadsheet.xlsx"
@@ -66,7 +67,7 @@ Public Class PanelAttributesDoc
     Private Function isValidDocument(mPath As String) As Boolean
         Dim isValidFile = True
 
-        If mPath = "No Panel Attributes Document Specified" Then
+        If mPath = EmptyPath Then
             isValidFile = False
         End If
 

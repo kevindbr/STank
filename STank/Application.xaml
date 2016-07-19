@@ -20,11 +20,11 @@
             <!--80%-->
             <Color x:Key="AccentColor">#00a5b8</Color>
             <!--60%-->
-            <Color x:Key="AccentColor2">#f1f1f3</Color>
+            <Color x:Key="AccentColor2">#f1f1f1</Color>
             <!--40%-->
-            <Color x:Key="AccentColor3">#f1f1f3</Color>
+            <Color x:Key="AccentColor3">#f1f1f1</Color>
             <!--20%-->
-            <Color x:Key="AccentColor4">#f1f1f3</Color>
+            <Color x:Key="AccentColor4">#f1f1f1</Color>
 
             <!-- re-set brushes too -->
             <SolidColorBrush x:Key="HighlightBrush" Color="{StaticResource HighlightColor}"/>
