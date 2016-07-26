@@ -116,6 +116,7 @@
     <Compile Include="Model\StateTextDoc.vb" />
     <Compile Include="Model\WorkingDirectory.vb" />
     <Compile Include="ViewModel\ConnectionViewModel.vb" />
+    <Compile Include="ViewModel\BaseMainViewModel.vb" />
     <Compile Include="ViewModel\SchedulesMainViewModel.vb" />
     <Compile Include="ViewModel\SSTOMainViewModel.vb" />
     <Compile Include="ViewModel\EngineeringUnitsMainViewModel.vb" />
@@ -124,6 +125,9 @@
     <Compile Include="ViewModel\StateTextMainViewModel.vb" />
     <Compile Include="View\ConnectionView.xaml.vb">
       <DependentUpon>ConnectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EnhancedAlarmsProgressView.xaml.vb">
+      <DependentUpon>EnhancedAlarmsProgressView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SchedulesProgressView.xaml.vb">
       <DependentUpon>SchedulesProgressView.xaml</DependentUpon>
@@ -140,8 +144,8 @@
     <Compile Include="View\EngineeringUnitsMainView.xaml.vb">
       <DependentUpon>EngineeringUnitsMainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EnhancedAlarmsView.xaml.vb">
-      <DependentUpon>EnhancedAlarmsView.xaml</DependentUpon>
+    <Compile Include="View\EnhancedAlarmsMainView.xaml.vb">
+      <DependentUpon>EnhancedAlarmsMainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\FindAndReplaceMainView.xaml.vb">
       <DependentUpon>FindAndReplaceMainView.xaml</DependentUpon>
@@ -180,8 +184,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\ConnectionView.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\EnhancedAlarmsProgressView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\SchedulesProgressView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -203,7 +211,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\EnhancedAlarmsView.xaml">
+    <Page Include="View\EnhancedAlarmsMainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

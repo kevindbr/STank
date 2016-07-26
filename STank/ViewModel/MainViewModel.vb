@@ -2,8 +2,15 @@
 
 
 Public Class MainViewModel
+    Inherits BaseMainViewModel
 
-    Private mSTankProj As STankProj
+
+    Public Sub New()
+        MyBase.New(New STankProj())
+        IntializeProject()
+
+    End Sub
+
     Private portNameDefault = "No Active Comm Ports"
     Private activity1 = "System Name Change"
     Private activity2 = "Convert Engineering Units to Bacnet"
@@ -18,7 +25,7 @@ Public Class MainViewModel
     ''' </summary>
     ''' <remarks></remarks>
     Sub IntializeProject()
-        mSTankProj = New STankProj()
+        'mSTankProj = sTankProj
         mSTankProj.InitializeData()
         'mSTankProj.Directory = New WorkingDirectory()
         'mSTankProj.Directory.IntializeData()
@@ -50,38 +57,23 @@ Public Class MainViewModel
 
     End Sub
 
-    ''' <summary>
-    ''' We want to allow the user to have more than one comm port connection stored
-    ''' We will need to add logic to cleanly handle panel to comm port logic
-    ''' </summary>
-    ''' <param name="commPort"></param>
-    ''' <remarks></remarks>
-    Sub addNewPort(commPort As CommPort)
-        If mSTankProj.Panels.Count = 1 Then
-            mSTankProj.Panels.ElementAt(0).Port = commPort
-        End If
-    End Sub
 
-    Function getPanels() As List(Of Panel)
-        Return mSTankProj.Panels
-    End Function
 
-    Function getProj() As STankProj
-        Return mSTankProj
-    End Function
+    'TODO: I don't think these functions are used anymore
+
+
 
     ''' <summary>
     ''' Warnings are notifications that won't effect the user's ability to perform a find and replace
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Function getActivityWarningLogs() As List(Of String)
+    Public Overrides Function getActivityWarningLogs() As List(Of String)
 
         Dim allErrors As List(Of String) = New List(Of String)
 
         Dim error1 = "No Panel Attributes Document Specified"
         Dim error2 = "No Active Comm Ports"
-
 
         If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.PanelAttributesDocument.Path) Then
             allErrors.Add(error1)
@@ -91,8 +83,6 @@ Public Class MainViewModel
             allErrors.Add(error2)
         End If
 
-
-
         Return allErrors
     End Function
 
@@ -101,7 +91,7 @@ Public Class MainViewModel
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Function getActivityErrorLogs() As List(Of String)
+    Public Overrides Function getActivityErrorLogs() As List(Of String)
 
         Dim allErrors As List(Of String) = New List(Of String)
         Dim error1 = "No PPCL document provided"
@@ -281,6 +271,10 @@ Public Class MainViewModel
 
         Return activityNum
     End Function
+
+    Sub Log(listBox As ListBox, line As String)
+        Throw New NotImplementedException
+    End Sub
 
 
 End Class

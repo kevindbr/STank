@@ -12,6 +12,7 @@ Public Class SchedulerReport
     Public Shared EmptyPath As String = "No Scheduler Report Specified"
 
     Private mScheduleId As String
+    Private mZoneName As String
 
     Private mSchedules As Dictionary(Of String, Tuple(Of String, String))
 
@@ -57,6 +58,19 @@ Public Class SchedulerReport
     End Property
 
 
+    Public Property ZoneName As String
+        Get
+            Return mZoneName
+        End Get
+
+        Set(value As String)
+            mZoneName = value
+            'NotifyPropertyChanged("ScheduleId")
+        End Set
+    End Property
+
+
+
     Public Property Schedules As Dictionary(Of String, Tuple(Of String, String))
         Get
             Return mSchedules
@@ -98,6 +112,11 @@ Public Class SchedulerReport
         For i As Integer = 0 To lines.Length - 1
 
             Dim line As String = lines(i)
+
+            If line.StartsWith("Selection") Then
+                mZoneName = line.Split(":")(1).Trim
+                Continue For
+            End If
 
             Dim isMatch As Boolean = False
             Dim day As String = ""

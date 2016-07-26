@@ -69,6 +69,67 @@ Public Class NameChangeDoc
         'Return replacementValues
     End Sub
 
+
+
+    Public Sub PerformNameChange()
+
+        Dim i As Integer = 1
+        For Each kvp As KeyValuePair(Of String, String) In ReplacementValues
+
+            Dim process = RunNameChangeUtility(kvp.Key, kvp.Value)
+
+            'BaseMainViewModel.WriteLog("Changing name '" + kvp.Key + "' to '" + kvp.Value + "'")
+
+            process.WaitForExit()
+
+            BaseMainViewModel.WriteLog(process.StandardOutput.ReadToEnd)
+            BaseMainViewModel.WriteLog(process.StandardError.ReadToEnd)
+
+            System.Threading.Thread.Sleep(100)  'just for debugging, to more easily see progress
+
+            BaseMainViewModel.UpdateProgress(i / ReplacementValues.Count)
+
+            i = i + 1
+
+        Next
+
+
+    End Sub
+
+    Private Function RunNameChangeUtility(ByVal oldName As String, ByVal newName As String) As System.Diagnostics.Process
+
+        Dim sysName As String = newName
+        Dim cmd As String = "ChangeSystemName " + oldName + " " + newName + " " + sysName
+        'cmd = "ChangeSystemName " 'shouldn't run without arguments
+
+        BaseMainViewModel.WriteLog(String.Format("Running command '{0}'", cmd))
+
+
+        Dim process = New System.Diagnostics.Process()
+        Dim startInfo = New System.Diagnostics.ProcessStartInfo
+        startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden
+        startInfo.FileName = "cmd.exe"
+        startInfo.Arguments = "/C " + cmd
+        startInfo.RedirectStandardOutput = True
+        startInfo.RedirectStandardError = True
+        startInfo.UseShellExecute = False
+
+        startInfo.CreateNoWindow = True
+
+        process.StartInfo = startInfo
+        process.Start()
+
+
+        process.WaitForExit()
+
+
+        Return process
+
+    End Function
+
+
+
+
     ''' <summary>
     ''' Check file extension here
     ''' </summary>

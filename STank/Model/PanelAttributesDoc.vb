@@ -13,6 +13,9 @@ Public Class PanelAttributesDoc
 
     Private Const mEngineeringUnitsSpreadsheet = "BACnet_unit_conversion_spreadsheet.xlsx"
     Private mEngineeringUnits As Dictionary(Of String, String)
+    Private mLenumPoints As Dictionary(Of String, String)
+
+    Private mConnection As OleDbConnection
 
     Public Event PropertyChanged As PropertyChangedEventHandler _
   Implements INotifyPropertyChanged.PropertyChanged
@@ -34,9 +37,34 @@ Public Class PanelAttributesDoc
             File.Copy(value, sNewPath, True)
             mPath = sNewPath
 
-
+            getLenumPoints()
 
             NotifyPropertyChanged("Path")
+        End Set
+    End Property
+
+
+    Public Property Connection As OleDbConnection
+        Get
+            Return mConnection
+        End Get
+
+        Set(value As OleDbConnection)
+            mConnection = value
+            NotifyPropertyChanged("Connection")
+        End Set
+    End Property
+
+
+
+    Public Property LenumPoints As Dictionary(Of String, String)
+        Get
+            Return mLenumPoints
+        End Get
+
+        Set(value As Dictionary(Of String, String))
+            mLenumPoints = value
+            NotifyPropertyChanged("LenumPoints")
         End Set
     End Property
 
@@ -100,6 +128,98 @@ Public Class PanelAttributesDoc
     End Sub
 
 
+    Public Sub OpenConnection()
+
+        'sConnection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + mPath + ";Extended Properties=""Excel 12.0;HDR=No;IMEX=1"""
+        Dim sConnection = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source='{0}';Extended Properties=""Excel 12.0;HDR=Yes;""", mPath)
+        'can we deploy this without the ACE OLEDB provider being installed on target machine?
+
+        mConnection = New OleDbConnection(sConnection)
+        mConnection.Open()
+
+    End Sub
+
+
+    Public Sub ReplaceAllEngineeringUnits()
+
+        OpenConnection()
+
+
+        'Dim engineeringUnits = mMainViewModel.getProj.Panel.PanelAttributesDocument.EngineeringUnits
+        Dim i As Integer = 1
+        For Each kvp As KeyValuePair(Of String, String) In EngineeringUnits
+
+            ReplaceEngineeringUnits(kvp.Value, kvp.Key)
+
+            BaseMainViewModel.WriteLog(String.Format("Replacing unit '{0}' with '{1}'", kvp.Key, kvp.Value))
+
+            System.Threading.Thread.Sleep(100)  'just for debugging, to more easily see progress
+
+            BaseMainViewModel.UpdateProgress(i / EngineeringUnits.Count)
+
+            i = i + 1
+
+        Next
+
+        Connection.Close()
+
+    End Sub
+
+
+    Private Sub ReplaceEngineeringUnits(ByVal oldUnits As String, ByVal newUnits As String)
+
+        Dim sSheetName = "Points$"  'Panel Attributes document always has same format
+        Dim oleExcelCommand As OleDbCommand = mConnection.CreateCommand()
+        oleExcelCommand.CommandType = CommandType.Text
+        oleExcelCommand.CommandText = String.Format("UPDATE [{0}] SET [Eng units] = '{1}' WHERE [Eng units] = '{2}'", sSheetName, oldUnits, newUnits)
+        oleExcelCommand.ExecuteNonQuery()
+
+    End Sub
+
+
+
+
+    Private Sub getLenumPoints()
+
+        mLenumPoints = New Dictionary(Of String, String)
+
+        OpenConnection()
+
+        Dim t = mConnection.GetSchema("Tables")
+
+
+        Dim dtSheets As DataTable =
+          mConnection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, Nothing)
+
+
+        Dim sData = mConnection.GetSchema("Tables")
+
+        'Dim sSheetName = oleExcelConnection.GetSchema("Tables").Rows(2)("TABLE_NAME").ToString      'just use name of first sheet
+
+        Dim oleExcelCommand As OleDbCommand = mConnection.CreateCommand()
+        oleExcelCommand.CommandType = CommandType.Text
+        oleExcelCommand.CommandText = String.Format("Select [SysName], [Text table] From [Points$] where [PtType] = 'LENUM'")      'will this get only non-blank rows?
+
+        Dim oleExcelReader As OleDbDataReader = oleExcelCommand.ExecuteReader
+        Dim data As New DataTable
+        data.Load(oleExcelReader)
+        For Each row As DataRow In data.Rows
+            If row.Item(0).ToString.Trim = "" Then Continue For
+            Try
+                mLenumPoints.Add(row.Item(0), row.Item(1))
+                'mEngineeringUnits.Add(row.Item(0).ToString, row.Item(1).ToString)
+            Catch ex As ArgumentException
+            End Try
+
+        Next
+
+        oleExcelReader.Close()
+        mConnection.Close()
+
+    End Sub
+
+
+
 
     Private Sub getEngineeringUnits()
 
@@ -145,6 +265,14 @@ Public Class PanelAttributesDoc
         oleExcelConnection.Close()
 
     End Sub
+
+
+
+
+
+
+
+
 
 
 

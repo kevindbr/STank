@@ -41,6 +41,7 @@ Public Class SSTOProgressView
     End Sub
 
 
+    'TODO: still not
     Private Sub UpdateProgress(ByVal fraction As Integer)
 
         Dispatcher.Invoke(Sub(ByRef i As Integer)
@@ -155,64 +156,17 @@ Public Class SSTOProgressView
 
 
 
-    'TODO: put this in public place
     Private Sub AddToLog(ByVal line As String)
-
-        If line = "" Then Return 'when stderr is non-empty, stdout will be
-
         'Need this because this code doesn't run on UI thread but needs to modify UI elements
         Dispatcher.Invoke(Sub()
-
-                              log.Items.Add(line)
-
-                              If log.Items.Count > 10 Then
-                                  log.Items.RemoveAt(0)
-                              End If
-
-                              'log.SelectedIndex = log.Items.Count - 1
-                              'log.SelectedIndex = -1
-
-                              'Scroll to last entry
-                              Dim svAutomation As ListBoxAutomationPeer = ScrollViewerAutomationPeer.CreatePeerForElement(log)
-                              Dim scrollInterface As IScrollProvider = svAutomation.GetPattern(PatternInterface.Scroll)
-                              Dim scrollVertical As ScrollAmount = ScrollAmount.LargeIncrement
-                              Dim scrollHorizontal As ScrollAmount = ScrollAmount.NoAmount
-                              If scrollInterface.VerticallyScrollable Then
-                                  scrollInterface.Scroll(scrollHorizontal, scrollVertical)
-                              End If
-
-                              'og.ScrollIntoView(log.Items.Item(log.Items.Count - 1))   'doesn't work for duplicate entries
-
+                              mMainViewModel.Log(log, line)
                           End Sub)
-
-
     End Sub
 
     Private Sub exitView(sender As Object, e As RoutedEventArgs)
         Close()
     End Sub
 
-    'Private Sub updateDefineGrid()
-    '    Dim dt As New DataTable
 
-    '    dt.Columns.Add("Variable")
-    '    dt.Columns.Add("Current Def")
-    '    dt.Columns.Add("New Def")
-
-    '    For Each kvp As KeyValuePair(Of String, String) In mMainViewModel.getProj.Panel.Ppcl.Variables
-    '        dt.Rows.Add(kvp.Key, kvp.Value, kvp.Value)
-    '    Next
-
-
-    '    'defineGrid.DataContext = data.DefaultView
-
-    '    Dispatcher.Invoke(Sub()
-    '                          defineGrid.ItemsSource = dt.AsDataView
-
-    '                          defineGrid.Columns(0).IsReadOnly = True
-    '                          defineGrid.Columns(1).IsReadOnly = True
-    '                          defineGrid.Columns(2).IsReadOnly = False
-    '                      End Sub)
-    'End Sub
 
 End Class

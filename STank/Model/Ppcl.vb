@@ -213,6 +213,7 @@ Implements INotifyPropertyChanged.PropertyChanged
         ' Replace old full names with new full names
         For Each kvp As KeyValuePair(Of String, String) In replacementValues
             mNewText = mNewText.Replace(kvp.Key, kvp.Value)
+            BaseMainViewModel.WriteLog(String.Format("Changing name '{0}' to '{1}' in PPCL", kvp.Key, kvp.Value))
         Next
 
         ' Replace old variable definitions with new variable definitions
@@ -223,6 +224,7 @@ Implements INotifyPropertyChanged.PropertyChanged
         'Next
         For Each kvp As KeyValuePair(Of String, String) In mNewVariables
             mNewText = mNewText.Replace(kvp.Value, "%" + kvp.Key + "%")
+            BaseMainViewModel.WriteLog(String.Format("Changing variable '{0}' to '{1}' in PPCL", kvp.Value, kvp.Key))
         Next
 
         ' However, this will also affect DEFINE statements and cause them to read like DEFINE(X, "%X"), so this must be corrected

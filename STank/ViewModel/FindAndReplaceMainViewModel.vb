@@ -2,43 +2,21 @@
 
 
 Public Class FindAndReplaceMainViewModel
+    Inherits BaseMainViewModel
 
-    Private mSTankProj As STankProj
     Private portNameDefault = "No Active Comm Ports"
 
     Public Sub New(ByVal sTankProj As STankProj)
-
-        mSTankProj = sTankProj
-
+        MyBase.New(sTankProj)
     End Sub
 
-
-    ''' <summary>
-    ''' We want to allow the user to have more than one comm port connection stored
-    ''' We will need to add logic to cleanly handle panel to comm port logic
-    ''' </summary>
-    ''' <param name="commPort"></param>
-    ''' <remarks></remarks>
-    Sub addNewPort(commPort As CommPort)
-        If mSTankProj.Panels.Count = 1 Then
-            mSTankProj.Panels.ElementAt(0).Port = commPort
-        End If
-    End Sub
-
-    Function getPanels() As List(Of Panel)
-        Return mSTankProj.Panels
-    End Function
-
-    Function getProj() As STankProj
-        Return mSTankProj
-    End Function
 
     ''' <summary>
     ''' Warnings are notifications that won't effect the user's ability to perform a find and replace
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Function getActivityWarningLogs() As List(Of String)
+    Public Overrides Function getActivityWarningLogs() As List(Of String)
 
         Dim allErrors As List(Of String) = New List(Of String)
 
@@ -65,7 +43,7 @@ Public Class FindAndReplaceMainViewModel
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Function getActivityErrorLogs() As List(Of String)
+    Public Overrides Function getActivityErrorLogs() As List(Of String)
 
         Dim allErrors As List(Of String) = New List(Of String)
         Dim error1 = "No PPCL document provided"
@@ -87,20 +65,5 @@ Public Class FindAndReplaceMainViewModel
         Return allErrors
     End Function
 
-    Function getMaxNumOfErrors() As Integer
-        Return 2
-    End Function
-
-    Sub setComplete()
-        mSTankProj.NameChangeStatus = "complete"
-    End Sub
-
-    Sub setIncomplete()
-        mSTankProj.NameChangeStatus = "incomplete"
-    End Sub
-
-    Sub setPartial()
-        mSTankProj.NameChangeStatus = "partial"
-    End Sub
 
 End Class

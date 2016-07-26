@@ -345,7 +345,7 @@ Class MainWindow
             End If
 
             If nextStep = 4 Then
-                Dim nextView As EnhancedAlarmsView = New EnhancedAlarmsView(mMainViewModel)
+                Dim nextView As EnhancedAlarmsMainView = New EnhancedAlarmsMainView(mMainViewModel)
                 nextView.Show()
             End If
 
@@ -398,7 +398,7 @@ Class MainWindow
             End If
 
             If nextStep = 4 Then
-                Dim nextView As EnhancedAlarmsView = New EnhancedAlarmsView(mMainViewModel)
+                Dim nextView As EnhancedAlarmsMainView = New EnhancedAlarmsMainView(mMainViewModel)
                 nextView.Show()
             End If
 
