@@ -2,6 +2,7 @@
 Imports System.Data
 Imports System.Data.OleDb
 Imports System.IO
+Imports System.Text.RegularExpressions
 
 Public Class ZoneDefinitionReport
     Implements INotifyPropertyChanged
@@ -68,19 +69,37 @@ Public Class ZoneDefinitionReport
     Public Sub getZoneData()
         mZoneData = New Dictionary(Of String, String)
         Dim lines() As String = File.ReadAllLines(mPath)
-        For Each line As String In lines
+        For i As Integer = 0 To lines.Length - 1
+            Dim line As String = lines(i)
+            Dim name As String
+            Dim val As String
+
+            'Handle duplicate "Mode" if both start and night optimization enabled
+            Dim nameSuffix As String = ""
+            If line.Contains("Parameter") Then
+                Dim modeType As String = Regex.Split(line.Trim, "\s+")(0)    'assuming first one isn't empty
+                nameSuffix = " (" + modeType + ")"
+                i += 1
+                line = lines(i)
+            End If
+
             If Not line.Contains(":") Then Continue For
             Dim vals() As String = line.Split(":"c)
             'check if vals().length >= 2?  Or is it guaranteed due to above condition?
-            Dim name As String = vals(0).Trim()
-            Dim value As String = vals(1).Trim()
-            If (name <> "" And value <> "") Then
+            name = vals(0).Trim()
+            val = vals(1).Trim()
+
+            If (name <> "" And val <> "") Then
                 Try
-                    mZoneData.Add(name, value)
+                    mZoneData.Add(name + nameSuffix, val)
                 Catch
                     MsgBox("Please check zone definition report")
                 End Try
             End If
+        Next
+
+        For Each line As String In lines
+
         Next line
         'Return replacementValues
     End Sub

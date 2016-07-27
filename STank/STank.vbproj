@@ -126,6 +126,9 @@
     <Compile Include="View\ConnectionView.xaml.vb">
       <DependentUpon>ConnectionView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\EnhancedAlarmsTextView.xaml.vb">
+      <DependentUpon>EnhancedAlarmsTextView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\EnhancedAlarmsProgressView.xaml.vb">
       <DependentUpon>EnhancedAlarmsProgressView.xaml</DependentUpon>
     </Compile>
@@ -184,6 +187,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\ConnectionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\EnhancedAlarmsTextView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -14,6 +14,7 @@ Public Class PanelAttributesDoc
     Private Const mEngineeringUnitsSpreadsheet = "BACnet_unit_conversion_spreadsheet.xlsx"
     Private mEngineeringUnits As Dictionary(Of String, String)
     Private mLenumPoints As Dictionary(Of String, String)
+    Private mAlarmsData As DataTable
 
     Private mConnection As OleDbConnection
 
@@ -38,6 +39,7 @@ Public Class PanelAttributesDoc
             mPath = sNewPath
 
             getLenumPoints()
+            getEnhancedAlarms()
 
             NotifyPropertyChanged("Path")
         End Set
@@ -67,6 +69,21 @@ Public Class PanelAttributesDoc
             NotifyPropertyChanged("LenumPoints")
         End Set
     End Property
+
+
+
+    Public Property AlarmsData As DataTable
+        Get
+            Return mAlarmsData
+        End Get
+
+        Set(value As DataTable)
+            mAlarmsData = value
+            NotifyPropertyChanged("AlarmsData")
+        End Set
+    End Property
+
+
 
 
     Public Property EngineeringUnits As Dictionary(Of String, String)
@@ -183,6 +200,7 @@ Public Class PanelAttributesDoc
 
         mLenumPoints = New Dictionary(Of String, String)
 
+
         OpenConnection()
 
         Dim t = mConnection.GetSchema("Tables")
@@ -217,6 +235,37 @@ Public Class PanelAttributesDoc
         mConnection.Close()
 
     End Sub
+
+
+
+
+    Private Sub getEnhancedAlarms()
+
+        mAlarmsData = New DataTable
+
+        OpenConnection()
+
+        'Dim sSheetName = oleExcelConnection.GetSchema("Tables").Rows(2)("TABLE_NAME").ToString      'just use name of first sheet
+
+        Dim oleExcelCommand As OleDbCommand = mConnection.CreateCommand()
+        oleExcelCommand.CommandType = CommandType.Text
+        oleExcelCommand.CommandText = String.Format("Select [{0}].[SysName], [{0}].[PtType], [{0}].[Mode Point], [{0}].[Level delay], " +
+                                                    "[{0}].[D1 Set Point Name], [{0}].[D1 L1 Offset], [{0}].[D1 L2 Offset], " +
+                                                    "[{1}].[Eng units], [{1}].[Decimal], [{1}].[Format], [{1}].[Deadband] " +
+                                                    "from [{1}] inner join [{0}] on [{0}].[SysName] = [{1}].[SysName]",
+                                                    "Points$", "'Enhanced Alarms$'")      'will this get only non-blank rows?
+
+        Dim oleExcelReader As OleDbDataReader = oleExcelCommand.ExecuteReader
+        Dim data As New DataTable
+        mAlarmsData.Load(oleExcelReader)
+
+        oleExcelReader.Close()
+        mConnection.Close()
+
+    End Sub
+
+
+
 
 
 

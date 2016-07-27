@@ -511,17 +511,12 @@ Public Class CommPort
 
 
 
-    Private Sub ConfigureSSTO()
+    Public Sub ConfigureSSTO(ByVal replacementValues As Dictionary(Of String, String), ByVal zoneData As Dictionary(Of String, String),
+                             ByVal scheduleId As String)
 
         Dim resp As String
 
-        Dim newNames As Dictionary(Of String, String) = mPanel.NameChangeDocument.ReplacementValues     'TODO: make sure name change is done first
-        Dim zoneData As Dictionary(Of String, String) = mPanel.ZoneDefinitionReport.ZoneData
-        Dim scheduleId As String = mPanel.SchedulerReport.ScheduleId
-
-
-        Dim fieldPanel As String = mPanel.Port.Login(False)       'already have connection
-
+        BaseMainViewModel.UpdateProgress(0.2)
 
         'General SSTO settings
         SendCommand("#")        'Top of menu
@@ -536,46 +531,66 @@ Public Class CommPort
         SendCommand(If(zoneData("Night Operation") = "Enabled", "y", "n"))   'Enable night operation (Y/N)
         SendCommand(GetOperationCommand(zoneData("Allowed Operation")))   'Allowed operation (N,H,C,hAc)
         SendCommand(GetOperationCommand(zoneData("Selected Operation")))   'Desired oper (N,H,C,hAc,R)  'Not sure about this R option....'
-        SendCommand(newNames(zoneData("Outside Temperature")), True)   'Outside temperature
-        SendCommand(newNames(zoneData("Zone Temperature")), True)   'Zone temperature
+        SendCommand(replacementValues(zoneData("Outside Temperature")), True)   'Outside temperature
+        SendCommand(replacementValues(zoneData("Zone Temperature")), True)   'Zone temperature
         SendCommand(zoneData("Heating Setpoint (OCC)"), True)   'Heating setpoint-occupancy
         SendCommand(zoneData("Heating Setpoint (VAC)"), True)   'Heating setpoint-vacancy
         SendCommand(zoneData("Cooling Setpoint (OCC)"), True)   'Cooling setpoint-occupancy
         resp = SendCommand(zoneData("Cooling Setpoint (VAC)"), True)   'Cooling setpoint-vacancy
         'check that response contains "Command successful"
 
+        BaseMainViewModel.UpdateProgress(0.4)
+
         'Start time optimization
-        SendCommand("#")        'Top of menu
-        SendCommand("a")        'Application
-        SendCommand("b")        'BacNet
-        SendCommand("t")        'ssTo
-        SendCommand("s")        'Start
-        SendCommand("a")        'Add
-        SendCommand(scheduleId, True)   'Schedule id
-        For Each mode As SstoMode In System.Enum.GetValues(GetType(SstoMode))
-            SendCommand(GetSstoData(mode, zoneData("Mode")), True)   'Start mode-htg
-            SendCommand(If(GetSstoData(mode, zoneData("If too early")) = "OCC1", "y", "n"))   'Early-next occ mode-htg (Y/N)    'not sure about this comparison
-            SendCommand(If(GetSstoData(mode, zoneData("If too late")) = "Use Next Mode", "y", "n"))   'Late-occ mode-htg (Y/N)    'not sure about this comparison
-            SendCommand(If(GetSstoData(mode, zoneData("Time Shift")) = "Inside and Outside", "a", "b"))   'Time shift-htg (Fxd,Bsc,Adv)    '3 options, how to map?
-            SendCommand(If(GetSstoData(mode, zoneData("Use Learning")) = "Yes", "y", "n"))   'Use learning-htg (Y/N)
-            SendCommand(GetSstoData(mode, zoneData("Outside Temp Limit")), True)   'Outside temp limit-htg
-            SendCommand(GetSstoData(mode, zoneData("Zone Temp Deviation")), True)   'Zone temp deviation-htg 
-            SendCommand(GetSstoData(mode, zoneData("Min Start Duration")), True)   'Min start duration-htg (min)
-            SendCommand(GetSstoData(mode, zoneData("Max Start Duration")), True)   'Max start duration-htg (min)
-            SendCommand(GetSstoData(mode, zoneData("Max Extension Time")), True)   'Max extension time-htg (min)
+        'TODO: only do this if enabled in report?
+        If (zoneData("Start Optimization") = "Enabled") Then
+            SendCommand("#")        'Top of menu
+            SendCommand("a")        'Application
+            SendCommand("b")        'BacNet
+            SendCommand("t")        'ssTo
+            SendCommand("s")        'Start
+            SendCommand("a")        'Add
+            SendCommand(scheduleId, True)   'Schedule id
+            For Each mode As SstoMode In System.Enum.GetValues(GetType(SstoMode))
+                SendCommand(GetSstoData(mode, zoneData("Mode (Start)")), True)   'Start mode-htg
+                SendCommand(If(GetSstoData(mode, zoneData("If too early")) = "OCC1", "y", "n"))   'Early-next occ mode-htg (Y/N)    'not sure about this comparison
+                SendCommand(If(GetSstoData(mode, zoneData("If too late")) = "Use Next Mode", "y", "n"))   'Late-occ mode-htg (Y/N)    'not sure about this comparison
+                SendCommand(If(GetSstoData(mode, zoneData("Time Shift")) = "Inside and Outside", "a", "b"))   'Time shift-htg (Fxd,Bsc,Adv)    '3 options, how to map?
+                SendCommand(If(GetSstoData(mode, zoneData("Use Learning")) = "Yes", "y", "n"))   'Use learning-htg (Y/N)
+                SendCommand(GetSstoData(mode, zoneData("Outside Temp Limit")), True)   'Outside temp limit-htg
+                SendCommand(GetSstoData(mode, zoneData("Zone Temp Deviation")), True)   'Zone temp deviation-htg 
+                SendCommand(GetSstoData(mode, zoneData("Min Start Duration")), True)   'Min start duration-htg (min)
+                SendCommand(GetSstoData(mode, zoneData("Max Start Duration")), True)   'Max start duration-htg (min)
+                SendCommand(GetSstoData(mode, zoneData("Max Extension Time")), True)   'Max extension time-htg (min)
 
-            'missed a couple other options here...offset?
+                If mode = SstoMode.Heating Then
+                    SendCommand(GetSstoData(mode, zoneData("Max Setpoint Offset")), True)   'Maximum setpoint offset-htg
+                End If
 
-        Next
+            Next
+        End If
+
+        BaseMainViewModel.UpdateProgress(0.6)
+
+        If (zoneData("Night Operation") = "Enabled") Then
+            SendCommand("#")        'Top of menu
+            SendCommand("a")        'Application
+            SendCommand("b")        'BacNet
+            SendCommand("t")        'ssTo
+            SendCommand("n")        'Night
+            SendCommand("a")        'Add
+            SendCommand(scheduleId, True)   'Schedule id
+            SendCommand(GetSstoData(SstoMode.Heating, zoneData("Mode (Night)")), True)   'Night mode-htg
+            SendCommand(GetSstoData(SstoMode.Cooling, zoneData("Mode (Night)")), True)   'Night mode-clg
+            resp = SendCommand(zoneData("Differential"), True)   'Differential
+            'check that response contains "Command successful"
+        End If
+
+        BaseMainViewModel.UpdateProgress(1.0)
 
         'TODO: probably don't need to implement stop time optimization, they said...it wasn't in the example report anyway
-        'but may need to do night
-
-        mPanel.Port.Logout()
-
 
     End Sub
-
 
 
     Private Function GetOperationCommand(ByVal zoneDefOperation As String)
@@ -592,9 +607,79 @@ Public Class CommPort
     End Function
 
 
+    Private Enum SstoMode
+        Heating
+        Cooling
+    End Enum
+
+
+    Private Function GetSstoData(ByVal mode As SstoMode, ByVal zoneDataValue As String)
+        Return Regex.Split(zoneDataValue, "\s{2,}")(mode)
+    End Function
 
 
 
+
+    Function CreateEnhancedAlarms(ByVal alarmsDataRow As DataRow) As String
+
+        Dim resp As String
+
+        'First need to create reference point
+
+        SendCommand("#")        'Top of menu
+        SendCommand("p")        'Point
+        SendCommand("e")        'Edit
+        SendCommand("a")        'Add
+        SendCommand(alarmsDataRow.Item("SysName") + "V", True)   'Point system name
+        SendCommand("", True)   'Instance Number     (will auto-assign if not specified)
+        SendCommand("", True)   'Point name          (already gets filled in from system name, so just press enter)
+        SendCommand("LAO", True)   'Point type (is this always the type we use?)
+        SendCommand("", True)   'Descriptor
+        SendCommand(alarmsDataRow.Item("Format").Substring(0, 1))   'Float, Integer, Time, Date, dAte-time
+        SendCommand(alarmsDataRow.Item("Decimals"), True)   'Number of decimal places
+        SendCommand(alarmsDataRow.Item("Eng units"), True)   'Engineering units    (has this already been replaced with BACnet?)
+        SendCommand("", True)   'Access group(s)
+        SendCommand("n")   'Alarmable (Y/N)       NOTE: these y/n commands may not require space to be sent
+        SendCommand("", True)   'Field panel
+        SendCommand("v", True)   'Physical, Virtual Point address
+        SendCommand("", True)   'Point
+        SendCommand("1", True)   'COV limit (is this always the value we send?)
+        resp = SendCommand("56", True)   'Relinquish Default   (is this always the value we send?)
+
+        BaseMainViewModel.UpdateProgress(0.5)
+
+
+        SendCommand("#")        'Top of menu
+        SendCommand("p")        'Point
+        SendCommand("a")        'Alarm
+        SendCommand("v")        'Event
+        SendCommand("e")        'Edit
+        SendCommand("a")        'Add
+        SendCommand("", True)   'Field panel
+        SendCommand(alarmsDataRow.Item("SysName") + "_EE", True)   'Event Enrollment Name
+        SendCommand("", True)   'Event enrollment instance
+        SendCommand("", True)   'Event enrollment description
+        SendCommand("Y")   'Report as Alarm (Y/N)
+        SendCommand("Y")   'OFFNORMAL event enabled (Y/N)
+        SendCommand("Y")   'NORMAL event enabled (Y/N)
+        SendCommand("Y")   'FAULT event enabled (Y/N)
+        SendCommand("3", True)   'Notification ID
+        SendCommand("0", True)   'Alarm Message number
+        SendCommand(alarmsDataRow.Item("SysName"), True)   'Reference point name
+        SendCommand("LIM", True)   'Event Type
+        SendCommand(alarmsDataRow.Item("SysName") + "V", True)   'Setpoint reference
+        SendCommand(alarmsDataRow.Item("D1 L2 Offset"), True)   'High diff limit          'TODO: not sure these are right.  Shouldn't these come from Pt Export?
+        SendCommand(alarmsDataRow.Item("D1 L1 Offset").ToString.Trim("-"), True)   'Low diff limit (can't be negative?  How does this work?
+        SendCommand(alarmsDataRow.Item("Deadband"), True)   'Deadband
+        resp = SendCommand(alarmsDataRow.Item("Level delay"), True)   'TimeDelay (sec)
+        'check that response contains "Command successful"
+
+        BaseMainViewModel.UpdateProgress(1.0)
+
+
+        Return ""
+
+    End Function
 
 
 

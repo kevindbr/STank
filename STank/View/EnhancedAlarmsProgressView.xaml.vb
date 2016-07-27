@@ -7,7 +7,7 @@ Imports System.Windows.Threading
 Imports System.Data.OleDb
 Imports System.Text.RegularExpressions
 
-Public Class SchedulesProgressView
+Public Class EnhancedAlarmsProgressView
 
     Private mMainViewModel As MainViewModel
     Private bw As BackgroundWorker = New BackgroundWorker
@@ -35,58 +35,30 @@ Public Class SchedulesProgressView
 
     Private Sub bw_RunFindAndReplace(ByVal sender As Object, ByVal e As DoWorkEventArgs)
 
-        'TODO: might make sense to move this logic into SchedulerReport...
-
+        Dim worker As BackgroundWorker = CType(sender, BackgroundWorker)
 
         Dim panel = mMainViewModel.getProj.Panel
-        Dim port = panel.Port
-
-        Dim fieldPanel As String = port.Login()
-
-        Dim schedulerReport = panel.SchedulerReport
-        Dim replacementValues = panel.NameChangeDocument.ReplacementValues
-        'Dim commandName As String = replacementValues(schedulerReport.ZoneName)     'TODO: currently zone name is not in name change document
-        Dim commandName As String = schedulerReport.ZoneName.Replace(".", "_")
+        Dim alarmsData = panel.PanelAttributesDocument.AlarmsData
 
 
-        Dim scheduleId As String = port.CreateSchedule(commandName + "_SchedCmd")
-        'BaseMainViewModel.WriteLog(String.Format("Creating BACnet schedule object '{0}'", commandName + "_SchedCmd"))
-        BaseMainViewModel.UpdateProgress(0.1)
 
+        For Each row As DataRow In alarmsData.Rows
 
-        For Each kvp As KeyValuePair(Of String, Tuple(Of String, String)) In panel.SchedulerReport.Schedules
-            Dim weekday As String = kvp.Key
-            Dim times As Tuple(Of String, String) = kvp.Value
-            port.PopulateSchedule(scheduleId, weekday, times.Item1, times.Item2)
-        Next
+            panel.Port.CreateEnhancedAlarms(row)
 
-        BaseMainViewModel.UpdateProgress(0.2)
-
-
-        Dim i As Integer = 1
-        For Each kvp As KeyValuePair(Of String, String) In panel.PanelAttributesDocument.LenumPoints
-
-            Dim pointName As String = kvp.Key
-            Dim stateTextTableId As String = kvp.Value
-
-            Dim stateTextTable As StateTextDoc.StateTextTable = panel.StateTextDocument.GetStateTextByID(stateTextTableId)
-            Dim pointId As String = port.GetPointInstanceNumber(pointName)
-
-            Dim commandId As String = port.CreateBacnetCommand(commandName + If(i > 1, CStr(i), ""))     'need new command for each point
-            BaseMainViewModel.UpdateProgress(0.4)
-
-            Dim commandEncodedName As String = port.CreateCommandActions(commandName, commandId, fieldPanel, stateTextTable, pointId)
-
-            BaseMainViewModel.UpdateProgress(0.6)
-
-            port.LinkScheduleToCommand(scheduleId, commandEncodedName)
+            Dim textView As New EnhancedAlarmsTextView(row)
+            textView.Show()
 
         Next
 
-
-        port.Logout()
 
         BaseMainViewModel.ResetUI()
+
+    End Sub
+
+
+
+    Private Sub showTextView(sender As Object, e As RoutedEventArgs)
 
     End Sub
 
