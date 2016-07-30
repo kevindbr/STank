@@ -40,16 +40,20 @@ Public Class EnhancedAlarmsProgressView
         Dim panel = mMainViewModel.getProj.Panel
         Dim alarmsData = panel.PanelAttributesDocument.AlarmsData
 
-
+        panel.Port.Login()
 
         For Each row As DataRow In alarmsData.Rows
 
             panel.Port.CreateEnhancedAlarms(row)
 
-            Dim textView As New EnhancedAlarmsTextView(row)
-            textView.Show()
+            Dispatcher.Invoke(Sub()
+                                  Dim textView As New EnhancedAlarmsTextView(row)
+                                  textView.Show()
+                              End Sub)
 
         Next
+
+        panel.Port.Logout()
 
 
         BaseMainViewModel.ResetUI()

@@ -39,6 +39,7 @@ Public Class StateTextProgressView
         Dim port = mMainViewModel.getProj.Panel.Port
         Dim panelAttributesDoc = mMainViewModel.getProj.Panel.PanelAttributesDocument
 
+        port.Login()
 
         Dim modifiedStateTextTableIds = New List(Of String)
 
@@ -72,6 +73,8 @@ Public Class StateTextProgressView
 
             i += 1
         Next
+
+        port.Logout()
 
         'should already have lenum points from when panel attributes doc path was set
 

@@ -114,7 +114,7 @@ Public Class StateTextDoc
         'sConnection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + mPath + ";Extended Properties=""Excel 12.0;HDR=No;IMEX=1"""
         Dim sConnection = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source='{0}';Extended Properties=""Excel 12.0;HDR=Yes""", mPath)
 
-        Dim mConnection = New OleDbConnection(sConnection)
+        mConnection = New OleDbConnection(sConnection)
         mConnection.Open()
 
     End Sub
@@ -148,7 +148,7 @@ Public Class StateTextDoc
 
         Dim oleExcelCommand As OleDbCommand = mConnection.CreateCommand()
         oleExcelCommand.CommandType = CommandType.Text
-        oleExcelCommand.CommandText = String.Format("Select * From ['Text Table$'] where [ID] = '{0}'", id)
+        oleExcelCommand.CommandText = String.Format("Select * From ['Text Table$'] where [ID] = {0}", id)
 
         Dim oleExcelReader As OleDbDataReader = oleExcelCommand.ExecuteReader
         Dim data As New DataTable
@@ -181,7 +181,9 @@ Public Class StateTextDoc
         For Each column As DataColumn In stateTextData.Columns
 
             Dim columnName As String = column.ColumnName
-            Dim data As String = stateTextData.Rows(0).Item(column)
+            Dim item As Object = stateTextData.Rows(0).Item(column)
+            If IsDBNull(item) Then item = ""
+            Dim data As String = CStr(item)
 
             If data.Trim = "" Then Continue For
 

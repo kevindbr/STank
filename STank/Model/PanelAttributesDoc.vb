@@ -253,7 +253,7 @@ Public Class PanelAttributesDoc
                                                     "[{0}].[D1 Set Point Name], [{0}].[D1 L1 Offset], [{0}].[D1 L2 Offset], " +
                                                     "[{1}].[Eng units], [{1}].[Decimal], [{1}].[Format], [{1}].[Deadband] " +
                                                     "from [{1}] inner join [{0}] on [{0}].[SysName] = [{1}].[SysName]",
-                                                    "Points$", "'Enhanced Alarms$'")      'will this get only non-blank rows?
+                                                    "'Enhanced Alarms$'", "Points$")      'will this get only non-blank rows?
 
         Dim oleExcelReader As OleDbDataReader = oleExcelCommand.ExecuteReader
         Dim data As New DataTable

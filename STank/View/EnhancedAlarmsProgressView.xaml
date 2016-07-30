@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
       Controls:ButtonHelper.PreserveTextCase="True"
-    Title="Configuring Schedules" Height="500" Width="500"
+    Title="Configuring Alarms" Height="500" Width="500"
     BorderBrush="{DynamicResource AccentColorBrush}"
                       BorderThickness="1"
     Loaded="IntializeWindow"
@@ -22,7 +22,7 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Row="0" Margin="0 0 0 30">
-            <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Width="Auto" Content="Schedule configuration in progress..."/>
+            <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Width="Auto" Content="Alarms configuration in progress..."/>
             <ProgressBar Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="476" Height="12" x:Name="progressBar"/>
             <!--<DataGrid Grid.Column="1" HorizontalAlignment="Left" Margin="47,71,0,0" Grid.Row="2" VerticalAlignment="Top" Height="98" Width="264" x:Name="defineGrid" AutoGenerateColumns="True" ItemsSource="{Binding}" CanUserAddRows="False">
             </DataGrid>-->

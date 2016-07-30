@@ -50,6 +50,8 @@ Public Class SchedulesProgressView
 
 
         Dim scheduleId As String = port.CreateSchedule(commandName + "_SchedCmd")
+        panel.SchedulerReport.ScheduleId = scheduleId   'not sure if this is still needed.  Maybe for later stepss
+
         'BaseMainViewModel.WriteLog(String.Format("Creating BACnet schedule object '{0}'", commandName + "_SchedCmd"))
         BaseMainViewModel.UpdateProgress(0.1)
 
@@ -83,6 +85,7 @@ Public Class SchedulesProgressView
 
         Next
 
+        BaseMainViewModel.UpdateProgress(1.0)
 
         port.Logout()
 

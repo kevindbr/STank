@@ -33,11 +33,11 @@
         <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Content="Enhanced Alarms"/>
         <StackPanel Grid.Row="1" Grid.Column="0">
             <StackPanel Orientation="Horizontal" Margin="0 0 0 20">
-                <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="auto" Click="browseAttributesClicked">Set Scheduler Report</Button>
+                <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="auto" Click="browseAttributesClicked">Set Panel Attributes Document</Button>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Label  HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12">Scheduler Report:</Label>
-                <TextBox x:Name="schedulerReport" IsEnabled="False" Text="{Binding Path=Panel.SchedulerReport.Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0"></TextBox>
+                <Label  HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12">Panel Attributes Document:</Label>
+                <TextBox x:Name="schedulerReport" IsEnabled="False" Text="{Binding Path=Panel.PanelAttributesDocument.Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0"></TextBox>
             </StackPanel>
 
 
@@ -55,7 +55,7 @@
                 <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="18" Width="Auto">Project Status</Label>
                 <StackPanel Orientation="Horizontal" Margin=" 10 5 0 0" >
                     <Button Margin="0 0 0 0" Style="{StaticResource AccentedSquareButtonStyle}" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Right" FontSize="10" Height="20" Click="panelAttributeDetails">View Details</Button>
-                    <Label Margin="0 0 0 0" >Scheduler Report</Label>
+                    <Label Margin="0 0 0 0" >Panel Attributes Document</Label>
                 </StackPanel>
 
             </StackPanel>

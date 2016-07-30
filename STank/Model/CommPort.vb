@@ -414,7 +414,7 @@ Public Class CommPort
 
 
 
-        mPanel.SchedulerReport.ScheduleId = scheduleId
+        'mPanel.SchedulerReport.ScheduleId = scheduleId     'why is mPanel null here?
 
         Return scheduleId
 
@@ -636,7 +636,7 @@ Public Class CommPort
         SendCommand("LAO", True)   'Point type (is this always the type we use?)
         SendCommand("", True)   'Descriptor
         SendCommand(alarmsDataRow.Item("Format").Substring(0, 1))   'Float, Integer, Time, Date, dAte-time
-        SendCommand(alarmsDataRow.Item("Decimals"), True)   'Number of decimal places
+        SendCommand(alarmsDataRow.Item("Decimal"), True)   'Number of decimal places
         SendCommand(alarmsDataRow.Item("Eng units"), True)   'Engineering units    (has this already been replaced with BACnet?)
         SendCommand("", True)   'Access group(s)
         SendCommand("n")   'Alarmable (Y/N)       NOTE: these y/n commands may not require space to be sent
@@ -670,7 +670,8 @@ Public Class CommPort
         SendCommand(alarmsDataRow.Item("SysName") + "V", True)   'Setpoint reference
         SendCommand(alarmsDataRow.Item("D1 L2 Offset"), True)   'High diff limit          'TODO: not sure these are right.  Shouldn't these come from Pt Export?
         SendCommand(alarmsDataRow.Item("D1 L1 Offset").ToString.Trim("-"), True)   'Low diff limit (can't be negative?  How does this work?
-        SendCommand(alarmsDataRow.Item("Deadband"), True)   'Deadband
+        'SendCommand(alarmsDataRow.Item("Deadband"), True)   'Deadband (seems to be blank)
+        SendCommand("", True)   'Deadband
         resp = SendCommand(alarmsDataRow.Item("Level delay"), True)   'TimeDelay (sec)
         'check that response contains "Command successful"
 
@@ -784,6 +785,10 @@ Public Class CommPort
 
 
     Public Sub Logout()
+
+        SendCommand("#", True)           '
+        SendCommand("b")                'Bye
+        SendCommand("y")                'Yes
 
         sp.Close()
 

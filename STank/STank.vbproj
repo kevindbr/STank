@@ -117,6 +117,7 @@
     <Compile Include="Model\WorkingDirectory.vb" />
     <Compile Include="ViewModel\ConnectionViewModel.vb" />
     <Compile Include="ViewModel\BaseMainViewModel.vb" />
+    <Compile Include="ViewModel\EnhancedAlarmsMainViewModel.vb" />
     <Compile Include="ViewModel\SchedulesMainViewModel.vb" />
     <Compile Include="ViewModel\SSTOMainViewModel.vb" />
     <Compile Include="ViewModel\EngineeringUnitsMainViewModel.vb" />

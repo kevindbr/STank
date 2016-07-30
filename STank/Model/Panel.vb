@@ -139,11 +139,11 @@ Implements INotifyPropertyChanged.PropertyChanged
 
         mPpcl = New Ppcl()
         mPpcl.Path = Ppcl.EmptyPath
-        'mPpcl.Path = "C:\Users\Axios\Desktop\testWorkingDir\PPCL_MBC45.pcl"
+
 
         mNameChangeDoc = New NameChangeDoc()
         mNameChangeDoc.Path = NameChangeDoc.EmptyPath
-        'mNameChangeDoc.Path = "C:\Users\Axios\Desktop\testWorkingDir\EPMAHU05_NewNames.csv"
+
 
         mPanelAttributesDoc = New PanelAttributesDoc()
         mPanelAttributesDoc.Path = PanelAttributesDoc.EmptyPath
@@ -157,6 +157,24 @@ Implements INotifyPropertyChanged.PropertyChanged
         mZoneDefinitionReport = New ZoneDefinitionReport()
         mZoneDefinitionReport.Path = ZoneDefinitionReport.EmptyPath
 
+
+        'For local testing:
+        InitializePaths()
+
+
+
+
+    End Sub
+
+
+    Public Sub InitializePaths()
+        mPpcl.Path = "C:\Users\Axios\Desktop\testWorkingDir\AHU5.pcl"
+        mNameChangeDoc.Path = "C:\Users\Axios\Desktop\testWorkingDir\EPMAHU05_NewNames.csv"
+        mPanelAttributesDoc.Path = "C:\Users\Axios\Desktop\EPEAHU05_1.xlsx"
+        mStateTextDoc.Path = "C:\Users\Axios\Desktop\StateText.xlsx"
+        mSchedulerReport.Path = "C:\Users\Axios\Desktop\scheduler.txt"
+        mZoneDefinitionReport.Path = "C:\Users\Axios\Desktop\zone_def.txt"
+        Port.PortName = "COM5"
 
     End Sub
 

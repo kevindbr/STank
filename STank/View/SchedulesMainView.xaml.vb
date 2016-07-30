@@ -92,77 +92,11 @@ Class SchedulesMainView
 
 
     Private Sub updateMainWindow(Optional sender As Object = Nothing, Optional e As PropertyChangedEventArgs = Nothing)     'hacky
-        updateAllLogs()
+        mSchedulesMainViewModel.updateAllLogs(activityLog)
         updateButtons()
     End Sub
 
-    Private Sub updateAllLogs()
-        activityLog.Text = ""
 
-        Dim listOfErrors As List(Of String) = mSchedulesMainViewModel.getActivityErrorLogs()
-        Dim listOfWarnings As List(Of String) = mSchedulesMainViewModel.getActivityWarningLogs()
-
-        For Each notification As String In listOfErrors
-            Dim noticeImage As Image = New Image()
-            noticeImage.Width = 20
-            noticeImage.Height = 20
-
-            Dim bi3 As New BitmapImage
-            bi3.BeginInit()
-            bi3.UriSource = New Uri("Resources/Notice.png", UriKind.Relative)
-            bi3.EndInit()
-            noticeImage.Stretch = Stretch.Fill
-            noticeImage.Source = bi3
-
-            Dim container As InlineUIContainer = New InlineUIContainer(noticeImage)
-            activityLog.Inlines.Add(container)
-
-            Dim newLine As Run = New Run(" " + notification)
-            newLine.Foreground = Brushes.Red
-            activityLog.Inlines.Add(newLine)
-            activityLog.Inlines.Add(New LineBreak)
-        Next
-
-        For Each notification As String In listOfWarnings
-            Dim noticeImage As Image = New Image()
-            noticeImage.Width = 20
-            noticeImage.Height = 20
-
-            Dim bi3 As New BitmapImage
-            bi3.BeginInit()
-            bi3.UriSource = New Uri("Resources/Warning.png", UriKind.Relative)
-            bi3.EndInit()
-            noticeImage.Stretch = Stretch.Fill
-            noticeImage.Source = bi3
-
-            Dim container As InlineUIContainer = New InlineUIContainer(noticeImage)
-            activityLog.Inlines.Add(container)
-
-            Dim newLine As Run = New Run(" " + notification)
-            newLine.Foreground = Brushes.DarkOrange
-            activityLog.Inlines.Add(newLine)
-            activityLog.Inlines.Add(New LineBreak)
-        Next
-
-        Dim numberOfErrors As Integer = listOfErrors.Count + listOfWarnings.Count
-        Dim maxNumOfErrors As Integer = mSchedulesMainViewModel.getMaxNumOfErrors()
-
-        If ((maxNumOfErrors - numberOfErrors) = maxNumOfErrors) Then
-            mSchedulesMainViewModel.setComplete()
-        End If
-
-        If ((maxNumOfErrors - numberOfErrors) = 0) Then
-            mSchedulesMainViewModel.setIncomplete()
-        End If
-
-        If ((maxNumOfErrors - numberOfErrors) > 0 And (maxNumOfErrors - numberOfErrors) < maxNumOfErrors) Then
-            mSchedulesMainViewModel.setPartial()
-        End If
-
-
-
-
-    End Sub
 
     Private Sub updateButtons()
 

@@ -191,6 +191,77 @@ Public MustInherit Class BaseMainViewModel
 
 
 
+    Public Sub updateAllLogs(ByVal activityLog As System.Windows.Controls.TextBlock)
+        activityLog.Text = ""
+
+        Dim listOfErrors As List(Of String) = getActivityErrorLogs()
+        Dim listOfWarnings As List(Of String) = getActivityWarningLogs()
+
+        For Each notification As String In listOfErrors
+            Dim noticeImage As Image = New Image()
+            noticeImage.Width = 20
+            noticeImage.Height = 20
+
+            Dim bi3 As New BitmapImage
+            bi3.BeginInit()
+            bi3.UriSource = New Uri("Resources/Notice.png", UriKind.Relative)
+            bi3.EndInit()
+            noticeImage.Stretch = Stretch.Fill
+            noticeImage.Source = bi3
+
+            Dim container As InlineUIContainer = New InlineUIContainer(noticeImage)
+            activityLog.Inlines.Add(container)
+
+            Dim newLine As Run = New Run(" " + notification)
+            newLine.Foreground = Brushes.Red
+            activityLog.Inlines.Add(newLine)
+            activityLog.Inlines.Add(New LineBreak)
+        Next
+
+        For Each notification As String In listOfWarnings
+            Dim noticeImage As Image = New Image()
+            noticeImage.Width = 20
+            noticeImage.Height = 20
+
+            Dim bi3 As New BitmapImage
+            bi3.BeginInit()
+            bi3.UriSource = New Uri("Resources/Warning.png", UriKind.Relative)
+            bi3.EndInit()
+            noticeImage.Stretch = Stretch.Fill
+            noticeImage.Source = bi3
+
+            Dim container As InlineUIContainer = New InlineUIContainer(noticeImage)
+            activityLog.Inlines.Add(container)
+
+            Dim newLine As Run = New Run(" " + notification)
+            newLine.Foreground = Brushes.DarkOrange
+            activityLog.Inlines.Add(newLine)
+            activityLog.Inlines.Add(New LineBreak)
+        Next
+
+        Dim numberOfErrors As Integer = listOfErrors.Count + listOfWarnings.Count
+        Dim maxNumOfErrors As Integer = getMaxNumOfErrors()
+
+        If ((maxNumOfErrors - numberOfErrors) = maxNumOfErrors) Then
+            setComplete()
+        End If
+
+        If ((maxNumOfErrors - numberOfErrors) = 0) Then
+            setIncomplete()
+        End If
+
+        If ((maxNumOfErrors - numberOfErrors) > 0 And (maxNumOfErrors - numberOfErrors) < maxNumOfErrors) Then
+            setPartial()
+        End If
+
+
+
+
+    End Sub
+
+
+
+
 
 
 End Class

@@ -29,6 +29,10 @@ Class MainWindow
         mMainViewModel.IntializeProject()
         bw.WorkerReportsProgress = True
         bw.WorkerSupportsCancellation = True
+
+
+        '
+
         ' AddHandler bw.DoWork, AddressOf bw_RunFindAndReplace
 		
         'AddHandler bw.ProgressChanged, AddressOf bw_ProgressChanged
@@ -47,6 +51,7 @@ Class MainWindow
     End Sub
 
     Private Sub showConnectionView(sender As Object, e As RoutedEventArgs)
+        'mMainViewModel.getProj.Panel.InitializePaths()
         Dim connectionView As New ConnectionView(mMainViewModel)
         connectionView.Show()
     End Sub
