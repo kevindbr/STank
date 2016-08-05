@@ -235,7 +235,7 @@ Public Class CommPort
         SendCommand("t")        'Table
         SendCommand("a")        'Add
         SendCommand("BAC_" + stateTextTable.tableName, True)   'State text table name
-        SendCommand(stateTextTable.tableId.TrimStart("-"), True)   'State text table ID.  Turn negative into positive.  May need more robust method to produce unique ID...
+        SendCommand(stateTextTable.tableId, True)   'State text table ID
 
         For i As Integer = 0 To stateTextTable.namesList.Count - 1
             SendCommand(stateTextTable.valuesList(i), True)   'Value

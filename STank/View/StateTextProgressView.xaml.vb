@@ -36,18 +36,24 @@ Public Class StateTextProgressView
     Private Sub bw_RunFindAndReplace(ByVal sender As Object, ByVal e As DoWorkEventArgs)
 
         Dim panel = mMainViewModel.getProj.Panel
-        Dim port = mMainViewModel.getProj.Panel.Port
-        Dim panelAttributesDoc = mMainViewModel.getProj.Panel.PanelAttributesDocument
+        Dim port = panel.Port
+        Dim panelAttributesDoc = panel.PanelAttributesDocument
+        Dim stateTextDoc = panel.StateTextDocument
 
         port.Login()
 
         Dim modifiedStateTextTableIds = New List(Of String)
 
-        Dim i As Integer = 1
-        For Each kvp As KeyValuePair(Of String, String) In panelAttributesDoc.LenumPoints
 
-            Dim pointName As String = kvp.Key
-            Dim stateTextTableId As String = kvp.Value
+
+
+        Dim i As Integer = 1
+        Dim pointNames As New List(Of String)(panelAttributesDoc.LenumPoints.Keys)
+        For Each pointName As String In pointNames
+            'For Each kvp As KeyValuePair(Of String, String) In panelAttributesDoc.LenumPoints
+
+            'Dim pointName As String = kvp.Key
+            Dim stateTextTableId As String = panelAttributesDoc.LenumPoints(pointName)
 
             BaseMainViewModel.WriteLog(String.Format("Re-creating LENUM point '{0}'", pointName))
             BaseMainViewModel.UpdateProgress(0.25 * i / panelAttributesDoc.LenumPoints.Count)
@@ -55,7 +61,19 @@ Public Class StateTextProgressView
             Dim instanceNumber As String = port.GetPointInstanceNumber(pointName)
             If Not instanceNumber = "" Then port.DeletePoint(pointName)
 
-            Dim stateTextTable As StateTextDoc.StateTextTable = panel.StateTextDocument.GetStateTextByID(stateTextTableId)
+            Dim stateTextTable As StateTextDoc.StateTextTable = stateTextDoc.GetStateTextByID(stateTextTableId)
+
+            Dim newStateTextTableId As String = stateTextTable.tableId.TrimStart("-")
+            stateTextTable.tableId = newStateTextTableId
+            panelAttributesDoc.LenumPoints(pointName) = newStateTextTableId      'change reference from old table to new table
+            stateTextDoc.StateTextTables.Remove(stateTextTableId)
+            stateTextDoc.StateTextTables.Add(newStateTextTableId, stateTextTable)
+
+
+            'For now, we are simply taking the existing state text table ID with the minus sign stripped off (all built-in text tables have negative
+            'numbers, while positives are reserved for custom state text).  More robust would be some code here to look in the panel
+
+
 
             'Don't want to do this more than once per panel - all mode points will likely use same state text
             If Not modifiedStateTextTableIds.Contains(stateTextTable.tableId) Then
