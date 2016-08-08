@@ -1,0 +1,18 @@
+﻿<Controls:MetroWindow 
+    x:Class="GeneralPopupView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+      Controls:ButtonHelper.PreserveTextCase="True"
+    Title="Information" Height="200" Width="250"
+    BorderBrush="{DynamicResource AccentColorBrush}"
+                      BorderThickness="1"
+    Loaded="IntializeWindow"
+   WindowStartupLocation="CenterScreen" Top="0">
+    <Grid>
+        <StackPanel Margin="10 10 10 10" Width="auto" Height="auto" Orientation="Vertical">
+            <TextBlock TextWrapping="WrapWithOverflow" MinHeight="90" FontSize="14" FontWeight="Bold"  Name="messageView"></TextBlock>
+            <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="20 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Width="80" Click="exitView">Ok</Button>
+        </StackPanel>
+    </Grid>
+</Controls:MetroWindow>
