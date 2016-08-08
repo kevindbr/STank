@@ -12,7 +12,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60"></RowDefinition>
-            <RowDefinition Height="350"></RowDefinition>
+            <RowDefinition Height="250"></RowDefinition>
+            <RowDefinition Height="100"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
@@ -23,9 +24,9 @@
         <StackPanel Grid.Row="0" Margin="0 0 0 20">
             <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="18" Width="Auto">Edit Table Below To Set Define Statments</Label>
         </StackPanel>
-        <DataGrid Grid.Column="1" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="1" VerticalAlignment="Top" Height="Auto" Width="Auto" x:Name="defineGrid" AutoGenerateColumns="True" ItemsSource="{Binding}" CanUserAddRows="False">
+        <DataGrid Grid.Column="0" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="1" VerticalAlignment="Top" Height="Auto" Width="Auto" x:Name="defineGrid" AutoGenerateColumns="True" ItemsSource="{Binding}" CanUserAddRows="False">
         </DataGrid>
-
-        <Button Grid.Row="2" Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Center" VerticalAlignment="Top" Height="20" Width="100" Click="exitView">Done</Button>
+        <TextBlock Grid.Row="2" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow" FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="18" Width="Auto">Click in "NEW DEF" column to edit corresponding variable definition.  Once all changes have been made click done.</TextBlock>
+        <Button Grid.Row="3" Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Center" VerticalAlignment="Top" Height="20" Width="100" Click="exitView">Done</Button>
     </Grid>
 </Controls:MetroWindow>

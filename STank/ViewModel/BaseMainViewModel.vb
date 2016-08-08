@@ -77,22 +77,36 @@ Public MustInherit Class BaseMainViewModel
 
 
     Function getMaxNumOfErrors() As Integer
-        Return 1
+        Return 4
     End Function
 
-    Public Sub setComplete()
-        mSTankProj.StateTextStatus = "complete"
+    Public Sub setStatus(viewNum, status)
+
+        If viewNum = 1 Then
+            mSTankProj.NameChangeStatus = status
+        End If
+
+        If viewNum = 2 Then
+            mSTankProj.EngineeringUnitsStatus = status
+        End If
+
+        If viewNum = 3 Then
+            mSTankProj.StateTextStatus = status
+        End If
+
+        If viewNum = 4 Then
+            mSTankProj.EnhancedAlarmsStatus = status
+        End If
+
+        If viewNum = 5 Then
+            mSTankProj.SchedulesStatus = status
+        End If
+
+        If viewNum = 6 Then
+            mSTankProj.StartStopStatus = status
+        End If
+
     End Sub
-
-    Public Sub setIncomplete()
-        mSTankProj.StateTextStatus = "incomplete"
-    End Sub
-
-    Public Sub setPartial()
-        mSTankProj.StateTextStatus = "partial"
-    End Sub
-
-
 
 
     Public Delegate Sub Logger(ByVal line As String)
@@ -242,26 +256,7 @@ Public MustInherit Class BaseMainViewModel
         Dim numberOfErrors As Integer = listOfErrors.Count + listOfWarnings.Count
         Dim maxNumOfErrors As Integer = getMaxNumOfErrors()
 
-        If ((maxNumOfErrors - numberOfErrors) = maxNumOfErrors) Then
-            setComplete()
-        End If
-
-        If ((maxNumOfErrors - numberOfErrors) = 0) Then
-            setIncomplete()
-        End If
-
-        If ((maxNumOfErrors - numberOfErrors) > 0 And (maxNumOfErrors - numberOfErrors) < maxNumOfErrors) Then
-            setPartial()
-        End If
-
-
-
 
     End Sub
-
-
-
-
-
 
 End Class

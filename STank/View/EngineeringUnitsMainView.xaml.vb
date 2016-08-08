@@ -14,7 +14,7 @@ Class EngineeringUnitsMainView
 
     Public mMainViewModel As MainViewModel
     Public mEngineeringUnitsMainViewModel As EngineeringUnitsMainViewModel
-
+    Public runClicked As Boolean
     Private bw As BackgroundWorker = New BackgroundWorker
 
 
@@ -26,7 +26,7 @@ Class EngineeringUnitsMainView
     Sub New(ByRef mainViewModel As MainViewModel)
         mMainViewModel = mainViewModel
         mEngineeringUnitsMainViewModel = New EngineeringUnitsMainViewModel(mMainViewModel.getProj)
-        '
+        runClicked = False
         InitializeComponent()
 
     End Sub
@@ -51,10 +51,10 @@ Class EngineeringUnitsMainView
     '    connectionView.Show()
     'End Sub
 
-    Private Sub showDefineView(sender As Object, e As RoutedEventArgs)
-        Dim defineView As New DefineView(mMainViewModel)
-        defineView.Show()
-    End Sub
+    'Private Sub showDefineView(sender As Object, e As RoutedEventArgs)
+    '    Dim defineView As New DefineView(mMainViewModel)
+    '    defineView.Show()
+    'End Sub
 
     Private Sub LoadData_Click_1(sender As Object, e As RoutedEventArgs)
 
@@ -69,6 +69,8 @@ Class EngineeringUnitsMainView
     Private Sub browseAttributesClicked(sender As Object, e As RoutedEventArgs)
         'Create OpenFileDialog
         Dim dlg = New Microsoft.Win32.OpenFileDialog()
+        dlg.DefaultExt = ".xlsx" ' Default file extension
+        dlg.Filter = "xlsx documents (.xlsx)|*.xlsx" ' Filter files by extension
 
         ' Set filter for file extension and default file extension
         ' Display OpenFileDialog by calling ShowDialog method
@@ -84,36 +86,9 @@ Class EngineeringUnitsMainView
 
         Dim fnrView As New EngineeringUnitsProgressView(mMainViewModel)
         fnrView.Show()
-
-        'bw.RunWorkerAsync()     'Run find and replace on background thread.  Shouldn't need this if we are using a modal window instead
-
-
-        'Dim panel As Panel = mMainViewModel.getPanels().Item(0)     'for now there's only one panel
-        'Dim program = New Program(panel.Port.RetrieveProgram)
-        'program.changeNames(panel.NameChangeDocument.getReplacementValues)
-
-
-        'panel.Port.ReplaceProgram(program.NewLines)
-
-
-        'Dim timeStamp As String = DateTime.Now.ToString("MMddyyyyhhmmss")
-        'Dim cwd As String = mMainViewModel.getProj().Directory.Path
-
-        'System.IO.File.WriteAllText(cwd + System.IO.Path.DirectorySeparatorChar + "program_old_" + timeStamp + ".pcl", program.Text)
-        'System.IO.File.WriteAllText(cwd + System.IO.Path.DirectorySeparatorChar + "program_new_" + timeStamp + ".pcl", program.NewText)
-
-
-        'Return
-
-        'Dim folderDialog = New FolderBrowserDialog()
-        'folderDialog.SelectedPath = "C:\"
-
-        'Dim result = folderDialog.ShowDialog()
-        'If (result.ToString() = "OK") Then
-        '    mMainViewModel.getProj().Directory.Path = folderDialog.SelectedPath
-        'End If
+                runClicked = True
+        updateMainWindow()
     End Sub
-
 
 
     Private Sub updateMainWindow()
@@ -172,19 +147,46 @@ Class EngineeringUnitsMainView
         Dim numberOfErrors As Integer = listOfErrors.Count + listOfWarnings.Count
         Dim maxNumOfErrors As Integer = mEngineeringUnitsMainViewModel.getMaxNumOfErrors()
 
-        If ((maxNumOfErrors - numberOfErrors) = maxNumOfErrors) Then
-            mEngineeringUnitsMainViewModel.setComplete()
+        If (numberOfErrors = 0) Then
+            Dim noticeImage As Image = New Image()
+            noticeImage.Width = 20
+            noticeImage.Height = 20
+
+            Dim bi3 As New BitmapImage
+            bi3.BeginInit()
+            bi3.UriSource = New Uri("Resources/Complete.png", UriKind.Relative)
+            bi3.EndInit()
+            noticeImage.Stretch = Stretch.Fill
+            noticeImage.Source = bi3
+
+            Dim container As InlineUIContainer = New InlineUIContainer(noticeImage)
+            activityLog.Inlines.Add(container)
+
+            Dim newLine As Run = New Run(" All Steps Complete.  Please click replace engineering units.")
+            activityLog.Inlines.Add(newLine)
+            activityLog.Inlines.Add(New LineBreak)
         End If
 
-        If ((maxNumOfErrors - numberOfErrors) = 0) Then
-            mEngineeringUnitsMainViewModel.setIncomplete()
+        If Not runClicked Then
+            numberOfErrors += 1
+        End If
+        'For now, if the user clicks run, then we set status to complete, later we need to actually check if run was completed without errors
+        If runClicked Then
+            numberOfErrors = 0
+        End If
+
+
+        Dim status = "incomplete"
+
+        If ((maxNumOfErrors - numberOfErrors) = maxNumOfErrors) Then
+            status = "complete"
         End If
 
         If ((maxNumOfErrors - numberOfErrors) > 0 And (maxNumOfErrors - numberOfErrors) < maxNumOfErrors) Then
-            mEngineeringUnitsMainViewModel.setPartial()
+            status = "partial"
         End If
 
-
+        mEngineeringUnitsMainViewModel.setStatus(2, status)
 
     End Sub
 
@@ -194,9 +196,9 @@ Class EngineeringUnitsMainView
         Dim listOfWarnings As List(Of String) = mEngineeringUnitsMainViewModel.getActivityWarningLogs()
 
         If listOfErrors.Count = 0 Then
-            'runFnRButton.IsEnabled = True
+            replaceButton.IsEnabled = True
         Else
-            'runFnRButton.IsEnabled = False
+            replaceButton.IsEnabled = False
         End If
 
     End Sub

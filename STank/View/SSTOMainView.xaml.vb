@@ -52,10 +52,10 @@ Class SSTOMainView
         connectionView.Show()
     End Sub
 
-    Private Sub showDefineView(sender As Object, e As RoutedEventArgs)
-        Dim defineView As New DefineView(mMainViewModel)
-        defineView.Show()
-    End Sub
+    'Private Sub showDefineView(sender As Object, e As RoutedEventArgs)
+    '    Dim defineView As New DefineView(mMainViewModel)
+    '    defineView.Show()
+    'End Sub
 
     Private Sub LoadData_Click_1(sender As Object, e As RoutedEventArgs)
 
@@ -145,19 +145,17 @@ Class SSTOMainView
         Dim numberOfErrors As Integer = listOfErrors.Count + listOfWarnings.Count
         Dim maxNumOfErrors As Integer = mSSTOMainViewModel.getMaxNumOfErrors()
 
-        If ((maxNumOfErrors - numberOfErrors) = maxNumOfErrors) Then
-            mSSTOMainViewModel.setComplete()
-        End If
+        Dim status = "incomplete"
 
-        If ((maxNumOfErrors - numberOfErrors) = 0) Then
-            mSSTOMainViewModel.setIncomplete()
+        If ((maxNumOfErrors - numberOfErrors) = maxNumOfErrors) Then
+            status = "complete"
         End If
 
         If ((maxNumOfErrors - numberOfErrors) > 0 And (maxNumOfErrors - numberOfErrors) < maxNumOfErrors) Then
-            mSSTOMainViewModel.setPartial()
+            status = "partial"
         End If
 
-
+        mSSTOMainViewModel.setStatus(1, status)
 
 
     End Sub

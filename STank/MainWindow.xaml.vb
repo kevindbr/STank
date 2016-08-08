@@ -56,10 +56,10 @@ Class MainWindow
         connectionView.Show()
     End Sub
 
-    Private Sub showDefineView(sender As Object, e As RoutedEventArgs)
-        Dim defineView As New DefineView(mMainViewModel)
-        defineView.Show()
-    End Sub
+    'Private Sub showDefineView(sender As Object, e As RoutedEventArgs)
+    '    Dim defineView As New DefineView(mMainViewModel)
+    '    defineView.Show()
+    'End Sub
 
     Private Sub LoadData_Click_1(sender As Object, e As RoutedEventArgs)
 
@@ -267,9 +267,20 @@ Class MainWindow
             Dim container As InlineUIContainer = New InlineUIContainer(noticeImage)
             newItem.Inlines.Add(container)
 
+            Dim dependencyMessage = mMainViewModel.getDependency(notification)
+
+            If Not dependencyMessage.Equals("none") Then
+                newItem.IsEnabled = False
+                notification = notification + " (Dependency : " + dependencyMessage + " )"
+
+            End If
+
             Dim newLine As Run = New Run(" " + notification)
             newLine.Foreground = Brushes.Red
             newItem.Inlines.Add(newLine)
+
+
+
             activityLog.Items.Add(newItem)
         Next
 
@@ -384,6 +395,14 @@ Class MainWindow
         Try
 
             Dim selectedItem = activityLog.SelectedValue.Inlines.LastInline.Text
+            Dim showMessage = False
+
+            Dim dependencyMessage = mMainViewModel.getDependency(selectedItem)
+
+            If dependencyMessage.Equals("none") Then
+                showMessage = True
+
+            End If
 
             Dim nextStep As Integer = mMainViewModel.getNumericalEquvialent(selectedItem)
 
@@ -398,14 +417,31 @@ Class MainWindow
             End If
 
             If nextStep = 3 Then
-                Dim nextView As StateTextMainView = New StateTextMainView(mMainViewModel)
-                nextView.Show()
+
+                If showMessage Then
+                    Dim nextView As StateTextMainView = New StateTextMainView(mMainViewModel)
+                    nextView.Show()
+                End If
+                If Not showMessage Then
+                    Dim message As GeneralPopupView = New GeneralPopupView("Please complete all dependencies before proceeding to this step")
+                    message.Show()
+                End If
+
             End If
 
             If nextStep = 4 Then
-                Dim nextView As EnhancedAlarmsMainView = New EnhancedAlarmsMainView(mMainViewModel)
-                nextView.Show()
+
+                If showMessage Then
+                    Dim nextView As EnhancedAlarmsMainView = New EnhancedAlarmsMainView(mMainViewModel)
+                    nextView.Show()
+                End If
+
+                If Not showMessage Then
+                    Dim message As GeneralPopupView = New GeneralPopupView("Please complete all dependencies before proceeding to this step")
+                    message.Show()
+                End If
             End If
+
 
             If nextStep = 6 Then
                 Dim nextView As SSTOMainView = New SSTOMainView(mMainViewModel)

@@ -19,6 +19,7 @@ Public Class EngineeringUnitsProgressView
     Sub New(ByRef mainViewModel As MainViewModel)
         mMainViewModel = mainViewModel
         InitializeComponent()
+        doneButton.IsEnabled = False
 
     End Sub
 
@@ -30,6 +31,7 @@ Public Class EngineeringUnitsProgressView
         bw.WorkerReportsProgress = True
         bw.WorkerSupportsCancellation = True
         AddHandler bw.DoWork, AddressOf bw_RunFindAndReplace
+        AddHandler bw.RunWorkerCompleted, AddressOf showDone
         bw.RunWorkerAsync()
     End Sub
 
@@ -41,6 +43,12 @@ Public Class EngineeringUnitsProgressView
 
     End Sub
 
+    Private Sub showDone()
+        Dim message As GeneralPopupView = New GeneralPopupView("Bacnet unit conversion finished!  A copy of the original document has been created with _new appended to the name of the file.")
+        doneButton.Content = "Done"
+        doneButton.IsEnabled = True
+        message.Show()
+    End Sub
 
 
     Private Sub exitView(sender As Object, e As RoutedEventArgs)

@@ -39,12 +39,19 @@
                 <Label  HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12">Panel Attributes Document:</Label>
                 <TextBox x:Name="panelAttributesDoc" IsEnabled="False" Text="{Binding Path=Panel.PanelAttributesDocument.Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0"></TextBox>
             </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <StackPanel Margin="10 10 10 10" Orientation="Horizontal">
+                    <Image HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Width="20" Margin="10 10 10 0" Source="../Images/Siemens_Icons/Warning.png" />
+                    <TextBlock TextWrapping="WrapWithOverflow" Width="300" VerticalAlignment="Bottom">Bacnet unit conversion is based on the 'BACnet_unit_conversion_spreadsheet.xlsx'</TextBlock>
+                </StackPanel>
+
+            </StackPanel>
 
 
         </StackPanel>
         <ScrollViewer Grid.Row="1" Grid.Column="1">
             <StackPanel Grid.Row="1" Grid.Column="1">
-                <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Width="Auto">Activity Log</Label>
+                <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Width="Auto">Remaining Steps</Label>
                 <TextBlock Padding="20 20 20 20" FontSize="14" Background="#f5f5f5" x:Name="activityLog" HorizontalAlignment="Left" Height="Auto" MaxWidth="600" MinWidth="400" Width="Auto" Margin="20 0 0 0"></TextBlock>
             </StackPanel>
         </ScrollViewer>
@@ -52,10 +59,11 @@
 
         <ScrollViewer Grid.Row="2" Grid.Column="0">
             <StackPanel Grid.Row="2" Grid.Column="0">
-                <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="18" Width="Auto">Project Status</Label>
+                <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="18" Width="Auto">Project Details</Label>
                 <StackPanel Orientation="Horizontal" Margin=" 10 5 0 0" >
-                    <Button Margin="0 0 0 0" Style="{StaticResource AccentedSquareButtonStyle}" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Right" FontSize="10" Height="20" Click="panelAttributeDetails">View Details</Button>
-                    <Label Margin="0 0 0 0" >Panel Attributes Document</Label>
+                    <!--<Button Margin="0 0 0 0" Style="{StaticResource AccentedSquareButtonStyle}" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Right" FontSize="10" Height="20" Click="panelAttributeDetails">View Details</Button>
+                    <Label Margin="0 0 0 0" >Panel Attributes Document</Label>-->
+                    <TextBlock>No project details currently available</TextBlock>
                 </StackPanel>
 
             </StackPanel>
@@ -67,6 +75,8 @@
                 <Label VerticalAlignment="Bottom">Critical</Label>
                 <Image HorizontalAlignment="Left" Height="20" Width="20" Margin="20 10 0 0" Source="../Images/Siemens_Icons/Warning.png" />
                 <Label VerticalAlignment="Bottom">Warning</Label>
+                <Image HorizontalAlignment="Left" Height="20" Width="20" Margin="20 10 0 0" Source="../Images/Siemens_Icons/Complete.png" />
+                <Label VerticalAlignment="Bottom">Complete</Label>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" >
                 <Button x:Name="replaceButton" Grid.Row="2" Grid.Column="1" Style="{StaticResource AccentedSquareButtonStyle}" Margin="20 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Width="auto" Click="replaceClicked">Replace Engineering Units</Button>

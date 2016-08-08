@@ -17,23 +17,25 @@ Public Class FindAndReplaceMainViewModel
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public Overrides Function getActivityWarningLogs() As List(Of String)
-
         Dim allErrors As List(Of String) = New List(Of String)
 
-        Dim error1 = "No Panel Attributes Document Specified"
-        Dim error2 = "No Active Comm Ports"
-        Dim error3 = "Set Define Statements for PPCL"
+        Dim error1 = "Please Click 'View Details' Under Project Status to Edit PPCL define statements"
+        Dim sameVarible = True
 
+        ''error1 condition is true if ppcl variable are the same, this means the user may not have come to change them yet
+        For Each kvp As KeyValuePair(Of String, String) In mSTankProj.Panel.Ppcl.Variables
+            For Each kvp2 As KeyValuePair(Of String, String) In mSTankProj.Panel.Ppcl.NewVariables
+                If kvp.Key.Equals(kvp2.Key) Then
+                    If Not kvp.Value.Equals(kvp2.Value) Then
+                        sameVarible = False
+                    End If
+                End If
+            Next
+        Next
 
-        'If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.PanelAttributesDocument.Path) Then
-        '    allErrors.Add(error3)
-        'End If
-
-        'If mSTankProj.Panel.Port.PortName = portNameDefault Then
-        '    allErrors.Add(error2)
-        'End If
-
-
+        If sameVarible Then
+            allErrors.Add(error1)
+        End If
 
         Return allErrors
     End Function
@@ -51,7 +53,6 @@ Public Class FindAndReplaceMainViewModel
 
         If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.Ppcl.Path) Then
             allErrors.Add(error1)
-
         End If
 
         If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.NameChangeDocument.Path) Then
@@ -64,6 +65,10 @@ Public Class FindAndReplaceMainViewModel
 
         Return allErrors
     End Function
+
+    Sub updateStatus()
+        Throw New NotImplementedException
+    End Sub
 
 
 End Class

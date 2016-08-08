@@ -276,5 +276,33 @@ Public Class MainViewModel
         Throw New NotImplementedException
     End Sub
 
+    Function getDependency(activity As String) As Object
+        Dim message = "none"
+        Dim completeSteps = getCompleteSteps()
+        Dim dependentActivities As List(Of String) = New List(Of String)
+
+        If activity.Contains(activity3) Then
+            dependentActivities.Add(activity2)
+
+            For Each dependent In dependentActivities
+                If Not completeSteps.Contains(dependent) Then
+                    message = dependent
+                End If
+            Next
+        End If
+
+        If activity.Contains(activity4) Then
+            dependentActivities.Add(activity2)
+
+            For Each dependent In dependentActivities
+                If Not completeSteps.Contains(dependent) Then
+                    message = dependent
+                End If
+            Next
+        End If
+
+        Return message
+    End Function
+
 
 End Class

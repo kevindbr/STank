@@ -168,13 +168,13 @@ Implements INotifyPropertyChanged.PropertyChanged
 
 
     Public Sub InitializePaths()
-        mPpcl.Path = "C:\Users\Axios\Desktop\testWorkingDir\AHU5.pcl"
-        mNameChangeDoc.Path = "C:\Users\Axios\Desktop\testWorkingDir\EPMAHU05_NewNames.csv"
-        mPanelAttributesDoc.Path = "C:\Users\Axios\Desktop\EPEAHU05_1.xlsx"
-        mStateTextDoc.Path = "C:\Users\Axios\Desktop\StateText.xlsx"
-        mSchedulerReport.Path = "C:\Users\Axios\Desktop\scheduler.txt"
-        mZoneDefinitionReport.Path = "C:\Users\Axios\Desktop\zone_def.txt"
-        Port.PortName = "COM5"
+        'mPpcl.Path = "C:\Users\Axios\Desktop\testWorkingDir\AHU5.pcl"
+        'mNameChangeDoc.Path = "C:\Users\Axios\Desktop\testWorkingDir\EPMAHU05_NewNames.csv"
+        'mPanelAttributesDoc.Path = "C:\Users\Axios\Desktop\EPEAHU05_1.xlsx"
+        'mStateTextDoc.Path = "C:\Users\Axios\Desktop\StateText.xlsx"
+        'mSchedulerReport.Path = "C:\Users\Axios\Desktop\scheduler.txt"
+        'mZoneDefinitionReport.Path = "C:\Users\Axios\Desktop\zone_def.txt"
+        'Port.PortName = "COM5"
 
     End Sub
 

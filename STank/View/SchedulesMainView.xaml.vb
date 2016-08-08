@@ -52,10 +52,10 @@ Class SchedulesMainView
         connectionView.Show()
     End Sub
 
-    Private Sub showDefineView(sender As Object, e As RoutedEventArgs)
-        Dim defineView As New DefineView(mMainViewModel)
-        defineView.Show()
-    End Sub
+    'Private Sub showDefineView(sender As Object, e As RoutedEventArgs)
+    '    Dim defineView As New DefineView(mMainViewModel)
+    '    defineView.Show()
+    'End Sub
 
     Private Sub LoadData_Click_1(sender As Object, e As RoutedEventArgs)
 

@@ -15,6 +15,7 @@ Class FindAndReplaceMainView
 
     Public mMainViewModel As MainViewModel
     Public mFindAndReplaceMainViewModel As FindAndReplaceMainViewModel
+    Public runClicked As Boolean
 
     Private bw As BackgroundWorker = New BackgroundWorker
 
@@ -27,6 +28,7 @@ Class FindAndReplaceMainView
     Sub New(ByRef mainViewModel As MainViewModel)
         mMainViewModel = mainViewModel
         mFindAndReplaceMainViewModel = New FindAndReplaceMainViewModel(mMainViewModel.getProj)
+        runClicked = False
         InitializeComponent()
 
     End Sub
@@ -38,33 +40,13 @@ Class FindAndReplaceMainView
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub IntializeMainWindow()
-
-        ' this should have already been done...
-        'mMainViewModel = New MainViewModel()
-        'mMainViewModel.IntializeProject()
-
-        '  serialPortList.ItemsSource = mMainViewModel.getPanels()
         workingDirectory.DataContext = mFindAndReplaceMainViewModel.getProj()
         nameChangeDocument.DataContext = mFindAndReplaceMainViewModel.getProj()
-        '   panelAttributesDocument.DataContext = mMainViewModel.getProj()
-
         bw.WorkerReportsProgress = True
         bw.WorkerSupportsCancellation = True
-        ' AddHandler bw.DoWork, AddressOf bw_RunFindAndReplace
-
-        'AddHandler bw.ProgressChanged, AddressOf bw_ProgressChanged
-        'AddHandler bw.RunWorkerCompleted, AddressOf bw_RunWorkerCompleted
-
-        ' AddHandler mMainViewModel.getProj.Panel.NameChangeDocument.PropertyChanged, AddressOf updateDefineGrid
-        'mMainViewModel.getProj.Panel.NameChangeDocument.Path = mMainViewModel.getProj.Panel.NameChangeDocument.Path
-        'Gets event to trigger now that handler is in place
-
-
-        'TODO: should store these in FindAndReplaceMainViewModel instead...?
 
         AddHandler mFindAndReplaceMainViewModel.getProj.Panel.Ppcl.PropertyChanged, AddressOf updateMainWindow
         AddHandler mFindAndReplaceMainViewModel.getProj.Panel.NameChangeDocument.PropertyChanged, AddressOf updateMainWindow
-        'AddHandler mMainViewModel.getProj.Panel.PanelAttributesDocument.PropertyChanged, AddressOf updateMainWindow
 
         updateMainWindow()
     End Sub
@@ -75,7 +57,7 @@ Class FindAndReplaceMainView
     End Sub
 
     Private Sub showDefineView(sender As Object, e As RoutedEventArgs)
-        Dim defineView As New DefineView(mMainViewModel)
+        Dim defineView As New DefineView(mMainViewModel, Me)
         defineView.Show()
     End Sub
 
@@ -94,6 +76,8 @@ Class FindAndReplaceMainView
 
         'Create OpenFileDialog
         Dim dlg = New Microsoft.Win32.OpenFileDialog()
+        dlg.DefaultExt = ".pcl" ' Default file extension
+        dlg.Filter = "pcl documents (.pcl)|*.pcl" ' Filter files by extension
 
         ' Set filter for file extension and default file extension
         ' Display OpenFileDialog by calling ShowDialog method
@@ -110,6 +94,8 @@ Class FindAndReplaceMainView
     Private Sub browseNameClicked(sender As Object, e As RoutedEventArgs)
         'Create OpenFileDialog
         Dim dlg = New Microsoft.Win32.OpenFileDialog()
+        dlg.DefaultExt = ".csv" ' Default file extension
+        dlg.Filter = "csv documents (.csv)|*.csv" ' Filter files by extension
 
         ' Set filter for file extension and default file extension
         ' Display OpenFileDialog by calling ShowDialog method
@@ -139,34 +125,9 @@ Class FindAndReplaceMainView
 
         Dim fnrView As New FindAndReplaceView(mMainViewModel)
         fnrView.Show()
+        runClicked = True
+        updateMainWindow()
 
-        'bw.RunWorkerAsync()     'Run find and replace on background thread.  Shouldn't need this if we are using a modal window instead
-
-
-        'Dim panel As Panel = mMainViewModel.getPanels().Item(0)     'for now there's only one panel
-        'Dim program = New Program(panel.Port.RetrieveProgram)
-        'program.changeNames(panel.NameChangeDocument.getReplacementValues)
-
-
-        'panel.Port.ReplaceProgram(program.NewLines)
-
-
-        'Dim timeStamp As String = DateTime.Now.ToString("MMddyyyyhhmmss")
-        'Dim cwd As String = mMainViewModel.getProj().Directory.Path
-
-        'System.IO.File.WriteAllText(cwd + System.IO.Path.DirectorySeparatorChar + "program_old_" + timeStamp + ".pcl", program.Text)
-        'System.IO.File.WriteAllText(cwd + System.IO.Path.DirectorySeparatorChar + "program_new_" + timeStamp + ".pcl", program.NewText)
-
-
-        'Return
-
-        'Dim folderDialog = New FolderBrowserDialog()
-        'folderDialog.SelectedPath = "C:\"
-
-        'Dim result = folderDialog.ShowDialog()
-        'If (result.ToString() = "OK") Then
-        '    mMainViewModel.getProj().Directory.Path = folderDialog.SelectedPath
-        'End If
     End Sub
 
 
@@ -297,7 +258,7 @@ Class FindAndReplaceMainView
     '                      End Sub)
     'End Sub
 
-    Private Sub updateMainWindow()
+    Public Sub updateMainWindow()
         updateAllLogs()
         updateButtons()
         'mMainViewModel.
@@ -354,18 +315,45 @@ Class FindAndReplaceMainView
         Dim numberOfErrors As Integer = listOfErrors.Count + listOfWarnings.Count
         Dim maxNumOfErrors As Integer = mFindAndReplaceMainViewModel.getMaxNumOfErrors()
 
+        If (numberOfErrors = 0) Then
+             Dim noticeImage As Image = New Image()
+            noticeImage.Width = 20
+            noticeImage.Height = 20
+
+            Dim bi3 As New BitmapImage
+            bi3.BeginInit()
+            bi3.UriSource = New Uri("Resources/Complete.png", UriKind.Relative)
+            bi3.EndInit()
+            noticeImage.Stretch = Stretch.Fill
+            noticeImage.Source = bi3
+
+            Dim container As InlineUIContainer = New InlineUIContainer(noticeImage)
+            activityLog.Inlines.Add(container)
+
+            Dim newLine As Run = New Run(" All Steps Complete.  Please click run find and replace.")
+            activityLog.Inlines.Add(newLine)
+            activityLog.Inlines.Add(New LineBreak)
+        End If
+
+        If Not runClicked Then
+            numberOfErrors += 1
+        End If
+        'For now, if the user clicks run, then we set status to complete, later we need to actually check if run was completed without errors
+        If runClicked Then
+            numberOfErrors = 0
+        End If
+
+        Dim status = "incomplete"
+
         If ((maxNumOfErrors - numberOfErrors) = maxNumOfErrors) Then
-            mFindAndReplaceMainViewModel.setComplete()
+            status = "complete"
         End If
 
-        If ((maxNumOfErrors - numberOfErrors) = 0) Then
-            mFindAndReplaceMainViewModel.setIncomplete()
+        If ((maxNumOfErrors - numberOfErrors) > 0 And (maxNumOfErrors - numberOfErrors) < maxNumOfErrors) Then
+            status = "partial"
         End If
 
-        If ((maxNumOfErrors - numberOfErrors) > 0 AND (maxNumOfErrors - numberOfErrors) < maxNumOfErrors) Then
-            mFindAndReplaceMainViewModel.setPartial()
-        End If
-
+        mFindAndReplaceMainViewModel.setStatus(1, status)
 
     End Sub
 

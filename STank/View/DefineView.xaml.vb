@@ -8,14 +8,16 @@ Imports System.Windows.Forms
 Public Class DefineView
 
     Private mMainViewModel As MainViewModel
+    Private mFindAndReplaceMainView As FindAndReplaceMainView
 
     ''' <summary>
     ''' Bring in mainViewModel to update and change project data
     ''' </summary>
     ''' <param name="mainViewModel"></param>
     ''' <remarks></remarks>
-    Sub New(ByRef mainViewModel As MainViewModel)
+    Sub New(ByRef mainViewModel As MainViewModel, ByRef findAndReplaceView As FindAndReplaceMainView)
         mMainViewModel = mainViewModel
+        mFindAndReplaceMainView = findAndReplaceView
         InitializeComponent()
 
         'AddHandler mMainViewModel.getProj.Panel.Ppcl.PropertyChanged, AddressOf updateDefineGrid
@@ -70,13 +72,25 @@ Public Class DefineView
         dt.Columns.Add("Current Def")
         dt.Columns.Add("New Def")
 
+
+
         'Dim variables As New Dictionary(Of String, String)
         For Each kvp As KeyValuePair(Of String, String) In mMainViewModel.getProj.Panel.Ppcl.Variables  'which got set when Path was changed
-            dt.Rows.Add(kvp.Key, kvp.Value, kvp.Value)
-            'variables.Add(kvp.Key, kvp.Value)
+            Dim foundMatch = False
+
+            For Each kvp2 As KeyValuePair(Of String, String) In mMainViewModel.getProj.Panel.Ppcl.NewVariables
+                If kvp.Key.Equals(kvp2.Key) Then
+                    dt.Rows.Add(kvp.Key, kvp.Value, kvp2.Value)
+                    foundMatch = True
+                End If
+                'variables.Add(kvp.Key, kvp.Value)
+            Next
+            If Not foundMatch Then
+                dt.Rows.Add(kvp.Key, kvp.Value, kvp.Value)
+            End If
         Next
 
-        mMainViewModel.getProj.Panel.Ppcl.NewVariables = New Dictionary(Of String, String)(mMainViewModel.getProj.Panel.Ppcl.Variables)
+        mMainViewModel.getProj.Panel.Ppcl.NewVariables = New Dictionary(Of String, String)(mMainViewModel.getProj.Panel.Ppcl.NewVariables)
         'or could do this in setter for Variables
 
         'For Each row As DataRowView In defineGrid.Items   'will this reflect the new values?
@@ -96,9 +110,7 @@ Public Class DefineView
     End Sub
 
     Private Sub exitView(sender As Object, e As RoutedEventArgs)
-
-        'mMainViewModel.
-
+        mFindAndReplaceMainView.updateMainWindow()
         Close()
     End Sub
 

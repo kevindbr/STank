@@ -85,7 +85,7 @@ Public Class NameChangeDoc
             BaseMainViewModel.WriteLog(process.StandardOutput.ReadToEnd)
             BaseMainViewModel.WriteLog(process.StandardError.ReadToEnd)
 
-            System.Threading.Thread.Sleep(100)  'just for debugging, to more easily see progress
+            'System.Threading.Thread.Sleep(100)  'just for debugging, to more easily see progress
 
             BaseMainViewModel.UpdateProgress(i / ReplacementValues.Count)
 
