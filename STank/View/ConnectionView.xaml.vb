@@ -15,6 +15,7 @@ Public Class ConnectionView
         mMainViewModel = mainViewModel
         mConnectionViewModel = New ConnectionViewModel()
         InitializeComponent()
+
         hostString.DataContext = mConnectionViewModel.mCommPort
         tcpPort.DataContext = mConnectionViewModel.mCommPort
         searchForPorts()

@@ -24,13 +24,13 @@
             <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30">Connect to HMI Port</Label>
             <StackPanel Grid.Row="1">
                 <RadioButton GroupName="connectionOptions" 
-                             IsChecked="True" Margin="10 10 10 0" 
+                             IsChecked="False" Margin="10 10 10 0" 
                              BorderBrush="{DynamicResource AccentColorBrush}" 
                              HorizontalAlignment="Left" VerticalAlignment="Center" 
                              Height="20" Width="auto" Click="showTCPOptions">
                     TCP/IP</RadioButton>
-                
-                <RadioButton GroupName="connectionOptions" IsChecked="{Binding IsChecked}" 
+
+                <RadioButton GroupName="connectionOptions" IsChecked="True" 
                              Margin="10 10 10 0"  BorderBrush="{DynamicResource AccentColorBrush}" 
                              HorizontalAlignment="Left" VerticalAlignment="Center" 
                              Height="20" Width="auto" Click="showSerialOptions">Serial</RadioButton>

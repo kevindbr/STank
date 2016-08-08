@@ -14,7 +14,7 @@ Class StateTextMainView
 
     Public mMainViewModel As MainViewModel
     Public mStateTextMainViewModel As StateTextMainViewModel
-
+    Public runClicked As Boolean
     Private bw As BackgroundWorker = New BackgroundWorker
 
 
@@ -42,6 +42,7 @@ Class StateTextMainView
         stateTextDoc.DataContext = mMainViewModel.getProj()
 
         AddHandler mMainViewModel.getProj.Panel.StateTextDocument.PropertyChanged, AddressOf updateMainWindow     'do this in main view code?
+        AddHandler mMainViewModel.getProj.Panel.Port.PropertyChanged, AddressOf updateMainWindow
 
         updateMainWindow()
     End Sub
@@ -68,6 +69,8 @@ Class StateTextMainView
     Private Sub browseAttributesClicked(sender As Object, e As RoutedEventArgs)
         'Create OpenFileDialog
         Dim dlg = New Microsoft.Win32.OpenFileDialog()
+        dlg.DefaultExt = ".xlsx" ' Default file extension
+        dlg.Filter = "xlsx documents (.xlsx)|*.xlsx" ' Filter files by extension
 
         ' Set filter for file extension and default file extension
         ' Display OpenFileDialog by calling ShowDialog method
@@ -83,34 +86,9 @@ Class StateTextMainView
 
         Dim fnrView As New StateTextProgressView(mMainViewModel)
         fnrView.Show()
+        runClicked = True
+        updateMainWindow()
 
-        'bw.RunWorkerAsync()     'Run find and replace on background thread.  Shouldn't need this if we are using a modal window instead
-
-
-        'Dim panel As Panel = mMainViewModel.getPanels().Item(0)     'for now there's only one panel
-        'Dim program = New Program(panel.Port.RetrieveProgram)
-        'program.changeNames(panel.NameChangeDocument.getReplacementValues)
-
-
-        'panel.Port.ReplaceProgram(program.NewLines)
-
-
-        'Dim timeStamp As String = DateTime.Now.ToString("MMddyyyyhhmmss")
-        'Dim cwd As String = mMainViewModel.getProj().Directory.Path
-
-        'System.IO.File.WriteAllText(cwd + System.IO.Path.DirectorySeparatorChar + "program_old_" + timeStamp + ".pcl", program.Text)
-        'System.IO.File.WriteAllText(cwd + System.IO.Path.DirectorySeparatorChar + "program_new_" + timeStamp + ".pcl", program.NewText)
-
-
-        'Return
-
-        'Dim folderDialog = New FolderBrowserDialog()
-        'folderDialog.SelectedPath = "C:\"
-
-        'Dim result = folderDialog.ShowDialog()
-        'If (result.ToString() = "OK") Then
-        '    mMainViewModel.getProj().Directory.Path = folderDialog.SelectedPath
-        'End If
     End Sub
 
 
@@ -171,6 +149,34 @@ Class StateTextMainView
         Dim numberOfErrors As Integer = listOfErrors.Count + listOfWarnings.Count
         Dim maxNumOfErrors As Integer = mStateTextMainViewModel.getMaxNumOfErrors()
 
+        If (numberOfErrors = 0) Then
+            Dim noticeImage As Image = New Image()
+            noticeImage.Width = 20
+            noticeImage.Height = 20
+
+            Dim bi3 As New BitmapImage
+            bi3.BeginInit()
+            bi3.UriSource = New Uri("Resources/Complete.png", UriKind.Relative)
+            bi3.EndInit()
+            noticeImage.Stretch = Stretch.Fill
+            noticeImage.Source = bi3
+
+            Dim container As InlineUIContainer = New InlineUIContainer(noticeImage)
+            activityLog.Inlines.Add(container)
+
+            Dim newLine As Run = New Run(" All Steps Complete.  Please click replace state text.")
+            activityLog.Inlines.Add(newLine)
+            activityLog.Inlines.Add(New LineBreak)
+        End If
+
+        If Not runClicked Then
+            numberOfErrors += 1
+        End If
+        'For now, if the user clicks run, then we set status to complete, later we need to actually check if run was completed without errors
+        If runClicked Then
+            numberOfErrors = 0
+        End If
+
         Dim status = "incomplete"
 
         If ((maxNumOfErrors - numberOfErrors) = maxNumOfErrors) Then
@@ -181,9 +187,7 @@ Class StateTextMainView
             status = "partial"
         End If
 
-        mStateTextMainViewModel.setStatus(1, status)
-
-
+        mStateTextMainViewModel.setStatus(3, status)
     End Sub
 
     Private Sub updateButtons()
@@ -197,6 +201,12 @@ Class StateTextMainView
             'runFnRButton.IsEnabled = False
         End If
 
+    End Sub
+
+    Private Sub showConnectionView(sender As Object, e As RoutedEventArgs)
+        'mMainViewModel.getProj.Panel.InitializePaths()
+        Dim connectionView As New ConnectionView(mMainViewModel)
+        connectionView.Show()
     End Sub
 
     Private Sub exitView(sender As Object, e As RoutedEventArgs)

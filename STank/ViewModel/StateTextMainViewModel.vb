@@ -48,21 +48,16 @@ Public Class StateTextMainViewModel
 
         Dim allErrors As List(Of String) = New List(Of String)
         Dim error1 = "No State Text document provided"
-        'Dim error1 = "No PPCL document provided"
-        'Dim error2 = "No Name Change Document Path Specified"
-        'Dim error3 = "Set Define Statements for PPCL"
+        Dim error2 = "No Panel Connection Detected"
+
 
         If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.StateTextDocument.Path) Then
             allErrors.Add(error1)
         End If
 
-        'If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.NameChangeDocument.Path) Then
-        '    allErrors.Add(error2)
-        'End If
-
-        'If mSTankProj.Panel.Ppcl.NewVariables.Count > 0 Then
-        '    allErrors.Add(error3)
-        'End If
+        If mSTankProj.Panel.Port.PortName.Equals("No Active Comm Ports") Then
+            allErrors.Add(error2)
+        End If
 
         Return allErrors
     End Function
