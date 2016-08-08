@@ -159,7 +159,7 @@ Implements INotifyPropertyChanged.PropertyChanged
 
 
         'For local testing:
-        InitializePaths()
+        'InitializePaths()
 
 
 

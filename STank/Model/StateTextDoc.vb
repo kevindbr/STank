@@ -21,6 +21,8 @@ Public Class StateTextDoc
     Public Shared EmptyPath As String = "No State Text Document Specified"
     Private Const sNewDocSuffix = "_new"
 
+    Private mStateTextTables As New Dictionary(Of String, StateTextTable)
+
     Private mConnection As OleDbConnection
 
     'Private Const mEngineeringUnitsSpreadsheet = "BACnet_unit_conversion_spreadsheet.xlsx"
@@ -60,6 +62,18 @@ Public Class StateTextDoc
         Set(value As OleDbConnection)
             mConnection = value
             NotifyPropertyChanged("Connection")
+        End Set
+    End Property
+
+
+    Public Property StateTextTables As Dictionary(Of String, StateTextTable)
+        Get
+            Return mStateTextTables
+        End Get
+
+        Set(value As Dictionary(Of String, StateTextTable))
+            mStateTextTables = value
+            NotifyPropertyChanged("StateTextTables")
         End Set
     End Property
 
@@ -144,6 +158,9 @@ Public Class StateTextDoc
 
     Public Function GetStateTextByID(ByVal id As String) As StateTextTable
 
+
+        If mStateTextTables.ContainsKey(id) Then Return mStateTextTables(id)
+
         OpenConnection()
 
         Dim oleExcelCommand As OleDbCommand = mConnection.CreateCommand()
@@ -157,7 +174,10 @@ Public Class StateTextDoc
         oleExcelReader.Close()
         mConnection.Close()
 
-        Return ParseStateText(data)
+        Dim stateTextTable = ParseStateText(data)
+        mStateTextTables.Add(id, stateTextTable)
+
+        Return stateTextTable
 
     End Function
 
