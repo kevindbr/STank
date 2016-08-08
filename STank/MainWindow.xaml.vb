@@ -336,6 +336,25 @@ Class MainWindow
 
     Private Sub updateButtons()
 
+        If mMainViewModel.getProj().Panel.Port.PortName.Equals("No Active Comm Ports") Then
+            Dim bi3 As New BitmapImage
+            bi3.BeginInit()
+            bi3.UriSource = New Uri("Resources/unplug.png", UriKind.Relative)
+            bi3.EndInit()
+            connectionImage.Source = bi3
+            connectionImage.ToolTip = "Panel Disconnected"
+
+        Else
+            Dim bi3 As New BitmapImage
+            bi3.BeginInit()
+            bi3.UriSource = New Uri("Resources/plug.png", UriKind.Relative)
+            bi3.EndInit()
+            connectionImage.Source = bi3
+            connectionImage.ToolTip = "Panel Connected"
+        End If
+
+
+
 
 
     End Sub

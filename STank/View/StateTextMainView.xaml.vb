@@ -196,9 +196,26 @@ Class StateTextMainView
         Dim listOfWarnings As List(Of String) = mStateTextMainViewModel.getActivityWarningLogs()
 
         If listOfErrors.Count = 0 Then
-            'runFnRButton.IsEnabled = True
+            replaceButton.IsEnabled = True
         Else
-            'runFnRButton.IsEnabled = False
+            replaceButton.IsEnabled = False
+        End If
+
+        If mMainViewModel.getProj().Panel.Port.PortName.Equals("No Active Comm Ports") Then
+            Dim bi3 As New BitmapImage
+            bi3.BeginInit()
+            bi3.UriSource = New Uri("../Images/Siemens_Icons/unplug.png", UriKind.Relative)
+            bi3.EndInit()
+            connectionImage.Source = bi3
+            connectionImage.ToolTip = "Panel Disconnected"
+
+        Else
+            Dim bi3 As New BitmapImage
+            bi3.BeginInit()
+            bi3.UriSource = New Uri("../Images/Siemens_Icons/plug.png", UriKind.Relative)
+            bi3.EndInit()
+            connectionImage.Source = bi3
+            connectionImage.ToolTip = "Panel Connected"
         End If
 
     End Sub

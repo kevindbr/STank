@@ -77,6 +77,7 @@
                         <StackPanel Orientation="Horizontal">
                         <Button x:Name="nextStepButton" Style="{StaticResource AccentedSquareButtonStyle}" Margin="0 20 20 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Width="auto" Click="nextStepClicked">Go To Next Incomplete Step</Button>
                         <Button x:Name="connectionButton" Style="{StaticResource AccentedSquareButtonStyle}" Margin="0 20 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Width="111" Click="showConnectionView" Content="Connect to Panel"/>
+                            <Image Name="connectionImage" ToolTip="Panel Disconnected" HorizontalAlignment="Left" Height="20" Width="20" Margin="10 10 0 0" VerticalAlignment="Bottom" Source="Images/Siemens_Icons/unplug.png" />
                         </StackPanel>
                     </StackPanel>
 

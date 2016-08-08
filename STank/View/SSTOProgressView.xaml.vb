@@ -20,7 +20,7 @@ Public Class SSTOProgressView
     Sub New(ByRef mainViewModel As MainViewModel)
         mMainViewModel = mainViewModel
         InitializeComponent()
-
+        doneButton.IsEnabled = False
     End Sub
 
     Private Sub IntializeWindow()
@@ -29,29 +29,26 @@ Public Class SSTOProgressView
         bw.WorkerReportsProgress = True
         bw.WorkerSupportsCancellation = True
         AddHandler bw.DoWork, AddressOf bw_RunFindAndReplace
+        AddHandler bw.RunWorkerCompleted, AddressOf showDone
         bw.RunWorkerAsync()
     End Sub
 
 
     Private Sub bw_RunFindAndReplace(ByVal sender As Object, ByVal e As DoWorkEventArgs)
-
         Dim panel = mMainViewModel.getProj.Panel
-
-
         Dim fieldPanel As String = panel.Port.Login()
-
-
         panel.Port.ConfigureSSTO(panel.NameChangeDocument.ReplacementValues, panel.ZoneDefinitionReport.ZoneData, panel.SchedulerReport.ScheduleId)
-
         panel.Port.Logout()
-
-
         BaseMainViewModel.ResetUI()
-
-
     End Sub
 
 
+    Private Sub showDone()
+        Dim message As GeneralPopupView = New GeneralPopupView("Start Stop Times have been converted.  Please refer to ssto log file for panel output.")
+        doneButton.Content = "Done"
+        doneButton.IsEnabled = True
+        message.Show()
+    End Sub
 
 
     Private Sub exitView(sender As Object, e As RoutedEventArgs)

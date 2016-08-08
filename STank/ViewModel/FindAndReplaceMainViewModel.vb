@@ -19,7 +19,7 @@ Public Class FindAndReplaceMainViewModel
     Public Overrides Function getActivityWarningLogs() As List(Of String)
         Dim allErrors As List(Of String) = New List(Of String)
 
-        Dim error1 = "Please Click 'View Details' Under Project Status to Edit PPCL define statements"
+        Dim error1 = "Please Click 'Edit Variables' Under Project Details to Edit PPCL Define Statements"
         Dim sameVarible = True
 
         ''error1 condition is true if ppcl variable are the same, this means the user may not have come to change them yet

@@ -158,10 +158,6 @@ Public MustInherit Class BaseMainViewModel
                               End If
 
                           End Sub)
-
-
-
-
     End Sub
 
 

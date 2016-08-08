@@ -15,7 +15,7 @@ Class SSTOMainView
 
     Public mMainViewModel As MainViewModel
     Public mSSTOMainViewModel As SSTOMainViewModel
-
+    Public runClicked As Boolean
     Private bw As BackgroundWorker = New BackgroundWorker
 
 
@@ -27,7 +27,7 @@ Class SSTOMainView
     Sub New(ByRef mainViewModel As MainViewModel)
         mMainViewModel = mainViewModel
         mSSTOMainViewModel = New SSTOMainViewModel(mMainViewModel.getProj)
-        '
+        runClicked = False
         InitializeComponent()
 
     End Sub
@@ -50,6 +50,8 @@ Class SSTOMainView
     Private Sub showConnectionView(sender As Object, e As RoutedEventArgs)
         Dim connectionView As New ConnectionView(mMainViewModel)
         connectionView.Show()
+        updateMainWindow()
+
     End Sub
 
     'Private Sub showDefineView(sender As Object, e As RoutedEventArgs)
@@ -69,7 +71,8 @@ Class SSTOMainView
     Private Sub browseAttributesClicked(sender As Object, e As RoutedEventArgs)
         'Create OpenFileDialog
         Dim dlg = New Microsoft.Win32.OpenFileDialog()
-
+        dlg.DefaultExt = ".txt" ' Default file extension
+        dlg.Filter = "txt documents (.txt)|*.txt" ' Filter files by extension
         ' Set filter for file extension and default file extension
         ' Display OpenFileDialog by calling ShowDialog method
         Dim result = dlg.ShowDialog()
@@ -84,8 +87,8 @@ Class SSTOMainView
 
         Dim fnrView As New SSTOProgressView(mMainViewModel)
         fnrView.Show()
-
-
+        runClicked = True
+        updateMainWindow()
     End Sub
 
 
@@ -145,6 +148,33 @@ Class SSTOMainView
         Dim numberOfErrors As Integer = listOfErrors.Count + listOfWarnings.Count
         Dim maxNumOfErrors As Integer = mSSTOMainViewModel.getMaxNumOfErrors()
 
+        If (numberOfErrors = 0) Then
+            Dim noticeImage As Image = New Image()
+            noticeImage.Width = 20
+            noticeImage.Height = 20
+
+            Dim bi3 As New BitmapImage
+            bi3.BeginInit()
+            bi3.UriSource = New Uri("Resources/Complete.png", UriKind.Relative)
+            bi3.EndInit()
+            noticeImage.Stretch = Stretch.Fill
+            noticeImage.Source = bi3
+
+            Dim container As InlineUIContainer = New InlineUIContainer(noticeImage)
+            activityLog.Inlines.Add(container)
+
+            Dim newLine As Run = New Run(" All Steps Complete.  Please click Configure SSTO.")
+            activityLog.Inlines.Add(newLine)
+            activityLog.Inlines.Add(New LineBreak)
+        End If
+        If Not runClicked Then
+            numberOfErrors += 1
+        End If
+        'For now, if the user clicks run, then we set status to complete, later we need to actually check if run was completed without errors
+        If runClicked Then
+            numberOfErrors = 0
+        End If
+
         Dim status = "incomplete"
 
         If ((maxNumOfErrors - numberOfErrors) = maxNumOfErrors) Then
@@ -155,9 +185,7 @@ Class SSTOMainView
             status = "partial"
         End If
 
-        mSSTOMainViewModel.setStatus(1, status)
-
-
+        mSSTOMainViewModel.setStatus(6, status)
     End Sub
 
     Private Sub updateButtons()
@@ -166,11 +194,27 @@ Class SSTOMainView
         Dim listOfWarnings As List(Of String) = mSSTOMainViewModel.getActivityWarningLogs()
 
         If listOfErrors.Count = 0 Then
-            'runFnRButton.IsEnabled = True
+            replaceButton.IsEnabled = True
         Else
-            'runFnRButton.IsEnabled = False
+            replaceButton.IsEnabled = False
         End If
 
+        If mMainViewModel.getProj().Panel.Port.PortName.Equals("No Active Comm Ports") Then
+            Dim bi3 As New BitmapImage
+            bi3.BeginInit()
+            bi3.UriSource = New Uri("../Images/Siemens_Icons/unplug.png", UriKind.Relative)
+            bi3.EndInit()
+            connectionImage.Source = bi3
+            connectionImage.ToolTip = "Panel Disconnected"
+
+        Else
+            Dim bi3 As New BitmapImage
+            bi3.BeginInit()
+            bi3.UriSource = New Uri("../Images/Siemens_Icons/plug.png", UriKind.Relative)
+            bi3.EndInit()
+            connectionImage.Source = bi3
+            connectionImage.ToolTip = "Panel Connected"
+        End If
     End Sub
 
     Private Sub exitView(sender As Object, e As RoutedEventArgs)

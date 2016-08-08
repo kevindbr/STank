@@ -19,6 +19,11 @@ Public Class ConnectionView
         hostString.DataContext = mConnectionViewModel.mCommPort
         tcpPort.DataContext = mConnectionViewModel.mCommPort
         searchForPorts()
+        serialStackPanel.Visibility = Windows.Visibility.Visible
+        tcpStackPanel.Visibility = Windows.Visibility.Hidden
+        serialStackPanel.Height = "200"
+        tcpStackPanel.Height = "0"
+        isSerial = True
     End Sub
 
     ''' <summary>
@@ -58,6 +63,8 @@ Public Class ConnectionView
     Private Sub saveNewConnection(sender As Object, e As RoutedEventArgs)
         mConnectionViewModel.validateCommPort()
         mMainViewModel.addNewPort(mConnectionViewModel.mCommPort)
+        Dim message As GeneralPopupView = New GeneralPopupView("New panel connection established using : " + mConnectionViewModel.mCommPort.PortName)
+        message.Show()
         Close()
     End Sub
 

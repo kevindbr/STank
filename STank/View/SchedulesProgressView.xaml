@@ -23,7 +23,7 @@
 
         <StackPanel Grid.Row="0" Margin="0 0 0 30">
             <Label HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Width="Auto" Content="Schedule configuration in progress..."/>
-            <ProgressBar Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="476" Height="12" x:Name="progressBar"/>
+            <ProgressBar Grid.Row="1" HorizontalAlignment="Left" Margin="20 0 0 0" VerticalAlignment="Top" Width="450" Height="12" x:Name="progressBar"/>
             <!--<DataGrid Grid.Column="1" HorizontalAlignment="Left" Margin="47,71,0,0" Grid.Row="2" VerticalAlignment="Top" Height="98" Width="264" x:Name="defineGrid" AutoGenerateColumns="True" ItemsSource="{Binding}" CanUserAddRows="False">
             </DataGrid>-->
         </StackPanel>
@@ -36,7 +36,6 @@
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
-
-        <Button Grid.Row="2" Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Center" VerticalAlignment="Top" Height="20" Width="100" Click="exitView">Done</Button>
+        <Button Name="doneButton" Grid.Row="2" Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Center" VerticalAlignment="Top" Height="20" Width="100" Click="exitView">Please Wait ...</Button>
     </Grid>
 </Controls:MetroWindow>
