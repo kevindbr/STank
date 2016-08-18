@@ -47,7 +47,7 @@ Public Class StateTextMainViewModel
     Public Overrides Function getActivityErrorLogs() As List(Of String)
 
         Dim allErrors As List(Of String) = New List(Of String)
-        Dim error1 = "No State Text document provided"
+        Dim error1 = "No State Text Document Provided"
         Dim error2 = "No Panel Connection Detected"
 
 
@@ -55,7 +55,7 @@ Public Class StateTextMainViewModel
             allErrors.Add(error1)
         End If
 
-        If mSTankProj.Panel.Port.PortName.Equals("No Active Comm Ports") Then
+        If mSTankProj.Panel.Port.PortName.Equals("No Active Comm Ports") Or Not mSTankProj.Panel.Port.LoginValid Then
             allErrors.Add(error2)
         End If
 

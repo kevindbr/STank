@@ -19,6 +19,10 @@ Public Class CommPort
     Private mSshVersion As String
     Private mProtocol As String
     Private mPortName As String
+    Private mUserName As String
+    Private mPassword As String
+    Private mLoginValid As Boolean
+
 
     Private sp As IO.Ports.SerialPort       'TODO: rename
     Private logger As BaseMainViewModel.Logger
@@ -126,6 +130,39 @@ Public Class CommPort
         End Set
     End Property
 
+    Public Property UserName As String
+        Get
+            Return mUserName
+        End Get
+
+        Set(value As String)
+            mUserName = value
+            NotifyPropertyChanged("UserName")
+        End Set
+    End Property
+
+
+    Public Property Password As String
+        Get
+            Return mPassword
+        End Get
+
+        Set(value As String)
+            mPassword = value
+            NotifyPropertyChanged("Password")
+        End Set
+    End Property
+
+    Public Property LoginValid As Boolean
+        Get
+            Return mLoginValid
+        End Get
+
+        Set(value As Boolean)
+            mLoginValid = value
+            NotifyPropertyChanged("LoginValid")
+        End Set
+    End Property
 
 
     Sub IntializeData()
@@ -136,6 +173,8 @@ Public Class CommPort
         mSshVersion = "null"
         mTcpPort = 0
         mType = "null"
+        mUserName = "high"
+        mPassword = "high1"
     End Sub
 
 
@@ -531,8 +570,12 @@ Public Class CommPort
         SendCommand(If(zoneData("Night Operation") = "Enabled", "y", "n"))   'Enable night operation (Y/N)
         SendCommand(GetOperationCommand(zoneData("Allowed Operation")))   'Allowed operation (N,H,C,hAc)
         SendCommand(GetOperationCommand(zoneData("Selected Operation")))   'Desired oper (N,H,C,hAc,R)  'Not sure about this R option....'
-        SendCommand(replacementValues(zoneData("Outside Temperature")), True)   'Outside temperature
-        SendCommand(replacementValues(zoneData("Zone Temperature")), True)   'Zone temperature
+
+        If Not replacementValues Is Nothing Then
+            SendCommand(replacementValues(zoneData("Outside Temperature")), True)   'Outside temperature
+            SendCommand(replacementValues(zoneData("Zone Temperature")), True)   'Zone temperature
+        End If
+
         SendCommand(zoneData("Heating Setpoint (OCC)"), True)   'Heating setpoint-occupancy
         SendCommand(zoneData("Heating Setpoint (VAC)"), True)   'Heating setpoint-vacancy
         SendCommand(zoneData("Cooling Setpoint (OCC)"), True)   'Cooling setpoint-occupancy
@@ -753,45 +796,95 @@ Public Class CommPort
 
 
 
+    Public Function TestLogin(Optional ByVal isFresh As Boolean = True) As Boolean
 
+        If Not mPortName.Equals("No Active Comm Ports") Then
+
+            Me.sp = My.Computer.Ports.OpenSerialPort(mPortName)     'is this set whenever changed in Connection View?
+
+            If Not (sp Is Nothing) Then
+                If (sp.IsOpen()) Then
+
+                    sp.ReadTimeout = 200
+                    sp.NewLine = vbCr
+                    sp.BaudRate = 115200
+
+                    If Not isFresh Then Return ""
+
+                    Dim resp As String
+
+                    SendCommand("", True)           'get initial response from panel
+                    SendCommand("h")                'Hello
+                    SendCommand(mUserName, True)       'Username
+                    resp = SendCommand(mPassword, True)      'Password
+
+                    Logout()
+
+                    If resp.ToLower().Contains("invalid") Then
+                        mLoginValid = False
+                        Return False
+                    End If
+
+                    mLoginValid = True
+                    Return True
+                End If
+            End If
+        End If
+
+        mLoginValid = False
+        Return False
+
+    End Function
 
 
     Public Function Login(Optional ByVal isFresh As Boolean = True) As String
 
-        Me.sp = My.Computer.Ports.OpenSerialPort(mPortName)     'is this set whenever changed in Connection View?
+        Dim fieldPanel = ""
+        Try
 
-        sp.ReadTimeout = 200
-        sp.NewLine = vbCr
-        sp.BaudRate = 115200
 
-        If Not isFresh Then Return ""
+            Me.sp = My.Computer.Ports.OpenSerialPort(mPortName)     'is this set whenever changed in Connection View?
 
-        Dim resp As String
+            sp.ReadTimeout = 200
+            sp.NewLine = vbCr
+            sp.BaudRate = 115200
 
-        SendCommand("", True)           'get initial response from panel
-        SendCommand("h")                'Hello
-        SendCommand("high", True)       'Username
-        resp = SendCommand("high1", True)      'Password
+            If Not isFresh Then Return ""
 
-        'Dim matches As MatchCollection = Regex.Matches(reRegex.Escape("DEFINE(") & "(.*)" & Regex.Escape(",""") & "(.*)" & """" & "(.*)")
-        Dim fieldPanel = Regex.Matches(resp, "Field panel <([0-9]+)>").Item(0).Groups(1).ToString()
+            Dim resp As String
 
-        SendCommand("", True)
+            SendCommand("", True)           'get initial response from panel
+            SendCommand("h")                'Hello
+            SendCommand(mUserName, True)       'Username
+            resp = SendCommand(mPassword, True)      'Password
+
+            'Dim matches As MatchCollection = Regex.Matches(reRegex.Escape("DEFINE(") & "(.*)" & Regex.Escape(",""") & "(.*)" & """" & "(.*)")
+            fieldPanel = Regex.Matches(resp, "Field panel <([0-9]+)>").Item(0).Groups(1).ToString()
+
+            SendCommand("", True)
+        Catch ex As Exception
+
+
+            fieldPanel = ex.Message
+        End Try
+
 
         Return fieldPanel
-
 
     End Function
 
 
     Public Sub Logout()
+        If Not (sp Is Nothing) Then
+            If (sp.IsOpen()) Then
 
-        SendCommand("#", True)           '
-        SendCommand("b")                'Bye
-        SendCommand("y")                'Yes
+                SendCommand("#", True)           '
+                SendCommand("b")                'Bye
+                SendCommand("y")                'Yes
 
-        sp.Close()
-
+                sp.Close()
+            End If
+        End If
     End Sub
 
 

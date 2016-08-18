@@ -16,8 +16,9 @@ Public Class MainViewModel
     Private activity2 = "Convert Engineering Units to Bacnet"
     Private activity3 = "Update State Text Tables"
     Private activity4 = "Replace Enhanced Alarms"
-    Private activity6 = "Convert Create Start Stop Time Optimization Zones to Bacnet"
     Private activity5 = "Convert Schedules to Bacnet"
+    Private activity6 = "Convert Create Start Stop Time Optimization Zones to Bacnet"
+
 
 
     ''' <summary>
@@ -140,11 +141,11 @@ Public Class MainViewModel
             allActivities.Add(activity4)
         End If
 
-        If mSTankProj.StartStopStatus = "complete" Then
+        If mSTankProj.SchedulesStatus = "complete" Then
             allActivities.Add(activity5)
         End If
 
-        If mSTankProj.SchedulesStatus = "complete" Then
+        If mSTankProj.StartStopStatus = "complete" Then
             allActivities.Add(activity6)
         End If
 
@@ -176,11 +177,11 @@ Public Class MainViewModel
             allActivities.Add(activity4)
         End If
 
-        If mSTankProj.StartStopStatus = "partial" Then
+        If mSTankProj.SchedulesStatus = "partial" Then
             allActivities.Add(activity5)
         End If
 
-        If mSTankProj.SchedulesStatus = "partial" Then
+        If mSTankProj.StartStopStatus = "partial" Then
             allActivities.Add(activity6)
         End If
 
@@ -214,11 +215,11 @@ Public Class MainViewModel
             allActivities.Add(activity4)
         End If
 
-        If mSTankProj.StartStopStatus = "incomplete" Then
+        If mSTankProj.SchedulesStatus = "incomplete" Then
             allActivities.Add(activity5)
         End If
 
-        If mSTankProj.SchedulesStatus = "incomplete" Then
+        If mSTankProj.StartStopStatus = "incomplete" Then
             allActivities.Add(activity6)
         End If
 
@@ -292,6 +293,16 @@ Public Class MainViewModel
         End If
 
         If activity.Contains(activity4) Then
+            dependentActivities.Add(activity2)
+
+            For Each dependent In dependentActivities
+                If Not completeSteps.Contains(dependent) Then
+                    message = dependent
+                End If
+            Next
+        End If
+
+        If activity.Contains(activity5) Then
             dependentActivities.Add(activity2)
 
             For Each dependent In dependentActivities

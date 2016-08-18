@@ -18,17 +18,17 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"></RowDefinition>
                 <RowDefinition Height="100"></RowDefinition>
-                <RowDefinition Height="250"></RowDefinition>
+                <RowDefinition Height="240"></RowDefinition>
                 <RowDefinition Height="40"></RowDefinition>
             </Grid.RowDefinitions>
             <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30">Connect to HMI Port</Label>
             <StackPanel Grid.Row="1">
-                <RadioButton GroupName="connectionOptions" 
+                <!--<RadioButton GroupName="connectionOptions" 
                              IsChecked="False" Margin="10 10 10 0" 
                              BorderBrush="{DynamicResource AccentColorBrush}" 
                              HorizontalAlignment="Left" VerticalAlignment="Center" 
                              Height="20" Width="auto" Click="showTCPOptions">
-                    TCP/IP</RadioButton>
+                    TCP/IP</RadioButton>-->
 
                 <RadioButton GroupName="connectionOptions" IsChecked="True" 
                              Margin="10 10 10 0"  BorderBrush="{DynamicResource AccentColorBrush}" 
@@ -38,13 +38,20 @@
   </StackPanel>
             <StackPanel Grid.Row="2">
 
-                <StackPanel Name="serialStackPanel" Height="0" Visibility="Hidden">
-                    <Label Margin="0 0 0 10">Serial Port Options</Label>
+                <StackPanel Name="serialStackPanel" Height="Auto" Visibility="Visible">
+
                     <Label>Please select the comm port you would like to use:</Label>
-                    <ListBox Name="serialPortList" SelectionChanged="serialPortChanged"></ListBox>
+                    <ScrollViewer MinHeight="60" VerticalScrollBarVisibility="Visible" >
+                        <ListBox Height="80" Name="serialPortList" SelectionChanged="serialPortChanged"></ListBox>
+                    </ScrollViewer>
+                    <Label>Panel User Name:</Label>
+                    <TextBox  x:Name="userName" HorizontalAlignment="Left" Margin="10 0 0 0" Width="250" Text="{Binding UserName}"></TextBox>
+                    <Label>Panel Panel Password:</Label>
+                    <TextBox x:Name="password" HorizontalAlignment="Left" Margin="10 0 0 30" Width="250" Text="{Binding Password}"></TextBox>
+                    
                 </StackPanel>
 
-                <StackPanel Name="tcpStackPanel"  Visibility="Visible" >
+                <StackPanel Name="tcpStackPanel"  Visibility="Hidden" >
                     <Label Margin="0 0 0 10">TCP/IP Options</Label>
                     <Label>Host Address:</Label>
                     <TextBox  x:Name="hostString" HorizontalAlignment="Left" Margin="10 0 0 0" Width="250" Text="{Binding HostString}"></TextBox>

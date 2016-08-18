@@ -69,7 +69,7 @@ Public Class EnhancedAlarmsProgressView
     End Sub
 
     Private Sub showDone()
-        Dim message As GeneralPopupView = New GeneralPopupView("Find and Replace Finished!  A copy of the original PPCL has been created with _new appended to the name this file contains the replaced names.")
+        Dim message As GeneralPopupView = New GeneralPopupView("Enhanced alarm replacement finished!  Please refer to enhanced alarm log file for panel output.")
         doneButton.Content = "Done"
         doneButton.IsEnabled = True
         message.Show()

@@ -170,8 +170,11 @@ Class StateTextMainView
         End If
 
         If Not runClicked Then
-            numberOfErrors += 1
+            If Not mMainViewModel.getProj().StateTextStatus.Equals("complete") Then
+                numberOfErrors += 1
+            End If
         End If
+
         'For now, if the user clicks run, then we set status to complete, later we need to actually check if run was completed without errors
         If runClicked Then
             numberOfErrors = 0
@@ -201,22 +204,25 @@ Class StateTextMainView
             replaceButton.IsEnabled = False
         End If
 
-        If mMainViewModel.getProj().Panel.Port.PortName.Equals("No Active Comm Ports") Then
-            Dim bi3 As New BitmapImage
-            bi3.BeginInit()
-            bi3.UriSource = New Uri("../Images/Siemens_Icons/unplug.png", UriKind.Relative)
-            bi3.EndInit()
-            connectionImage.Source = bi3
-            connectionImage.ToolTip = "Panel Disconnected"
+        If Not mMainViewModel.getProj().Panel.Port.PortName.Equals("No Active Comm Ports") And mMainViewModel.getProj.Panel.Port.LoginValid Then
 
-        Else
             Dim bi3 As New BitmapImage
             bi3.BeginInit()
             bi3.UriSource = New Uri("../Images/Siemens_Icons/plug.png", UriKind.Relative)
             bi3.EndInit()
             connectionImage.Source = bi3
             connectionImage.ToolTip = "Panel Connected"
+        Else
+
+            Dim bi3 As New BitmapImage
+            bi3.BeginInit()
+            bi3.UriSource = New Uri("../Images/Siemens_Icons/unplug.png", UriKind.Relative)
+            bi3.EndInit()
+            connectionImage.Source = bi3
+            connectionImage.ToolTip = "Panel Disconnected"
         End If
+
+
 
     End Sub
 

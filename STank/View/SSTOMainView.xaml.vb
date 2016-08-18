@@ -43,7 +43,7 @@ Class SSTOMainView
         zoneDefReport.DataContext = mMainViewModel.getProj()
 
         AddHandler mMainViewModel.getProj.Panel.ZoneDefinitionReport.PropertyChanged, AddressOf updateMainWindow     'do this in main view code?
-
+        AddHandler mMainViewModel.getProj.Panel.Port.PropertyChanged, AddressOf updateMainWindow
         updateMainWindow()
     End Sub
 
@@ -167,9 +167,14 @@ Class SSTOMainView
             activityLog.Inlines.Add(newLine)
             activityLog.Inlines.Add(New LineBreak)
         End If
+
+
         If Not runClicked Then
-            numberOfErrors += 1
+            If Not mMainViewModel.getProj().StartStopStatus.Equals("complete") Then
+                numberOfErrors += 1
+            End If
         End If
+
         'For now, if the user clicks run, then we set status to complete, later we need to actually check if run was completed without errors
         If runClicked Then
             numberOfErrors = 0
@@ -198,23 +203,25 @@ Class SSTOMainView
         Else
             replaceButton.IsEnabled = False
         End If
+        If Not mMainViewModel.getProj().Panel.Port.PortName.Equals("No Active Comm Ports") And mMainViewModel.getProj.Panel.Port.LoginValid Then
 
-        If mMainViewModel.getProj().Panel.Port.PortName.Equals("No Active Comm Ports") Then
-            Dim bi3 As New BitmapImage
-            bi3.BeginInit()
-            bi3.UriSource = New Uri("../Images/Siemens_Icons/unplug.png", UriKind.Relative)
-            bi3.EndInit()
-            connectionImage.Source = bi3
-            connectionImage.ToolTip = "Panel Disconnected"
-
-        Else
             Dim bi3 As New BitmapImage
             bi3.BeginInit()
             bi3.UriSource = New Uri("../Images/Siemens_Icons/plug.png", UriKind.Relative)
             bi3.EndInit()
             connectionImage.Source = bi3
             connectionImage.ToolTip = "Panel Connected"
+        Else
+
+            Dim bi3 As New BitmapImage
+            bi3.BeginInit()
+            bi3.UriSource = New Uri("../Images/Siemens_Icons/unplug.png", UriKind.Relative)
+            bi3.EndInit()
+            connectionImage.Source = bi3
+            connectionImage.ToolTip = "Panel Disconnected"
         End If
+
+
     End Sub
 
     Private Sub exitView(sender As Object, e As RoutedEventArgs)

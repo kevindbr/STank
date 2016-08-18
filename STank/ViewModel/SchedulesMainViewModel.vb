@@ -48,12 +48,15 @@ Public Class SchedulesMainViewModel
 
         Dim allErrors As List(Of String) = New List(Of String)
         Dim error1 = "No Scheduler report provided"
-        'Dim error1 = "No PPCL document provided"
-        'Dim error2 = "No Name Change Document Path Specified"
+        Dim error2 = "No Panel Connection Detected"
         'Dim error3 = "Set Define Statements for PPCL"
 
         If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.SchedulerReport.Path) Then
             allErrors.Add(error1)
+        End If
+
+        If mSTankProj.Panel.Port.PortName.Equals("No Active Comm Ports") Or Not mSTankProj.Panel.Port.LoginValid Then
+            allErrors.Add(error2)
         End If
 
         'If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.NameChangeDocument.Path) Then

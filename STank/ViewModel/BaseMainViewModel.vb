@@ -134,30 +134,32 @@ Public MustInherit Class BaseMainViewModel
 
 
     Public Shared Sub WriteLog(ByVal line As String)
+        If Not (dispatcher Is Nothing) Then
+            dispatcher.Invoke(Sub()
 
-        Dispatcher.Invoke(Sub()
+                                  If line = "" Then Return 'when stderr is non-empty, stdout will be
 
-                              If line = "" Then Return 'when stderr is non-empty, stdout will be
+                                  If Not (logBox Is Nothing) Then
+                                      logBox.Items.Add(line)
 
-                              LogBox.Items.Add(line)
+                                      If logBox.Items.Count > 10 Then
+                                          logBox.Items.RemoveAt(0)
+                                      End If
 
-                              If LogBox.Items.Count > 10 Then
-                                  LogBox.Items.RemoveAt(0)
-                              End If
+                                      'log.SelectedIndex = log.Items.Count - 1
+                                      'log.SelectedIndex = -1
 
-                              'log.SelectedIndex = log.Items.Count - 1
-                              'log.SelectedIndex = -1
-
-                              'Scroll to last entry
-                              Dim svAutomation As ListBoxAutomationPeer = ScrollViewerAutomationPeer.CreatePeerForElement(LogBox)
-                              Dim scrollInterface As IScrollProvider = svAutomation.GetPattern(PatternInterface.Scroll)
-                              Dim scrollVertical As ScrollAmount = ScrollAmount.LargeIncrement
-                              Dim scrollHorizontal As ScrollAmount = ScrollAmount.NoAmount
-                              If scrollInterface.VerticallyScrollable Then
-                                  scrollInterface.Scroll(scrollHorizontal, scrollVertical)
-                              End If
-
-                          End Sub)
+                                      'Scroll to last entry
+                                      Dim svAutomation As ListBoxAutomationPeer = ScrollViewerAutomationPeer.CreatePeerForElement(logBox)
+                                      Dim scrollInterface As IScrollProvider = svAutomation.GetPattern(PatternInterface.Scroll)
+                                      Dim scrollVertical As ScrollAmount = ScrollAmount.LargeIncrement
+                                      Dim scrollHorizontal As ScrollAmount = ScrollAmount.NoAmount
+                                      If scrollInterface.VerticallyScrollable Then
+                                          scrollInterface.Scroll(scrollHorizontal, scrollVertical)
+                                      End If
+                                  End If
+                              End Sub)
+        End If
     End Sub
 
 

@@ -336,21 +336,22 @@ Class MainWindow
 
     Private Sub updateButtons()
 
-        If mMainViewModel.getProj().Panel.Port.PortName.Equals("No Active Comm Ports") Then
-            Dim bi3 As New BitmapImage
-            bi3.BeginInit()
-            bi3.UriSource = New Uri("Resources/unplug.png", UriKind.Relative)
-            bi3.EndInit()
-            connectionImage.Source = bi3
-            connectionImage.ToolTip = "Panel Disconnected"
+        If Not mMainViewModel.getProj().Panel.Port.PortName.Equals("No Active Comm Ports") And mMainViewModel.getProj.Panel.Port.LoginValid Then
 
-        Else
             Dim bi3 As New BitmapImage
             bi3.BeginInit()
             bi3.UriSource = New Uri("Resources/plug.png", UriKind.Relative)
             bi3.EndInit()
             connectionImage.Source = bi3
             connectionImage.ToolTip = "Panel Connected"
+        Else
+
+            Dim bi3 As New BitmapImage
+            bi3.BeginInit()
+            bi3.UriSource = New Uri("Resources/unplug.png", UriKind.Relative)
+            bi3.EndInit()
+            connectionImage.Source = bi3
+            connectionImage.ToolTip = "Panel Disconnected"
         End If
 
 
@@ -462,15 +463,25 @@ Class MainWindow
             End If
 
 
+            If nextStep = 5 Then
+                If showMessage Then
+                    Dim nextView As SchedulesMainView = New SchedulesMainView(mMainViewModel)
+                    nextView.Show()
+                End If
+
+                If Not showMessage Then
+                    Dim message As GeneralPopupView = New GeneralPopupView("Please complete all dependencies before proceeding to this step")
+                    message.Show()
+                End If
+            End If
+
+
             If nextStep = 6 Then
                 Dim nextView As SSTOMainView = New SSTOMainView(mMainViewModel)
                 nextView.Show()
             End If
 
-            If nextStep = 5 Then
-                Dim nextView As SchedulesMainView = New SchedulesMainView(mMainViewModel)
-                nextView.Show()
-            End If
+
 
             If nextStep = 0 Then
                 Dim nextView As MessageView = New MessageView()

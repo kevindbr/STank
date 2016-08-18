@@ -4,18 +4,19 @@
     Public mConnectedPorts As List(Of String)
 
 
-    Sub New()
-        mCommPort = New CommPort()
-        mConnectedPorts = New List(Of String)
-        mCommPort.IntializeData()
+    Sub New(commPort As CommPort)
+        mCommPort = commPort
     End Sub
 
     ''' <summary>
     ''' Update comm port object depending on information received from UI
     ''' </summary>
     ''' <remarks></remarks>
-    Sub validateCommPort()
+    Function validateCommPort() As Boolean
 
-    End Sub
+        Dim response = mCommPort.TestLogin()
+        Return response
+
+    End Function
 
 End Class

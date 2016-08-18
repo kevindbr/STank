@@ -336,8 +336,11 @@ Class FindAndReplaceMainView
         End If
 
         If Not runClicked Then
-            numberOfErrors += 1
+            If Not mMainViewModel.getProj().NameChangeStatus.Equals("complete") Then
+                numberOfErrors += 1
+            End If
         End If
+
         'For now, if the user clicks run, then we set status to complete, later we need to actually check if run was completed without errors
         If runClicked Then
             numberOfErrors = 0

@@ -13,16 +13,18 @@ Public Class ConnectionView
     ''' <remarks></remarks>
     Sub New(ByRef mainViewModel As MainViewModel)
         mMainViewModel = mainViewModel
-        mConnectionViewModel = New ConnectionViewModel()
+        mConnectionViewModel = New ConnectionViewModel(mMainViewModel.getProj.Panel.Port)
         InitializeComponent()
 
         hostString.DataContext = mConnectionViewModel.mCommPort
         tcpPort.DataContext = mConnectionViewModel.mCommPort
+        userName.DataContext = mConnectionViewModel.mCommPort
+        password.DataContext = mConnectionViewModel.mCommPort
+
         searchForPorts()
         serialStackPanel.Visibility = Windows.Visibility.Visible
         tcpStackPanel.Visibility = Windows.Visibility.Hidden
-        serialStackPanel.Height = "200"
-        tcpStackPanel.Height = "0"
+        serialStackPanel.Height = "240"
         isSerial = True
     End Sub
 
@@ -36,7 +38,7 @@ Public Class ConnectionView
         tcpStackPanel.Visibility = Windows.Visibility.Visible
         serialStackPanel.Visibility = Windows.Visibility.Hidden
         serialStackPanel.Height = "0"
-        tcpStackPanel.Height = "200"
+        tcpStackPanel.Height = "240"
         isSerial = False
     End Sub
 
@@ -49,7 +51,7 @@ Public Class ConnectionView
     Private Sub showSerialOptions(sender As Object, e As RoutedEventArgs)
         serialStackPanel.Visibility = Windows.Visibility.Visible
         tcpStackPanel.Visibility = Windows.Visibility.Hidden
-        serialStackPanel.Height = "200"
+        serialStackPanel.Height = "240"
         tcpStackPanel.Height = "0"
         isSerial = True
     End Sub
@@ -61,10 +63,24 @@ Public Class ConnectionView
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub saveNewConnection(sender As Object, e As RoutedEventArgs)
-        mConnectionViewModel.validateCommPort()
-        mMainViewModel.addNewPort(mConnectionViewModel.mCommPort)
-        Dim message As GeneralPopupView = New GeneralPopupView("New panel connection established using : " + mConnectionViewModel.mCommPort.PortName)
-        message.Show()
+        Dim successfulConnection = mConnectionViewModel.validateCommPort()
+
+        If (successfulConnection) Then
+            mMainViewModel.addNewPort(mConnectionViewModel.mCommPort)
+            mMainViewModel.getProj.Panel.Port.PortName = mConnectionViewModel.mCommPort.PortName
+            Dim message As GeneralPopupView = New GeneralPopupView("New panel connection established using : " + mConnectionViewModel.mCommPort.PortName)
+            message.Show()
+        End If
+
+        If Not (successfulConnection) Then
+            Dim message As GeneralPopupView = New GeneralPopupView("Connection to panel failed, please check username and password for: " + mConnectionViewModel.mCommPort.PortName)
+            mMainViewModel.getProj.Panel.Port.PortName = mConnectionViewModel.mCommPort.PortName
+            message.Show()
+        End If
+
+
+
+
         Close()
     End Sub
 

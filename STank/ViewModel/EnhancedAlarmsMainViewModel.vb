@@ -58,7 +58,7 @@ Public Class EnhancedAlarmsMainViewModel
         End If
 
 
-        If mSTankProj.Panel.Port.PortName = "null" Then
+        If mSTankProj.Panel.Port.PortName.Equals("No Active Comm Ports") Or Not mSTankProj.Panel.Port.LoginValid Then
             allErrors.Add(error2)
         End If
 
