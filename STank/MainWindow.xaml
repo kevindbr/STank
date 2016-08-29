@@ -90,6 +90,12 @@
             <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
                 <StackPanel Margin="0 0 0 20" />
                 <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" />
+
+                <StackPanel Orientation="Horizontal">
+                    <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 0 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="auto" Click="browseClicked">Set Log File Location</Button>
+                    <Label  HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="12">Current Location:</Label>
+                    <TextBox x:Name="LogDirectory" IsEnabled="False" Text="{Binding Path=LogPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0"></TextBox>
+                </StackPanel>
             </StackPanel>
 
             <StackPanel Height="30" Background="#dfe6ed"  Orientation="Horizontal" Grid.Row="4" Grid.ColumnSpan="2" VerticalAlignment="Bottom" >

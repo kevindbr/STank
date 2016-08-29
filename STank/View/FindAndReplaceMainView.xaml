@@ -37,7 +37,7 @@
                     <Button Style="{StaticResource AccentedSquareButtonStyle}" Margin="10 10 0 0"  BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="auto" Click="browseNameClicked">Set Name Change Document</Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Label  HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12">PPCL Document:</Label>
+                    <Label  HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="12">PPCL Documents:</Label>
                     <TextBox x:Name="workingDirectory" IsEnabled="False" Text="{Binding Path=Panel.Ppcl.Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0"></TextBox>
                     
                 </StackPanel>

@@ -10,7 +10,7 @@ Public Class EngineeringUnitsProgressView
 
     Private mMainViewModel As MainViewModel
     Private bw As BackgroundWorker = New BackgroundWorker
-
+    Private Property logFName = "EngineeringUnits"
     ''' <summary>
     ''' Bring in mainViewModel to update and change project data
     ''' </summary>
@@ -23,10 +23,12 @@ Public Class EngineeringUnitsProgressView
 
     End Sub
 
+
+
     Private Sub IntializeWindow()
         ' updateDefineGrid()
 
-        BaseMainViewModel.InitUI(Dispatcher.CurrentDispatcher, log, progressBar)
+        BaseMainViewModel.InitUI(Dispatcher.CurrentDispatcher, log, progressBar, logFName, mMainViewModel.getProj.LogPath)
 
         bw.WorkerReportsProgress = True
         bw.WorkerSupportsCancellation = True

@@ -8,6 +8,7 @@ Public Class FindAndReplaceView
 
     Private mMainViewModel As MainViewModel
     Private bw As BackgroundWorker = New BackgroundWorker
+    Private Property logFName = "FindAndReplace"
 
     ''' <summary>
     ''' Bring in mainViewModel to update and change project data
@@ -23,7 +24,7 @@ Public Class FindAndReplaceView
     Private Sub IntializeWindow()
         ' updateDefineGrid()
 
-        BaseMainViewModel.InitUI(Windows.Threading.Dispatcher.CurrentDispatcher, log, progressBar)
+        BaseMainViewModel.InitUI(Windows.Threading.Dispatcher.CurrentDispatcher, log, progressBar, logFName, mMainViewModel.getProj.LogPath)
 
         bw.WorkerReportsProgress = True
         bw.WorkerSupportsCancellation = True

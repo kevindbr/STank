@@ -66,28 +66,26 @@ Class FindAndReplaceMainView
     End Sub
 
     Private Sub browseProgramClicked(sender As Object, e As RoutedEventArgs)
-        'Dim folderDialog = New FolderBrowserDialog()
-        'folderDialog.SelectedPath = "C:\"
-
-        'Dim result = folderDialog.ShowDialog()
-        'If (result.ToString() = "OK") Then
-        '    mMainViewModel.getProj().Directory.Path = folderDialog.SelectedPath
-        'End If
 
         'Create OpenFileDialog
         Dim dlg = New Microsoft.Win32.OpenFileDialog()
         dlg.DefaultExt = ".pcl" ' Default file extension
         dlg.Filter = "pcl documents (.pcl)|*.pcl" ' Filter files by extension
-
+        dlg.Multiselect = True
         ' Set filter for file extension and default file extension
         ' Display OpenFileDialog by calling ShowDialog method
         Dim result = dlg.ShowDialog()
 
+        Dim allPaths = New List(Of String)
+
         ' Get the selected file name and display in a TextBox
         If (result = True) Then
-            mMainViewModel.getProj().Panel.Ppcl.Path = dlg.FileName
-        End If
+            For Each file In dlg.FileNames
+                allPaths.Add(file)
+            Next
 
+            mMainViewModel.getProj().Panel.Ppcl.Paths = allPaths
+        End If
     End Sub
 
 

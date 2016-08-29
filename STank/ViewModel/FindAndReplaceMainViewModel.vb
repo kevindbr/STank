@@ -51,7 +51,7 @@ Public Class FindAndReplaceMainViewModel
         Dim error1 = "No PPCL document provided"
         Dim error2 = "No Name Change Document Path Specified"
 
-        If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.Ppcl.Path) Then
+        If Not My.Computer.FileSystem.FileExists(mSTankProj.Panel.Ppcl.Paths.First) Then
             allErrors.Add(error1)
         End If
 

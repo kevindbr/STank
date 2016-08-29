@@ -22,6 +22,7 @@ Public Class STankProj
     Private mEnhancedAlarmsStatus As String
     Private mStartStopStatus As String
     Private mSchedulesStatus As String
+    Private mLogPath As String
 
 
     Public Event PropertyChanged As PropertyChangedEventHandler _
@@ -98,6 +99,17 @@ Public Class STankProj
         End Set
     End Property
 
+    Public Property LogPath As String
+        Get
+            Return mLogPath
+        End Get
+
+        Set(value As String)
+            mLogPath = value
+            NotifyPropertyChanged("LogPath")
+        End Set
+    End Property
+
     Public Property Panel As Panel
         Get
             Return mPanel
@@ -155,6 +167,7 @@ Public Class STankProj
         mEnhancedAlarmsStatus = "incomplete"
         mStartStopStatus = "incomplete"
         mSchedulesStatus = "incomplete"
+        mLogPath = "c:\logs"
 
     End Sub
 

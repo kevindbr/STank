@@ -139,7 +139,8 @@ Implements INotifyPropertyChanged.PropertyChanged
 
         mPpcl = New Ppcl()
         mPpcl.Path = Ppcl.EmptyPath
-
+        mPpcl.Paths = New List(Of String)
+        mPpcl.Paths.Add(Ppcl.EmptyPath)
 
         mNameChangeDoc = New NameChangeDoc()
         mNameChangeDoc.Path = NameChangeDoc.EmptyPath

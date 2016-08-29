@@ -414,44 +414,49 @@ Public Class CommPort
 
 
     Function CreateSchedule(ByVal scheduleName As String) As String
-
-        Dim resp As String
-
-        SendCommand("#")        'Top of menu
-        SendCommand("a")        'Application
-        SendCommand("b")        'BacNet
-        SendCommand("s")        'Schedule
-        SendCommand("e")        'Edit
-        SendCommand("a")        'Add
-        SendCommand("", True)   'Field panel
-        SendCommand(scheduleName, True)   'Schedule name
-        SendCommand("", True)        'Schedule ID (should be auto-assigned, then we get it below)
-        SendCommand("", True)   'Description
-        SendCommand("1", True)   'Default Value
-        SendCommand("u")    'Bool, Real, Enum, Unsigned
-        SendCommand("16", True)    'Priority for writing (1-16)
-        SendCommand("", True)   'Start date (MM/DD/YYYY) - would assume blank means forever
-        SendCommand("", True)   'Weekday (m,tu,w,th,f,sa,su,*)   - not sure what this means, but leave blank for now?
-        SendCommand("", True)   'Stop date (MM/DD/YYYY) - would assume blank means forever
-        SendCommand("", True)   'Weekday (m,tu,w,th,f,sa,su,*)   - not sure what this means, but leave blank for now?
-        SendCommand("n")   'Out of service (y/n)
-        SendCommand("y")   'SSTO enabled (y/n)
-        resp = SendCommand("y")   'SI unit (y/n)
-        'check that response contains "Command successful"
-
-        SendCommand("#")        'Top of menu
-        SendCommand("a")        'Application
-        SendCommand("b")        'BacNet
-        SendCommand("s")        'Schedule
-        SendCommand("l")        'Log    (or 'd' to Display - Schedule report - lets us see what was done above)
-        SendCommand("", True)   'Field panel
-        SendCommand("", True)   'First Id
-        resp = SendCommand("", True)   'Last Id
-        Dim scheduleId = Regex.Matches(resp, "([0-9]+)\s+" + scheduleName).Item(0).Groups(1).ToString()
-        'mMainViewModel.getProj.Panel.SchedulerReport.ScheduleId = scheduleId
-        SendCommand("", True)
+        Dim scheduleId = ""
+        Try
 
 
+            Dim resp As String
+
+            SendCommand("#")        'Top of menu
+            SendCommand("a")        'Application
+            SendCommand("b")        'BacNet
+            SendCommand("s")        'Schedule
+            SendCommand("e")        'Edit
+            SendCommand("a")        'Add
+            SendCommand("", True)   'Field panel
+            SendCommand(scheduleName, True)   'Schedule name
+            SendCommand("", True)        'Schedule ID (should be auto-assigned, then we get it below)
+            SendCommand("", True)   'Description
+            SendCommand("1", True)   'Default Value
+            SendCommand("u")    'Bool, Real, Enum, Unsigned
+            SendCommand("16", True)    'Priority for writing (1-16)
+            SendCommand("", True)   'Start date (MM/DD/YYYY) - would assume blank means forever
+            SendCommand("", True)   'Weekday (m,tu,w,th,f,sa,su,*)   - not sure what this means, but leave blank for now?
+            SendCommand("", True)   'Stop date (MM/DD/YYYY) - would assume blank means forever
+            SendCommand("", True)   'Weekday (m,tu,w,th,f,sa,su,*)   - not sure what this means, but leave blank for now?
+            SendCommand("n")   'Out of service (y/n)
+            SendCommand("y")   'SSTO enabled (y/n)
+            resp = SendCommand("y")   'SI unit (y/n)
+            'check that response contains "Command successful"
+
+            SendCommand("#")        'Top of menu
+            SendCommand("a")        'Application
+            SendCommand("b")        'BacNet
+            SendCommand("s")        'Schedule
+            SendCommand("l")        'Log    (or 'd' to Display - Schedule report - lets us see what was done above)
+            SendCommand("", True)   'Field panel
+            SendCommand("", True)   'First Id
+            resp = SendCommand("", True)   'Last Id
+            scheduleId = Regex.Matches(resp, "([0-9]+)\s+" + scheduleName).Item(0).Groups(1).ToString()
+            'mMainViewModel.getProj.Panel.SchedulerReport.ScheduleId = scheduleId
+            SendCommand("", True)
+
+        Catch ex As Exception
+
+        End Try
 
         'mPanel.SchedulerReport.ScheduleId = scheduleId     'why is mPanel null here?
 
@@ -628,6 +633,20 @@ Public Class CommPort
             resp = SendCommand(zoneData("Differential"), True)   'Differential
             'check that response contains "Command successful"
         End If
+
+        'If (zoneData("Optimization") = "Enabled") Then
+        '    SendCommand("#")        'Top of menu
+        '    SendCommand("a")        'Application
+        '    SendCommand("b")        'BacNet
+        '    SendCommand("t")        'ssTo
+        '    SendCommand("o")        'optimization
+        '    SendCommand("a")        'Add
+        '    SendCommand(scheduleId, True)   'Schedule id
+        '    SendCommand(GetSstoData(SstoMode.Heating, zoneData("Mode (Night)")), True)   'Night mode-htg
+        '    SendCommand(GetSstoData(SstoMode.Cooling, zoneData("Mode (Night)")), True)   'Night mode-clg
+        '    resp = SendCommand(zoneData("Differential"), True)   'Differential
+        '    'check that response contains "Command successful"
+        'End If
 
         BaseMainViewModel.UpdateProgress(1.0)
 

@@ -29,10 +29,7 @@ Class MainWindow
         mMainViewModel.IntializeProject()
         bw.WorkerReportsProgress = True
         bw.WorkerSupportsCancellation = True
-
-
-        '
-
+        LogDirectory.DataContext = mMainViewModel.getProj()
         ' AddHandler bw.DoWork, AddressOf bw_RunFindAndReplace
 		
         'AddHandler bw.ProgressChanged, AddressOf bw_ProgressChanged
@@ -86,6 +83,23 @@ Class MainWindow
             mMainViewModel.getProj().Panel.Ppcl.Path = dlg.FileName
         End If
 
+    End Sub
+
+
+
+    Private Sub browseClicked(sender As Object, e As RoutedEventArgs)
+        'Create OpenFileDialog
+        Dim dlg = New System.Windows.Forms.FolderBrowserDialog()
+
+
+        ' Set filter for file extension and default file extension
+        ' Display OpenFileDialog by calling ShowDialog method
+        Dim result = dlg.ShowDialog()
+
+        ' Get the selected file name and display in a TextBox
+        If (result = True) Then
+            mMainViewModel.getProj().LogPath = dlg.SelectedPath
+        End If
     End Sub
 
 

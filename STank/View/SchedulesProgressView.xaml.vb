@@ -11,6 +11,7 @@ Public Class SchedulesProgressView
 
     Private mMainViewModel As MainViewModel
     Private bw As BackgroundWorker = New BackgroundWorker
+    Private Property logFName = "Schedules"
 
     ''' <summary>
     ''' Bring in mainViewModel to update and change project data
@@ -25,7 +26,7 @@ Public Class SchedulesProgressView
 
     Private Sub IntializeWindow()
         ' updateDefineGrid()
-        BaseMainViewModel.InitUI(Windows.Threading.Dispatcher.CurrentDispatcher, log, progressBar)
+        BaseMainViewModel.InitUI(Dispatcher.CurrentDispatcher, log, progressBar, logFName, mMainViewModel.getProj.LogPath)
         bw.WorkerReportsProgress = True
         bw.WorkerSupportsCancellation = True
         AddHandler bw.DoWork, AddressOf bw_RunFindAndReplace

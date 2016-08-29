@@ -91,7 +91,10 @@ Public Class ZoneDefinitionReport
 
             If (name <> "" And val <> "") Then
                 Try
-                    mZoneData.Add(name + nameSuffix, val)
+                    If Not (mZoneData.Keys.Contains(name + nameSuffix)) Then
+                        mZoneData.Add(name + nameSuffix, val)
+                    End If
+
                 Catch
                     MsgBox("Please check zone definition report")
                 End Try

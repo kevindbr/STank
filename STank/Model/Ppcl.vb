@@ -24,6 +24,8 @@ Public Class Ppcl
     Private mOldDefinitions As New Collection   'entire DEFINE statements
 
     Private mPath As String
+    Private mPaths As List(Of String)
+
     Public Shared EmptyPath As String = "No PPCL path Specified"
 
 
@@ -43,17 +45,34 @@ Implements INotifyPropertyChanged.PropertyChanged
 
         Set(value As String)
             mPath = value
-
-            If isValidDocument(mPath) Then
-                'findAndReplaceNoQuotes()    'reads file contents into mText, doing some basic error checking along the way
-                mText = File.ReadAllText(mPath)
-                getVariables()
-                getOldDefine()
-            End If
-
             NotifyPropertyChanged("Path")
 
+        End Set
+    End Property
 
+    Public Property Paths As List(Of String)
+        Get
+            Return mPaths
+        End Get
+
+        Set(value As List(Of String))
+            mPaths = value
+            mText = ""
+            Dim allPaths = ""
+            If (mPaths.Count > 0) Then
+                For Each singlePath In mPaths
+                    If isValidDocument(singlePath) Then
+                        'findAndReplaceNoQuotes()    'reads file contents into mText, doing some basic error checking along the way
+                        mText += File.ReadAllText(singlePath)
+                        allPaths += singlePath + " "
+                    End If
+                Next
+                getVariables()
+                getOldDefine()
+                Path = allPaths
+
+            End If
+            NotifyPropertyChanged("Paths")
         End Set
     End Property
 
@@ -232,11 +251,19 @@ Implements INotifyPropertyChanged.PropertyChanged
         For Each m As Match In matches
             Dim variable As String = m.Groups(1).ToString
             Dim val As String = m.Groups(2).ToString
-            mNewText = mNewText.Replace(m.ToString, "DEFINE(" + variable + ",""" + mNewVariables(variable) + """)")
+
+            If (mNewVariables.Count > 0) Then
+                If (mNewVariables.Keys.Contains(variable)) Then
+                    mNewText = mNewText.Replace(m.ToString, "DEFINE(" + variable + ",""" + mNewVariables(variable) + """)")
+                End If
+            End If
         Next m
 
 
-        File.WriteAllText(mPath & ".new", mNewText)
+        For Each singlePath In mPaths
+            File.WriteAllText(singlePath & ".new", mNewText)
+        Next
+
 
     End Sub
 
@@ -333,7 +360,10 @@ Implements INotifyPropertyChanged.PropertyChanged
         Dim matches As MatchCollection = Regex.Matches(mText, Regex.Escape("DEFINE(") & "(.*)" & Regex.Escape(",""") & "(.*)" & """" & "(.*)")
         'Dim variables As New Dictionary(Of String, String)()
         For Each m As Match In matches
-            mVariables.Add(m.Groups(1).ToString(), m.Groups(2).ToString())
+            If (Not mVariables.Keys.Contains(m.Groups(1).ToString())) Then
+                mVariables.Add(m.Groups(1).ToString(), m.Groups(2).ToString())
+            End If
+
         Next m
         'Return variables
 

@@ -3,20 +3,34 @@ Imports System.Windows.Threading
 Imports System.Windows.Automation.Peers
 Imports System.Windows.Automation.Provider
 Imports System.Windows.Automation
+Imports System.Text
 
 
 Public MustInherit Class BaseMainViewModel
 
     Protected mSTankProj As STankProj
     'Private portNameDefault = "No Active Comm Ports"
+    Private Shared dispatcher As Dispatcher
 
+    Private Shared logBox As System.Windows.Controls.ListBox
+
+    Private Shared progressBar As System.Windows.Controls.ProgressBar
+
+    Private Shared Property logFileName As String
+
+    Private Shared Property allLogText As StringBuilder
+
+    Private Shared Property logFilePath As String
 
     Public Shared Sub InitUI(ByVal dispatcher As Dispatcher, ByVal logBox As System.Windows.Controls.ListBox,
-                             ByVal progressBar As System.Windows.Controls.ProgressBar)
+                             ByVal progressBar As System.Windows.Controls.ProgressBar, ByVal logFName As String, ByVal logFPath As String)
 
         BaseMainViewModel.dispatcher = dispatcher
         BaseMainViewModel.logBox = logBox
         BaseMainViewModel.progressBar = progressBar
+        BaseMainViewModel.logFileName = logFName
+        BaseMainViewModel.logFilePath = logFPath
+        BaseMainViewModel.allLogText = New StringBuilder()
 
     End Sub
 
@@ -25,15 +39,14 @@ Public MustInherit Class BaseMainViewModel
         BaseMainViewModel.dispatcher = Nothing
         BaseMainViewModel.logBox = Nothing
         BaseMainViewModel.progressBar = Nothing
+        BaseMainViewModel.logFileName = Nothing
+        BaseMainViewModel.logFilePath = Nothing
+        BaseMainViewModel.allLogText.Clear()
 
     End Sub
 
 
-    Private Shared dispatcher As Dispatcher
 
-    Private Shared logBox As System.Windows.Controls.ListBox
-
-    Private Shared progressBar As System.Windows.Controls.ProgressBar
 
 
     Public Sub New(ByVal sTankProj As STankProj)
@@ -141,6 +154,7 @@ Public MustInherit Class BaseMainViewModel
 
                                   If Not (logBox Is Nothing) Then
                                       logBox.Items.Add(line)
+                                      allLogText.AppendLine(line)
 
                                       If logBox.Items.Count > 10 Then
                                           logBox.Items.RemoveAt(0)
@@ -162,7 +176,9 @@ Public MustInherit Class BaseMainViewModel
         End If
     End Sub
 
-
+    Public Shared Sub WriteFile(ByVal line As String)
+        IO.File.WriteAllText(logFilePath & DateTime.Now & logFileName, allLogText.ToString())
+    End Sub
 
 
 
@@ -192,9 +208,9 @@ Public MustInherit Class BaseMainViewModel
 
     Public Shared Sub UpdateProgress(ByVal fraction As Double)
 
-        Dispatcher.Invoke(Sub()
+        dispatcher.Invoke(Sub()
 
-                              ProgressBar.Value = fraction * 100
+                              progressBar.Value = fraction * 100
 
                           End Sub)
 
