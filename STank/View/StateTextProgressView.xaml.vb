@@ -99,8 +99,6 @@ Public Class StateTextProgressView
 
         'should already have lenum points from when panel attributes doc path was set
 
-        BaseMainViewModel.ResetUI()
-
     End Sub
 
 
@@ -137,6 +135,8 @@ Public Class StateTextProgressView
         doneButton.Content = "Done"
         doneButton.IsEnabled = True
         message.Show()
+        BaseMainViewModel.WriteFile()
+        BaseMainViewModel.ResetUI()
     End Sub
 
 

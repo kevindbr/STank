@@ -176,8 +176,12 @@ Public MustInherit Class BaseMainViewModel
         End If
     End Sub
 
-    Public Shared Sub WriteFile(ByVal line As String)
-        IO.File.WriteAllText(logFilePath & DateTime.Now & logFileName, allLogText.ToString())
+    Public Shared Sub WriteFile()
+
+        If Not (allLogText Is Nothing) Then
+            IO.File.WriteAllText(logFilePath & "\" & String.Format("text-{0:yyyy-MM-dd_hh-mm-ss-tt}.bin", DateTime.Now) & logFileName & ".txt", allLogText.ToString())
+        End If
+
     End Sub
 
 

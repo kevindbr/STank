@@ -40,7 +40,7 @@ Public Class SSTOProgressView
         Dim fieldPanel As String = panel.Port.Login()
         panel.Port.ConfigureSSTO(panel.NameChangeDocument.ReplacementValues, panel.ZoneDefinitionReport.ZoneData, panel.SchedulerReport.ScheduleId)
         panel.Port.Logout()
-        BaseMainViewModel.ResetUI()
+
     End Sub
 
 
@@ -49,6 +49,9 @@ Public Class SSTOProgressView
         doneButton.Content = "Done"
         doneButton.IsEnabled = True
         message.Show()
+        BaseMainViewModel.WriteFile()
+        BaseMainViewModel.ResetUI()
+
     End Sub
 
 

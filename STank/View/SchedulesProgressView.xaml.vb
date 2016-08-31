@@ -58,10 +58,10 @@ Public Class SchedulesProgressView
         BaseMainViewModel.UpdateProgress(0.1)
 
 
-        For Each kvp As KeyValuePair(Of String, Tuple(Of String, String)) In panel.SchedulerReport.Schedules
+        For Each kvp As KeyValuePair(Of String, Tuple(Of String, String, String)) In panel.SchedulerReport.Schedules
             Dim weekday As String = kvp.Key
-            Dim times As Tuple(Of String, String) = kvp.Value
-            port.PopulateSchedule(scheduleId, weekday, times.Item1, times.Item2)
+            Dim times As Tuple(Of String, String, String) = kvp.Value
+            port.PopulateSchedule(scheduleId, weekday, times.Item2, times.Item3)
         Next
 
         BaseMainViewModel.UpdateProgress(0.2)
@@ -82,16 +82,14 @@ Public Class SchedulesProgressView
             Dim commandEncodedName As String = port.CreateCommandActions(commandName, commandId, fieldPanel, stateTextTable, pointId)
 
             BaseMainViewModel.UpdateProgress(0.6)
-
             port.LinkScheduleToCommand(scheduleId, commandEncodedName)
-
         Next
 
         BaseMainViewModel.UpdateProgress(1.0)
 
         port.Logout()
 
-        BaseMainViewModel.ResetUI()
+
 
     End Sub
 
@@ -100,6 +98,8 @@ Public Class SchedulesProgressView
         doneButton.Content = "Done"
         doneButton.IsEnabled = True
         message.Show()
+        BaseMainViewModel.WriteFile()
+        BaseMainViewModel.ResetUI()
     End Sub
 
 

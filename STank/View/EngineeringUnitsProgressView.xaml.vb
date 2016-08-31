@@ -38,11 +38,7 @@ Public Class EngineeringUnitsProgressView
     End Sub
 
     Private Sub bw_RunFindAndReplace(ByVal sender As Object, ByVal e As DoWorkEventArgs)
-
         mMainViewModel.getProj.Panel.PanelAttributesDocument.ReplaceAllEngineeringUnits()
-
-        BaseMainViewModel.ResetUI()
-
     End Sub
 
     Private Sub showDone()
@@ -50,6 +46,8 @@ Public Class EngineeringUnitsProgressView
         doneButton.Content = "Done"
         doneButton.IsEnabled = True
         message.Show()
+        BaseMainViewModel.WriteFile()
+        BaseMainViewModel.ResetUI()
     End Sub
 
 

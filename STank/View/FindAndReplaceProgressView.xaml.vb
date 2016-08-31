@@ -45,8 +45,6 @@ Public Class FindAndReplaceView
         ppcl.findAndReplaceInFile2(nameChangeDoc.ReplacementValues)
         nameChangeDoc.PerformNameChange()
 
-        BaseMainViewModel.ResetUI()
-
     End Sub
 
 
@@ -59,6 +57,8 @@ Public Class FindAndReplaceView
         doneButton.Content = "Done"
         doneButton.IsEnabled = True
         message.Show()
+        BaseMainViewModel.WriteFile()
+        BaseMainViewModel.ResetUI()
     End Sub
 
 

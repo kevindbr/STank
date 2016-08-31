@@ -97,9 +97,8 @@ Class MainWindow
         Dim result = dlg.ShowDialog()
 
         ' Get the selected file name and display in a TextBox
-        If (result = True) Then
-            mMainViewModel.getProj().LogPath = dlg.SelectedPath
-        End If
+        mMainViewModel.getProj().LogPath = dlg.SelectedPath
+
     End Sub
 
 

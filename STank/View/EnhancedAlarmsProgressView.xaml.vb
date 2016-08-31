@@ -58,9 +58,6 @@ Public Class EnhancedAlarmsProgressView
 
         panel.Port.Logout()
 
-
-        BaseMainViewModel.ResetUI()
-
     End Sub
 
 
@@ -74,6 +71,8 @@ Public Class EnhancedAlarmsProgressView
         doneButton.Content = "Done"
         doneButton.IsEnabled = True
         message.Show()
+        BaseMainViewModel.WriteFile()
+        BaseMainViewModel.ResetUI()
     End Sub
 
     Private Sub exitView(sender As Object, e As RoutedEventArgs)
