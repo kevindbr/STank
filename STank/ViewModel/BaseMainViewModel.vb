@@ -178,10 +178,15 @@ Public MustInherit Class BaseMainViewModel
 
     Public Shared Sub WriteFile()
 
-        If Not (allLogText Is Nothing) Then
-            IO.File.WriteAllText(logFilePath & "\" & String.Format("text-{0:yyyy-MM-dd_hh-mm-ss-tt}.bin", DateTime.Now) & logFileName & ".txt", allLogText.ToString())
-        End If
+        Try
+            If Not (allLogText Is Nothing) Then
+                IO.File.WriteAllText(logFilePath & "\" & String.Format("text-{0:yyyy-MM-dd_hh-mm-ss-tt}.bin", DateTime.Now) & logFileName & ".txt", allLogText.ToString())
+            End If
 
+        Catch ex As Exception
+            Dim message As GeneralPopupView = New GeneralPopupView(ex.Message)
+            message.Show()
+        End Try
     End Sub
 
 

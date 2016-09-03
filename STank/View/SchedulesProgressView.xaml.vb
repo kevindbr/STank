@@ -37,59 +37,79 @@ Public Class SchedulesProgressView
 
     Private Sub bw_RunFindAndReplace(ByVal sender As Object, ByVal e As DoWorkEventArgs)
 
-        'TODO: might make sense to move this logic into SchedulerReport...
-
-
         Dim panel = mMainViewModel.getProj.Panel
         Dim port = panel.Port
 
-        Dim fieldPanel As String = port.Login()
+        Try
+            'TODO: might make sense to move this logic into SchedulerReport...
+            Dim fieldPanel As String = port.Login()
 
-        Dim schedulerReport = panel.SchedulerReport
-        Dim replacementValues = panel.NameChangeDocument.ReplacementValues
-        'Dim commandName As String = replacementValues(schedulerReport.ZoneName)     'TODO: currently zone name is not in name change document
-        Dim commandName As String = schedulerReport.ZoneName.Replace(".", "_")
-
-
-        Dim scheduleId As String = port.CreateSchedule(commandName + "_SchedCmd")
-        panel.SchedulerReport.ScheduleId = scheduleId   'not sure if this is still needed.  Maybe for later stepss
-
-        'BaseMainViewModel.WriteLog(String.Format("Creating BACnet schedule object '{0}'", commandName + "_SchedCmd"))
-        BaseMainViewModel.UpdateProgress(0.1)
+            Dim schedulerReport = panel.SchedulerReport
+            Dim replacementValues = panel.NameChangeDocument.ReplacementValues
+            'Dim commandName As String = replacementValues(schedulerReport.ZoneName)     'TODO: currently zone name is not in name change document
+            Dim listOfScheduleIdsZoneNames As List(Of KeyValuePair(Of String, String)) = New List(Of KeyValuePair(Of String, String))
+            Dim totalCount = 1
 
 
-        For Each kvp As KeyValuePair(Of String, Tuple(Of String, String, String)) In panel.SchedulerReport.Schedules
-            Dim weekday As String = kvp.Key
-            Dim times As Tuple(Of String, String, String) = kvp.Value
-            port.PopulateSchedule(scheduleId, weekday, times.Item2, times.Item3)
-        Next
+            For Each kvp As KeyValuePair(Of String, Tuple(Of String, String, String)) In panel.SchedulerReport.Schedules
+                BaseMainViewModel.UpdateProgress(totalCount / panel.SchedulerReport.Schedules.Count)
+                totalCount += 1
+                Dim zoneName As String = kvp.Value.Item1
+                Dim commandName As String = zoneName.Replace(".", "_")
+                Dim scheduleId = ""
 
-        BaseMainViewModel.UpdateProgress(0.2)
-
-
-        Dim i As Integer = 1
-        For Each kvp As KeyValuePair(Of String, String) In panel.PanelAttributesDocument.LenumPoints
-
-            Dim pointName As String = kvp.Key
-            Dim stateTextTableId As String = kvp.Value
-
-            Dim stateTextTable As StateTextDoc.StateTextTable = panel.StateTextDocument.GetStateTextByID(stateTextTableId)
-            Dim pointId As String = port.GetPointInstanceNumber(pointName)
-
-            Dim commandId As String = port.CreateBacnetCommand(commandName + If(i > 1, CStr(i), ""))     'need new command for each point
-            BaseMainViewModel.UpdateProgress(0.4)
-
-            Dim commandEncodedName As String = port.CreateCommandActions(commandName, commandId, fieldPanel, stateTextTable, pointId)
-
-            BaseMainViewModel.UpdateProgress(0.6)
-            port.LinkScheduleToCommand(scheduleId, commandEncodedName)
-        Next
-
-        BaseMainViewModel.UpdateProgress(1.0)
-
-        port.Logout()
+                If (listOfScheduleIdsZoneNames.Count > 0) Then
+                    For Each schPair As KeyValuePair(Of String, String) In listOfScheduleIdsZoneNames
+                        If (schPair.Key = zoneName) Then
+                            scheduleId = schPair.Value
+                        End If
+                    Next
+                End If
 
 
+                If (scheduleId = "") Then
+                    scheduleId = port.CreateSchedule(commandName + "_SchedCmd")
+                    Dim scheduleZonePair = New KeyValuePair(Of String, String)(zoneName, scheduleId)
+
+                    If Not (listOfScheduleIdsZoneNames.Contains(scheduleZonePair)) Then
+                        listOfScheduleIdsZoneNames.Add(scheduleZonePair)
+                    End If
+                End If
+
+                panel.SchedulerReport.ScheduleId = scheduleId   'not sure if this is still needed.  Maybe for later stepss
+
+                'BaseMainViewModel.WriteLog(String.Format("Creating BACnet schedule object '{0}'", commandName + "_SchedCmd"))
+
+                Dim weekday As String = kvp.Key
+                Dim times As Tuple(Of String, String, String) = kvp.Value
+                port.PopulateSchedule(scheduleId, weekday, times.Item2, times.Item3)
+
+                Dim i As Integer = 1
+                For Each kvp2 As KeyValuePair(Of String, String) In panel.PanelAttributesDocument.LenumPoints
+
+                    Dim pointName As String = kvp2.Key
+                    Dim stateTextTableId As String = kvp2.Value
+
+                    Dim stateTextTable As StateTextDoc.StateTextTable = panel.StateTextDocument.GetStateTextByID(stateTextTableId)
+                    Dim pointId As String = port.GetPointInstanceNumber(pointName)
+
+                    Dim commandId As String = port.CreateBacnetCommand(commandName + If(i > 1, CStr(i), ""))     'need new command for each point
+                    Dim commandEncodedName As String = port.CreateCommandActions(commandName, commandId, fieldPanel, stateTextTable, pointId)
+                    port.LinkScheduleToCommand(scheduleId, commandEncodedName)
+                Next
+            Next
+
+            mMainViewModel.getProj.Panel.SchedulerReport.ListOfScheduleIdsZoneNames = listOfScheduleIdsZoneNames
+            BaseMainViewModel.UpdateProgress(1.0)
+            port.Logout()
+
+        Catch ex As Exception
+            port.Logout()
+            Dim message As GeneralPopupView = New GeneralPopupView(ex.Message)
+            doneButton.Content = "Done"
+            doneButton.IsEnabled = True
+            message.Show()
+        End Try
 
     End Sub
 

@@ -47,9 +47,6 @@ Public Class StateTextProgressView
 
         Dim modifiedStateTextTableIds = New List(Of String)
 
-
-
-
         Dim i As Integer = 1
         Dim pointNames As New List(Of String)(panelAttributesDoc.LenumPoints.Keys)
         For Each pointName As String In pointNames
@@ -67,16 +64,24 @@ Public Class StateTextProgressView
             Dim stateTextTable As StateTextDoc.StateTextTable = stateTextDoc.GetStateTextByID(stateTextTableId)
 
             Dim newStateTextTableId As String = stateTextTable.tableId.TrimStart("-")
+
+            If stateTextTable.tableId = newStateTextTableId Then 'This is not a negative table id, must find next available ID
+                newStateTextTableId += getNextStateTextId(panelAttributesDoc.LenumPoints)
+            End If
+
             stateTextTable.tableId = newStateTextTableId
+
+
+
             panelAttributesDoc.LenumPoints(pointName) = newStateTextTableId      'change reference from old table to new table
+
+
+
             stateTextDoc.StateTextTables.Remove(stateTextTableId)
             stateTextDoc.StateTextTables.Add(newStateTextTableId, stateTextTable)
 
-
             'For now, we are simply taking the existing state text table ID with the minus sign stripped off (all built-in text tables have negative
             'numbers, while positives are reserved for custom state text).  More robust would be some code here to look in the panel
-
-
 
             'Don't want to do this more than once per panel - all mode points will likely use same state text
             If Not modifiedStateTextTableIds.Contains(stateTextTable.tableId) Then
@@ -143,6 +148,19 @@ Public Class StateTextProgressView
     Private Sub exitView(sender As Object, e As RoutedEventArgs)
         Close()
     End Sub
+
+    Private Function getNextStateTextId(lPoints As Dictionary(Of String, String)) As String
+        Dim largestId As Int32 = 0
+
+        For Each pointName In lPoints
+            Dim tempNum As Int32 = Int32.Parse(pointName.Value)
+            If largestId < Math.Abs(tempNum) Then
+                largestId = tempNum
+            End If
+        Next
+        Return (largestId + 1)
+
+    End Function
 
 
 End Class

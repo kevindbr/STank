@@ -38,7 +38,16 @@ Public Class SSTOProgressView
     Private Sub bw_RunFindAndReplace(ByVal sender As Object, ByVal e As DoWorkEventArgs)
         Dim panel = mMainViewModel.getProj.Panel
         Dim fieldPanel As String = panel.Port.Login()
-        panel.Port.ConfigureSSTO(panel.NameChangeDocument.ReplacementValues, panel.ZoneDefinitionReport.ZoneData, panel.SchedulerReport.ScheduleId)
+
+        ' We have a list of Zones and their corresponding zone data list
+        ' We have a list of Zones and their corresponding schedule id, we match on those and configure ssto with those data
+        For Each zoneDataList In panel.ZoneDefinitionReport.ZoneData
+            For Each scheduleZoneIdPair In panel.SchedulerReport.ListOfScheduleIdsZoneNames
+                If (zoneDataList.Key = scheduleZoneIdPair.Key) Then
+                    panel.Port.ConfigureSSTO(panel.NameChangeDocument.ReplacementValues, zoneDataList.Value, scheduleZoneIdPair.Value)
+                End If
+            Next
+        Next
         panel.Port.Logout()
 
     End Sub

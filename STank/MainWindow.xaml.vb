@@ -490,8 +490,16 @@ Class MainWindow
 
 
             If nextStep = 6 Then
-                Dim nextView As SSTOMainView = New SSTOMainView(mMainViewModel)
-                nextView.Show()
+                If showMessage Then
+                    Dim nextView As SSTOMainView = New SSTOMainView(mMainViewModel)
+                    nextView.Show()
+                End If
+
+
+                If Not showMessage Then
+                    Dim message As GeneralPopupView = New GeneralPopupView("Please complete all dependencies before proceeding to this step")
+                    message.Show()
+                End If
             End If
 
 

@@ -237,7 +237,7 @@ Implements INotifyPropertyChanged.PropertyChanged
             ' Replace old full names with new full names
             For Each kvp As KeyValuePair(Of String, String) In replacementValues
                 'mNewText = mNewText.Replace(kvp.Key, kvp.Value)
-                tempValue = tempValue.Replace("%" + kvp.Key + "%", kvp.Value)
+                tempValue = tempValue.Replace(kvp.Key, kvp.Value)
                 BaseMainViewModel.WriteLog(String.Format("Changing name '{0}' to '{1}' in PPCL", kvp.Key, kvp.Value))
             Next
 
@@ -249,7 +249,7 @@ Implements INotifyPropertyChanged.PropertyChanged
             'Next
             For Each kvp As KeyValuePair(Of String, String) In mNewVariables
                 ' mNewText = mNewText.Replace(kvp.Value, "%" + kvp.Key + "%")
-                tempValue = tempValue.Replace("%" + kvp.Key + "%", kvp.Value)
+                tempValue = tempValue.Replace("%" + kvp.Value + "%", kvp.Key)
                 BaseMainViewModel.WriteLog(String.Format("Changing variable '{0}' to '{1}' in PPCL", kvp.Value, kvp.Key))
             Next
 
@@ -262,11 +262,12 @@ Implements INotifyPropertyChanged.PropertyChanged
                 If (mNewVariables.Count > 0) Then
                     If (mNewVariables.Keys.Contains(variable)) Then
                         ' mNewText = mNewText.Replace(m.ToString, "DEFINE(" + variable + ",""" + mNewVariables(variable) + """)")
-                        tempValue = tempValue.Replace(m.ToString, "DEFINE(" + variable + ",""" + mNewVariables(variable) + """)")
-                        newListOfValues.Add(New KeyValuePair(Of String, String)(newTextSingleValue.Key, tempValue))
+                        tempValue = tempValue.Replace(m.ToString, "DEFINE(" + variable + ",""" + mNewVariables(variable) + """)") 
                     End If
                 End If
             Next m
+
+            newListOfValues.Add(New KeyValuePair(Of String, String)(newTextSingleValue.Key, tempValue))
 
             File.WriteAllText(newTextSingleValue.Key & ".new", tempValue)
         Next
@@ -355,8 +356,8 @@ Implements INotifyPropertyChanged.PropertyChanged
 
     Public Sub getOldDefine()
 
-        For Each newTextSingleValue As KeyValuePair(Of String, String) In mNewText
-            Dim matches As MatchCollection = Regex.Matches(newTextSingleValue.Value, Regex.Escape("DEFINE(") & "(.*)" & Regex.Escape(",""") & "(.*)" & """")
+        For Each textSingleValue As KeyValuePair(Of String, String) In mText
+            Dim matches As MatchCollection = Regex.Matches(textSingleValue.Value, Regex.Escape("DEFINE(") & "(.*)" & Regex.Escape(",""") & "(.*)" & """")
             'Dim variables As New Collection
             For Each m As Match In matches
                 'variables.Add(m.ToString)
@@ -370,8 +371,8 @@ Implements INotifyPropertyChanged.PropertyChanged
 
 
     Public Sub getVariables()
-        For Each newTextSingleValue As KeyValuePair(Of String, String) In mNewText
-            Dim matches As MatchCollection = Regex.Matches(newTextSingleValue.Value, Regex.Escape("DEFINE(") & "(.*)" & Regex.Escape(",""") & "(.*)" & """" & "(.*)")
+        For Each textSingleValue As KeyValuePair(Of String, String) In mText
+            Dim matches As MatchCollection = Regex.Matches(textSingleValue.Value, Regex.Escape("DEFINE(") & "(.*)" & Regex.Escape(",""") & "(.*)" & """" & "(.*)")
             'Dim variables As New Dictionary(Of String, String)()
             For Each m As Match In matches
                 If (Not mVariables.Keys.Contains(m.Groups(1).ToString())) Then

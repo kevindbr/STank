@@ -15,6 +15,7 @@ Public Class SchedulerReport
     Private mZoneName As String
     Private mZoneNames As List(Of String)
     Private mSchedules As List(Of KeyValuePair(Of String, Tuple(Of String, String, String)))
+    Private mListOfScheduleIdsZoneNames As List(Of KeyValuePair(Of String, String)) = New List(Of KeyValuePair(Of String, String))
 
 
     'Private Const mEngineeringUnitsSpreadsheet = "BACnet_unit_conversion_spreadsheet.xlsx"
@@ -79,6 +80,17 @@ Public Class SchedulerReport
         Set(value As List(Of KeyValuePair(Of String, Tuple(Of String, String, String))))
             mSchedules = value
             NotifyPropertyChanged("Schedules")
+        End Set
+    End Property
+
+    Public Property ListOfScheduleIdsZoneNames As List(Of KeyValuePair(Of String, String))
+        Get
+            Return mListOfScheduleIdsZoneNames
+        End Get
+
+        Set(value As List(Of KeyValuePair(Of String, String)))
+            mListOfScheduleIdsZoneNames = value
+            NotifyPropertyChanged("ScheduleList")
         End Set
     End Property
 

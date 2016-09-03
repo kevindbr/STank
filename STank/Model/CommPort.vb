@@ -197,6 +197,8 @@ Public Class CommPort
 
         If resp.Contains("not found") Then Return ""
 
+        If resp.Equals("") Then Return ""
+
         'Dim matches As MatchCollection = Regex.Matches(reRegex.Escape("DEFINE(") & "(.*)" & Regex.Escape(",""") & "(.*)" & """" & "(.*)")
         Dim instanceNumber = Regex.Matches(resp, "Instance Number\s+:\s+([0-9]+)").Item(0).Groups(1).ToString()
 
@@ -376,6 +378,8 @@ Public Class CommPort
         SendCommand("a")        'Actionlists
         SendCommand("l")        'Log
         resp = SendCommand("", True)   'Field panel
+
+
         Dim commandEncodedName = Regex.Matches(resp, "(\S+)\s+" + commandName).Item(0).Groups(1).ToString()
 
         Return commandEncodedName
@@ -570,83 +574,75 @@ Public Class CommPort
         SendCommand("g")        'General
         SendCommand("a")        'Add
         SendCommand(scheduleId, True)   'Schedule id
-        SendCommand(If(zoneData("Start Optimization") = "Enabled", "y", "n"))   'Enable strt optimization (Y/N)
-        SendCommand(If(zoneData("Stop Optimization") = "Enabled", "y", "n"))   'Enable stop optimization (Y/N)
-        SendCommand(If(zoneData("Night Operation") = "Enabled", "y", "n"))   'Enable night operation (Y/N)
-        SendCommand(GetOperationCommand(zoneData("Allowed Operation")))   'Allowed operation (N,H,C,hAc)
-        SendCommand(GetOperationCommand(zoneData("Selected Operation")))   'Desired oper (N,H,C,hAc,R)  'Not sure about this R option....'
 
-        If Not replacementValues Is Nothing Then
-            SendCommand(replacementValues(zoneData("Outside Temperature")), True)   'Outside temperature
-            SendCommand(replacementValues(zoneData("Zone Temperature")), True)   'Zone temperature
-        End If
+        If (zoneData("Optimization") = "Enabled") Then
 
-        SendCommand(zoneData("Heating Setpoint (OCC)"), True)   'Heating setpoint-occupancy
-        SendCommand(zoneData("Heating Setpoint (VAC)"), True)   'Heating setpoint-vacancy
-        SendCommand(zoneData("Cooling Setpoint (OCC)"), True)   'Cooling setpoint-occupancy
-        resp = SendCommand(zoneData("Cooling Setpoint (VAC)"), True)   'Cooling setpoint-vacancy
-        'check that response contains "Command successful"
+            SendCommand(If(zoneData("Start Optimization") = "Enabled", "y", "n"))   'Enable strt optimization (Y/N)
+            SendCommand(If(zoneData("Stop Optimization") = "Enabled", "y", "n"))   'Enable stop optimization (Y/N)
+            SendCommand(If(zoneData("Night Operation") = "Enabled", "y", "n"))   'Enable night operation (Y/N)
+            SendCommand(GetOperationCommand(zoneData("Allowed Operation")))   'Allowed operation (N,H,C,hAc)
+            SendCommand(GetOperationCommand(zoneData("Selected Operation")))   'Desired oper (N,H,C,hAc,R)  'Not sure about this R option....'
 
-        BaseMainViewModel.UpdateProgress(0.4)
+            If Not replacementValues Is Nothing Then
+                SendCommand(replacementValues(zoneData("Outside Temperature")), True)   'Outside temperature
+                SendCommand(replacementValues(zoneData("Zone Temperature")), True)   'Zone temperature
+            End If
 
-        'Start time optimization
-        'TODO: only do this if enabled in report?
-        If (zoneData("Start Optimization") = "Enabled") Then
-            SendCommand("#")        'Top of menu
-            SendCommand("a")        'Application
-            SendCommand("b")        'BacNet
-            SendCommand("t")        'ssTo
-            SendCommand("s")        'Start
-            SendCommand("a")        'Add
-            SendCommand(scheduleId, True)   'Schedule id
-            For Each mode As SstoMode In System.Enum.GetValues(GetType(SstoMode))
-                SendCommand(GetSstoData(mode, zoneData("Mode (Start)")), True)   'Start mode-htg
-                SendCommand(If(GetSstoData(mode, zoneData("If too early")) = "OCC1", "y", "n"))   'Early-next occ mode-htg (Y/N)    'not sure about this comparison
-                SendCommand(If(GetSstoData(mode, zoneData("If too late")) = "Use Next Mode", "y", "n"))   'Late-occ mode-htg (Y/N)    'not sure about this comparison
-                SendCommand(If(GetSstoData(mode, zoneData("Time Shift")) = "Inside and Outside", "a", "b"))   'Time shift-htg (Fxd,Bsc,Adv)    '3 options, how to map?
-                SendCommand(If(GetSstoData(mode, zoneData("Use Learning")) = "Yes", "y", "n"))   'Use learning-htg (Y/N)
-                SendCommand(GetSstoData(mode, zoneData("Outside Temp Limit")), True)   'Outside temp limit-htg
-                SendCommand(GetSstoData(mode, zoneData("Zone Temp Deviation")), True)   'Zone temp deviation-htg 
-                SendCommand(GetSstoData(mode, zoneData("Min Start Duration")), True)   'Min start duration-htg (min)
-                SendCommand(GetSstoData(mode, zoneData("Max Start Duration")), True)   'Max start duration-htg (min)
-                SendCommand(GetSstoData(mode, zoneData("Max Extension Time")), True)   'Max extension time-htg (min)
 
-                If mode = SstoMode.Heating Then
-                    SendCommand(GetSstoData(mode, zoneData("Max Setpoint Offset")), True)   'Maximum setpoint offset-htg
-                End If
-
-            Next
-        End If
-
-        BaseMainViewModel.UpdateProgress(0.6)
-
-        If (zoneData("Night Operation") = "Enabled") Then
-            SendCommand("#")        'Top of menu
-            SendCommand("a")        'Application
-            SendCommand("b")        'BacNet
-            SendCommand("t")        'ssTo
-            SendCommand("n")        'Night
-            SendCommand("a")        'Add
-            SendCommand(scheduleId, True)   'Schedule id
-            SendCommand(GetSstoData(SstoMode.Heating, zoneData("Mode (Night)")), True)   'Night mode-htg
-            SendCommand(GetSstoData(SstoMode.Cooling, zoneData("Mode (Night)")), True)   'Night mode-clg
-            resp = SendCommand(zoneData("Differential"), True)   'Differential
+            SendCommand(zoneData("Heating Setpoint (OCC)"), True)   'Heating setpoint-occupancy
+            SendCommand(zoneData("Heating Setpoint (VAC)"), True)   'Heating setpoint-vacancy
+            SendCommand(zoneData("Cooling Setpoint (OCC)"), True)   'Cooling setpoint-occupancy
+            resp = SendCommand(zoneData("Cooling Setpoint (VAC)"), True)   'Cooling setpoint-vacancy
             'check that response contains "Command successful"
         End If
 
-        'If (zoneData("Optimization") = "Enabled") Then
-        '    SendCommand("#")        'Top of menu
-        '    SendCommand("a")        'Application
-        '    SendCommand("b")        'BacNet
-        '    SendCommand("t")        'ssTo
-        '    SendCommand("o")        'optimization
-        '    SendCommand("a")        'Add
-        '    SendCommand(scheduleId, True)   'Schedule id
-        '    SendCommand(GetSstoData(SstoMode.Heating, zoneData("Mode (Night)")), True)   'Night mode-htg
-        '    SendCommand(GetSstoData(SstoMode.Cooling, zoneData("Mode (Night)")), True)   'Night mode-clg
-        '    resp = SendCommand(zoneData("Differential"), True)   'Differential
-        '    'check that response contains "Command successful"
-        'End If
+        BaseMainViewModel.UpdateProgress(0.4)
+        If (zoneData("Optimization") = "Enabled") Then
+            'Start time optimization
+            'TODO: only do this if enabled in report?
+            If (zoneData("Start Optimization") = "Enabled") Then
+                SendCommand("#")        'Top of menu
+                SendCommand("a")        'Application
+                SendCommand("b")        'BacNet
+                SendCommand("t")        'ssTo
+                SendCommand("s")        'Start
+                SendCommand("a")        'Add
+                SendCommand(scheduleId, True)   'Schedule id
+                For Each mode As SstoMode In System.Enum.GetValues(GetType(SstoMode))
+                    SendCommand(GetSstoData(mode, zoneData("Mode (Start)")), True)   'Start mode-htg
+                    SendCommand(If(GetSstoData(mode, zoneData("If too early")) = "OCC1", "y", "n"))   'Early-next occ mode-htg (Y/N)    'not sure about this comparison
+                    SendCommand(If(GetSstoData(mode, zoneData("If too late")) = "Use Next Mode", "y", "n"))   'Late-occ mode-htg (Y/N)    'not sure about this comparison
+                    SendCommand(If(GetSstoData(mode, zoneData("Time Shift")) = "Inside and Outside", "a", "b"))   'Time shift-htg (Fxd,Bsc,Adv)    '3 options, how to map?
+                    SendCommand(If(GetSstoData(mode, zoneData("Use Learning")) = "Yes", "y", "n"))   'Use learning-htg (Y/N)
+                    SendCommand(GetSstoData(mode, zoneData("Outside Temp Limit")), True)   'Outside temp limit-htg
+                    SendCommand(GetSstoData(mode, zoneData("Zone Temp Deviation")), True)   'Zone temp deviation-htg 
+                    SendCommand(GetSstoData(mode, zoneData("Min Start Duration")), True)   'Min start duration-htg (min)
+                    SendCommand(GetSstoData(mode, zoneData("Max Start Duration")), True)   'Max start duration-htg (min)
+                    SendCommand(GetSstoData(mode, zoneData("Max Extension Time")), True)   'Max extension time-htg (min)
+
+                    If mode = SstoMode.Heating Then
+                        SendCommand(GetSstoData(mode, zoneData("Max Setpoint Offset")), True)   'Maximum setpoint offset-htg
+                    End If
+
+                Next
+            End If
+
+            BaseMainViewModel.UpdateProgress(0.6)
+
+            If (zoneData("Night Operation") = "Enabled") Then
+                SendCommand("#")        'Top of menu
+                SendCommand("a")        'Application
+                SendCommand("b")        'BacNet
+                SendCommand("t")        'ssTo
+                SendCommand("n")        'Night
+                SendCommand("a")        'Add
+                SendCommand(scheduleId, True)   'Schedule id
+                SendCommand(GetSstoData(SstoMode.Heating, zoneData("Mode (Night)")), True)   'Night mode-htg
+                SendCommand(GetSstoData(SstoMode.Cooling, zoneData("Mode (Night)")), True)   'Night mode-clg
+                resp = SendCommand(zoneData("Differential"), True)   'Differential
+                'check that response contains "Command successful"
+            End If
+        End If
 
         BaseMainViewModel.UpdateProgress(1.0)
 

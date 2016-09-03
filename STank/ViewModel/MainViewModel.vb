@@ -304,6 +304,17 @@ Public Class MainViewModel
 
         If activity.Contains(activity5) Then
             dependentActivities.Add(activity2)
+            dependentActivities.Add(activity3)
+
+            For Each dependent In dependentActivities
+                If Not completeSteps.Contains(dependent) Then
+                    message = dependent
+                End If
+            Next
+        End If
+
+        If activity.Contains(activity6) Then
+            dependentActivities.Add(activity5)
 
             For Each dependent In dependentActivities
                 If Not completeSteps.Contains(dependent) Then

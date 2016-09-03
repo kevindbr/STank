@@ -10,8 +10,8 @@ Public Class ZoneDefinitionReport
     Private mPanel As Panel
     Private mPath As String
     Public Shared EmptyPath As String = "No Zone Definition Report Specified"
-
-    Private mZoneData As Dictionary(Of String, String)
+    'Zone, list of zone data pertaining to that zone
+    Private mZoneData As Dictionary(Of String, Dictionary(Of String, String))
 
     Public Event PropertyChanged As PropertyChangedEventHandler _
   Implements INotifyPropertyChanged.PropertyChanged
@@ -37,12 +37,12 @@ Public Class ZoneDefinitionReport
     End Property
 
 
-    Public Property ZoneData As Dictionary(Of String, String)
+    Public Property ZoneData As Dictionary(Of String, Dictionary(Of String, String))
         Get
             Return mZoneData
         End Get
 
-        Set(value As Dictionary(Of String, String))
+        Set(value As Dictionary(Of String, Dictionary(Of String, String)))
             mZoneData = value
             NotifyPropertyChanged("ZoneData")
         End Set
@@ -67,12 +67,30 @@ Public Class ZoneDefinitionReport
 
 
     Public Sub getZoneData()
-        mZoneData = New Dictionary(Of String, String)
+        mZoneData = New Dictionary(Of String, Dictionary(Of String, String))
+        Dim currentListOfZoneData = New Dictionary(Of String, String)
+        Dim currentZoneName = ""
+
+
         Dim lines() As String = File.ReadAllLines(mPath)
         For i As Integer = 0 To lines.Length - 1
+
+
             Dim line As String = lines(i)
             Dim name As String
             Dim val As String
+
+
+            If line.Contains("Zone Name:") Then
+                If (currentListOfZoneData.Count > 0) Then
+                    If Not (currentZoneName = "") Then
+                        mZoneData.Add(currentZoneName, currentListOfZoneData)
+                    End If
+                End If
+
+                currentZoneName = line.Split(":"c)(1).Trim()
+                currentListOfZoneData = New Dictionary(Of String, String)
+            End If
 
             'Handle duplicate "Mode" if both start and night optimization enabled
             Dim nameSuffix As String = ""
@@ -84,6 +102,7 @@ Public Class ZoneDefinitionReport
             End If
 
             If Not line.Contains(":") Then Continue For
+
             Dim vals() As String = line.Split(":"c)
             'check if vals().length >= 2?  Or is it guaranteed due to above condition?
             name = vals(0).Trim()
@@ -91,10 +110,12 @@ Public Class ZoneDefinitionReport
 
             If (name <> "" And val <> "") Then
                 Try
-                    If Not (mZoneData.Keys.Contains(name + nameSuffix)) Then
-                        mZoneData.Add(name + nameSuffix, val)
-                    End If
+                    ' If Not (mZoneData..Contains(name + nameSuffix)) Then
+                    'mZoneData.Add(name + nameSuffix, val)
 
+                    If Not (currentListOfZoneData.Keys.Contains(name + nameSuffix)) Then
+                        currentListOfZoneData.Add(name + nameSuffix, val)
+                    End If
                 Catch
                     MsgBox("Please check zone definition report")
                 End Try
@@ -108,12 +129,16 @@ Public Class ZoneDefinitionReport
     End Sub
 
 
-    Private Sub getNewTemperaturePointNames()
+    Private Sub getNewTemperaturePointNames(zoneName As String)
         'this does require that name change has already happened....
 
-        Dim outsideTemp As String = mPanel.NameChangeDocument.ReplacementValues(mZoneData("Outside Temperature"))
-        Dim zoneTemp As String = mPanel.NameChangeDocument.ReplacementValues(mZoneData("Zone Temperature"))
-
+        For Each listOfZoneData In mZoneData
+            If (listOfZoneData.Key = zoneName) Then
+                Dim outsideTemp As String = mPanel.NameChangeDocument.ReplacementValues(listOfZoneData.Value("Outside Temperature"))
+                Dim zoneTemp As String = mPanel.NameChangeDocument.ReplacementValues(listOfZoneData.Value("Zone Temperature"))
+                Exit For
+            End If
+        Next
     End Sub
 
 

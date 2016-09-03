@@ -6,7 +6,7 @@
     Controls:ButtonHelper.PreserveTextCase="True"
     FontSize="12"
     FontFamily="Siemens Sans Roman"
-    Title="SIEMENS | Shark Tank Find and Replace Tool" Height="560" Width="900"
+    Title="SIEMENS | Shark Tank Find and Replace Tool" Height="560" Width="990"
     BorderBrush="{DynamicResource AccentColorBrush}"
                       BorderThickness="1"
    WindowStartupLocation="CenterScreen"
