@@ -191,8 +191,8 @@ Public Class CommPort
         SendCommand("d")        'Display
         SendCommand("d")        'Definition
         SendCommand("n")        'Name
-        SendCommand(pointName, True)   'Point name
-        SendCommand("", True)   'Field panel
+        resp = SendCommand(pointName, True)   'Point name
+        resp = SendCommand("", True)   'Field panel
         resp = SendCommand("", True)   'Here, Printer
 
         If resp.Contains("not found") Then Return ""
@@ -318,7 +318,10 @@ Public Class CommPort
         'SendCommand(commandName, True)   'Command name
         'SendCommand("", True)   'Command instance
         'resp = SendCommand("", True)   'Description
-        Dim commandInstance = Regex.Matches(resp, "([0-9]+)\s+" + commandName).Item(0).Groups(1).ToString()
+        Dim commandInstance = ""
+        If Not resp = "" Then
+            commandInstance = Regex.Matches(resp, "([0-9]+)\s+" + commandName).Item(0).Groups(1).ToString()
+        End If
 
         SendCommand("", True)
 
@@ -424,19 +427,19 @@ Public Class CommPort
 
             Dim resp As String
 
-            SendCommand("#")        'Top of menu
-            SendCommand("a")        'Application
-            SendCommand("b")        'BacNet
-            SendCommand("s")        'Schedule
-            SendCommand("e")        'Edit
-            SendCommand("a")        'Add
-            SendCommand("", True)   'Field panel
-            SendCommand(scheduleName, True)   'Schedule name
-            SendCommand("", True)        'Schedule ID (should be auto-assigned, then we get it below)
-            SendCommand("", True)   'Description
-            SendCommand("1", True)   'Default Value
-            SendCommand("u")    'Bool, Real, Enum, Unsigned
-            SendCommand("16", True)    'Priority for writing (1-16)
+            resp = SendCommand("#")        'Top of menu
+            resp = SendCommand("a")        'Application
+            resp = SendCommand("b")        'BacNet
+            resp = SendCommand("s")        'Schedule
+            resp = SendCommand("e")        'Edit
+            resp = SendCommand("a")        'Add
+            resp = SendCommand("", True)   'Field panel
+            resp = SendCommand(scheduleName, True)   'Schedule name
+            resp = SendCommand("", True)        'Schedule ID (should be auto-assigned, then we get it below)
+            resp = SendCommand("", True)   'Description
+            resp = SendCommand("1", True)   'Default Value
+            resp = SendCommand("u")    'Bool, Real, Enum, Unsigned
+            resp = SendCommand("16", True)    'Priority for writing (1-16)
             SendCommand("", True)   'Start date (MM/DD/YYYY) - would assume blank means forever
             SendCommand("", True)   'Weekday (m,tu,w,th,f,sa,su,*)   - not sure what this means, but leave blank for now?
             SendCommand("", True)   'Stop date (MM/DD/YYYY) - would assume blank means forever
@@ -959,14 +962,20 @@ Public Class CommPort
 
         Dim returnStr As String = ""
         Dim str As String
+        'sp.NewLine = "\n"
 
         Try
-            Do
-                str = sp.ReadLine()
-                returnStr += str '+ vbCr
-                'file.WriteLine(str)
-            Loop
+            If sp.BytesToRead > 0 Then
+                Do
+                    str = sp.ReadLine()
+                    'str = sp.ReadExisting()
+                    returnStr += str '+ vbCr
+                    'file.WriteLine(str)
+                Loop
+            End If
         Catch ex As TimeoutException
+
+
         End Try
 
         Return returnStr

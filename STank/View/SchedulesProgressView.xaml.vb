@@ -114,7 +114,7 @@ Public Class SchedulesProgressView
     End Sub
 
     Private Sub showDone()
-        Dim message As GeneralPopupView = New GeneralPopupView("Schedules have been converted.  Please refer to ssto log file for panel output.")
+        Dim message As GeneralPopupView = New GeneralPopupView("Schedules have been converted.  Please refer to Schedules log file for panel output.")
         doneButton.Content = "Done"
         doneButton.IsEnabled = True
         message.Show()

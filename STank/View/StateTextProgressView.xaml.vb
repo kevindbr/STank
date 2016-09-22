@@ -46,6 +46,8 @@ Public Class StateTextProgressView
         port.Login()
 
         Dim modifiedStateTextTableIds = New List(Of String)
+        Dim newStateTextTables = New List(Of StateTextDoc.StateTextTable)()
+
 
         Dim i As Integer = 1
         Dim pointNames As New List(Of String)(panelAttributesDoc.LenumPoints.Keys)
@@ -66,7 +68,7 @@ Public Class StateTextProgressView
             Dim newStateTextTableId As String = stateTextTable.tableId.TrimStart("-")
 
             If stateTextTable.tableId = newStateTextTableId Then 'This is not a negative table id, must find next available ID
-                newStateTextTableId += getNextStateTextId(panelAttributesDoc.LenumPoints)
+                newStateTextTableId = getNextStateTextId(panelAttributesDoc.LenumPoints, stateTextTable, newStateTextTables) 'Also if we find that another lenum point has same state text, use that id
             End If
 
             stateTextTable.tableId = newStateTextTableId
@@ -93,6 +95,8 @@ Public Class StateTextProgressView
             BaseMainViewModel.UpdateProgress(0.75 * i / panelAttributesDoc.LenumPoints.Count)
 
             port.CreatePoint(pointName, instanceNumber, stateTextTable.tableId)
+            newStateTextTables.Add(stateTextTable)
+
 
             BaseMainViewModel.UpdateProgress(1 * i / panelAttributesDoc.LenumPoints.Count)
             'System.Threading.Thread.Sleep(100) 
@@ -149,18 +153,30 @@ Public Class StateTextProgressView
         Close()
     End Sub
 
-    Private Function getNextStateTextId(lPoints As Dictionary(Of String, String)) As String
-        Dim largestId As Int32 = 0
+    Private Function getNextStateTextId(lPoints As Dictionary(Of String, String), stateTextTable As StateTextDoc.StateTextTable, newStateTextTables As List(Of StateTextDoc.StateTextTable)) As String
+        Dim newId As Int32 = 0
 
         For Each pointName In lPoints
             Dim tempNum As Int32 = Int32.Parse(pointName.Value)
-            If largestId < Math.Abs(tempNum) Then
-                largestId = tempNum
+            If newId < Math.Abs(tempNum) Then
+                newId = tempNum
             End If
         Next
-        Return (largestId + 1)
+
+        newId = newId + 1
+
+        For Each sText In newStateTextTables 'Checks if we created a new id and uses that id if state text is the same
+
+            If stateTextTable.Equals(sText) Then
+                newId = sText.tableId
+            End If
+
+        Next
+
+        Return newId
 
     End Function
+
 
 
 End Class

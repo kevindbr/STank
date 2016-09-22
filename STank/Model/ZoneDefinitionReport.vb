@@ -101,27 +101,33 @@ Public Class ZoneDefinitionReport
                 line = lines(i)
             End If
 
+
             If Not line.Contains(":") Then Continue For
+            If Not currentZoneName = "" Then
 
-            Dim vals() As String = line.Split(":"c)
-            'check if vals().length >= 2?  Or is it guaranteed due to above condition?
-            name = vals(0).Trim()
-            val = vals(1).Trim()
 
-            If (name <> "" And val <> "") Then
-                Try
-                    ' If Not (mZoneData..Contains(name + nameSuffix)) Then
-                    'mZoneData.Add(name + nameSuffix, val)
+                Dim vals() As String = line.Split(":"c)
+                'check if vals().length >= 2?  Or is it guaranteed due to above condition?
+                name = vals(0).Trim()
+                val = vals(1).Trim()
 
-                    If Not (currentListOfZoneData.Keys.Contains(name + nameSuffix)) Then
-                        currentListOfZoneData.Add(name + nameSuffix, val)
-                    End If
-                Catch
-                    MsgBox("Please check zone definition report")
-                End Try
+                If (name <> "" And val <> "") Then
+                    Try
+                        ' If Not (mZoneData..Contains(name + nameSuffix)) Then
+                        'mZoneData.Add(name + nameSuffix, val)
+
+                        If Not (currentListOfZoneData.Keys.Contains(name + nameSuffix)) Then
+                            currentListOfZoneData.Add(name + nameSuffix, val)
+                        End If
+                    Catch
+                        MsgBox("Please check zone definition report")
+                    End Try
+                End If
             End If
         Next
 
+
+        mZoneData.Add(currentZoneName, currentListOfZoneData) 'Last list of zone data
         For Each line As String In lines
 
         Next line

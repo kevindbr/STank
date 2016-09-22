@@ -237,9 +237,19 @@ Implements INotifyPropertyChanged.PropertyChanged
             ' Replace old full names with new full names
             For Each kvp As KeyValuePair(Of String, String) In replacementValues
                 'mNewText = mNewText.Replace(kvp.Key, kvp.Value)
-                tempValue = tempValue.Replace(kvp.Key, kvp.Value)
+                tempValue = tempValue.Replace("""" + kvp.Key + """", """" + kvp.Value + """")
                 BaseMainViewModel.WriteLog(String.Format("Changing name '{0}' to '{1}' in PPCL", kvp.Key, kvp.Value))
             Next
+
+
+
+            '' Replace old full names with new full names
+            'For Each kvp As KeyValuePair(Of String, String) In replacementValues
+            '    Dim pattern = "\b" + """" + kvp.Key + """" + "\b"
+            '    tempValue = Regex.Replace(tempValue, pattern, kvp.Value)
+            '    BaseMainViewModel.WriteLog(String.Format("Changing name '{0}' to '{1}' in PPCL", kvp.Key, kvp.Value))
+            'Next
+
 
             ' Replace old variable definitions with new variable definitions
             'For i As Integer = 0 To mVariables.Count - 1
@@ -249,7 +259,7 @@ Implements INotifyPropertyChanged.PropertyChanged
             'Next
             For Each kvp As KeyValuePair(Of String, String) In mNewVariables
                 ' mNewText = mNewText.Replace(kvp.Value, "%" + kvp.Key + "%")
-                tempValue = tempValue.Replace("%" + kvp.Value + "%", kvp.Key)
+                tempValue = tempValue.Replace(kvp.Value, "%" + kvp.Key + "%")
                 BaseMainViewModel.WriteLog(String.Format("Changing variable '{0}' to '{1}' in PPCL", kvp.Value, kvp.Key))
             Next
 
