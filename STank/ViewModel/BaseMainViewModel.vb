@@ -225,6 +225,12 @@ Public MustInherit Class BaseMainViewModel
 
     End Sub
 
+    Public Sub UpdateSchedules(listOfScheduleIdsZoneNames As List(Of KeyValuePair(Of String, String)))
+
+        mSTankProj.Panel.SchedulerReport.ListOfScheduleIdsZoneNames = listOfScheduleIdsZoneNames
+
+    End Sub
+
 
 
 
@@ -281,5 +287,6 @@ Public MustInherit Class BaseMainViewModel
 
 
     End Sub
+
 
 End Class

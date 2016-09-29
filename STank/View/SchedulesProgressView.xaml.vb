@@ -99,30 +99,43 @@ Public Class SchedulesProgressView
                 Next
             Next
 
-            mMainViewModel.getProj.Panel.SchedulerReport.ListOfScheduleIdsZoneNames = listOfScheduleIdsZoneNames
+            ' mMainViewModel.getProj.Panel.SchedulerReport.ListOfScheduleIdsZoneNames = listOfScheduleIdsZoneNames
             BaseMainViewModel.UpdateProgress(1.0)
+            e.Result = listOfScheduleIdsZoneNames
+
             port.Logout()
 
         Catch ex As Exception
             port.Logout()
-            Dim message As GeneralPopupView = New GeneralPopupView(ex.Message)
-            doneButton.Content = "Done"
-            doneButton.IsEnabled = True
-            message.Show()
+            Throw New Exception(ex.Message + " schedules finished partially.")
+
         End Try
 
     End Sub
 
-    Private Sub showDone()
-        Dim message As GeneralPopupView = New GeneralPopupView("Schedules have been converted.  Please refer to Schedules log file for panel output.")
+
+    Private Sub showDone(ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs)
+        Dim message = "Schedules have been converted.  Please refer to Schedules log file for panel output."
+
+        If e.Cancelled = True Then
+            message = "Operation cancelled."
+
+        ElseIf e.Error IsNot Nothing Then
+            message = "Error. " + e.Error.Message
+
+        Else
+            mMainViewModel.getProj.Panel.SchedulerReport.ListOfScheduleIdsZoneNames = e.Result
+
+
+        End If
+
+        Dim messageWindow As GeneralPopupView = New GeneralPopupView(message)
         doneButton.Content = "Done"
         doneButton.IsEnabled = True
-        message.Show()
+        messageWindow.Show()
         BaseMainViewModel.WriteFile()
         BaseMainViewModel.ResetUI()
     End Sub
-
-
 
     Private Sub exitView(sender As Object, e As RoutedEventArgs)
         Close()

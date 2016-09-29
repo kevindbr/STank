@@ -2,6 +2,7 @@
 Imports System.Array
 Imports System.Text.RegularExpressions
 Imports System.Data
+Imports System.Threading
 
 Public Class CommPort
     Implements INotifyPropertyChanged
@@ -843,6 +844,11 @@ Public Class CommPort
                         Return False
                     End If
 
+                    If resp.Equals("") Then
+                        mLoginValid = False
+                        Return False
+                    End If
+
                     mLoginValid = True
                     Return True
                 End If
@@ -872,6 +878,7 @@ Public Class CommPort
             Dim resp As String
 
             SendCommand("", True)           'get initial response from panel
+            Thread.Sleep(1000)
             SendCommand("h")                'Hello
             SendCommand(mUserName, True)       'Username
             resp = SendCommand(mPassword, True)      'Password
@@ -882,8 +889,17 @@ Public Class CommPort
             SendCommand("", True)
         Catch ex As Exception
 
-
             fieldPanel = ex.Message
+
+            If (ex.Message.ToLower().Contains("denied")) Then
+                Logout()
+
+            End If
+
+
+            Throw New Exception(ex.Message + " ")
+
+
         End Try
 
 

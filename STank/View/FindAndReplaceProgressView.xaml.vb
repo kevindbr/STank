@@ -52,14 +52,25 @@ Public Class FindAndReplaceView
         Close()
     End Sub
 
-    Private Sub showDone()
-        Dim message As GeneralPopupView = New GeneralPopupView("Find and Replace Finished!  A copy of the original PPCL has been created with _new appended to the name this file contains the replaced names.")
+    Private Sub showDone(ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs)
+        Dim message = "Find and Replace Finished!  A copy of the original PPCL has been created with _new appended to the name this file contains the replaced names."
+
+        If e.Cancelled = True Then
+            message = "Operation cancelled."
+
+        ElseIf e.Error IsNot Nothing Then
+            message = "Error. " + e.Error.Message
+
+        Else
+
+        End If
+
+        Dim messageWindow As GeneralPopupView = New GeneralPopupView(message)
         doneButton.Content = "Done"
         doneButton.IsEnabled = True
-        message.Show()
+        messageWindow.Show()
         BaseMainViewModel.WriteFile()
         BaseMainViewModel.ResetUI()
     End Sub
-
 
 End Class

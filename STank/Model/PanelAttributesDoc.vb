@@ -146,13 +146,20 @@ Public Class PanelAttributesDoc
 
 
     Public Sub OpenConnection()
-
-        'sConnection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + mPath + ";Extended Properties=""Excel 12.0;HDR=No;IMEX=1"""
         Dim sConnection = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source='{0}';Extended Properties=""Excel 12.0;HDR=Yes;""", mPath)
-        'can we deploy this without the ACE OLEDB provider being installed on target machine?
+        Try
 
-        mConnection = New OleDbConnection(sConnection)
-        mConnection.Open()
+            'sConnection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + mPath + ";Extended Properties=""Excel 12.0;HDR=No;IMEX=1"""
+
+            'can we deploy this without the ACE OLEDB provider being installed on target machine?
+            mConnection = New OleDbConnection(sConnection)
+            mConnection.Open()
+        Catch ex As Exception
+
+            Throw New SystemException(ex.Message + " " + sConnection)
+
+        End Try
+
 
     End Sub
 
@@ -160,7 +167,6 @@ Public Class PanelAttributesDoc
     Public Sub ReplaceAllEngineeringUnits()
 
         OpenConnection()
-
 
         'Dim engineeringUnits = mMainViewModel.getProj.Panel.PanelAttributesDocument.EngineeringUnits
         Dim i As Integer = 1
@@ -170,7 +176,7 @@ Public Class PanelAttributesDoc
 
             BaseMainViewModel.WriteLog(String.Format("Replacing unit '{0}' with '{1}'", kvp.Key, kvp.Value))
 
-            System.Threading.Thread.Sleep(100)  'just for debugging, to more easily see progress
+            '   System.Threading.Thread.Sleep(100)  'just for debugging, to more easily see progress
 
             BaseMainViewModel.UpdateProgress(i / EngineeringUnits.Count)
 
@@ -184,12 +190,22 @@ Public Class PanelAttributesDoc
 
 
     Private Sub ReplaceEngineeringUnits(ByVal oldUnits As String, ByVal newUnits As String)
-
         Dim sSheetName = "Points$"  'Panel Attributes document always has same format
-        Dim oleExcelCommand As OleDbCommand = mConnection.CreateCommand()
-        oleExcelCommand.CommandType = CommandType.Text
-        oleExcelCommand.CommandText = String.Format("UPDATE [{0}] SET [Eng units] = '{1}' WHERE [Eng units] = '{2}'", sSheetName, oldUnits, newUnits)
-        oleExcelCommand.ExecuteNonQuery()
+        Try
+
+            Dim oleExcelCommand As OleDbCommand = mConnection.CreateCommand()
+            oleExcelCommand.CommandType = CommandType.Text
+            oleExcelCommand.CommandText = String.Format("UPDATE [{0}] SET [Eng units] = '{1}' WHERE [Eng units] = '{2}'", sSheetName, oldUnits, newUnits)
+
+
+            oleExcelCommand.ExecuteNonQuery()
+        Catch ex As Exception
+
+            Throw New SystemException(ex.Message + " " + sSheetName + " " + oldUnits + " " + newUnits)
+
+        End Try
+
+
 
     End Sub
 
@@ -273,45 +289,47 @@ Public Class PanelAttributesDoc
     Private Sub getEngineeringUnits()
 
         mEngineeringUnits = New Dictionary(Of String, String)
-
-        'sConnection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + mPath + ";Extended Properties=""Excel 12.0;HDR=No;IMEX=1"""
-        'Dim sConnection = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source='{0}';Extended Properties=""Excel 12.0;HDR=Yes;""", System.IO.Path.Combine(Directory.GetCurrentDirectory, mEngineeringUnitsSpreadsheet))
         'can we deploy this without the ACE OLEDB provider being installed on target machine?
+        Try
+            Dim sConnection = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source='{0}';Extended Properties=""Excel 12.0;HDR=No;""", System.IO.Path.Combine(Directory.GetCurrentDirectory, mEngineeringUnitsSpreadsheet))
+            Dim oleExcelConnection = New OleDbConnection(sConnection)
+            oleExcelConnection.Open()
 
-        Dim sConnection = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source='{0}';Extended Properties=""Excel 12.0;HDR=No;""", System.IO.Path.Combine(Directory.GetCurrentDirectory, mEngineeringUnitsSpreadsheet))
-
-
-        Dim oleExcelConnection = New OleDbConnection(sConnection)
-        oleExcelConnection.Open()
-
-        Dim t = oleExcelConnection.GetSchema("Tables")
+            Dim t = oleExcelConnection.GetSchema("Tables")
 
 
-        Dim dtSheets As DataTable =
-          oleExcelConnection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, Nothing)
+            Dim dtSheets As DataTable =
+              oleExcelConnection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, Nothing)
 
 
-        Dim sSheetName = oleExcelConnection.GetSchema("Tables").Rows(0)("TABLE_NAME").ToString      'just use name of first sheet
-        'Dim sSheetName = "BACnet Unit Conversion Spreadsh"
+            Dim sSheetName = oleExcelConnection.GetSchema("Tables").Rows(0)("TABLE_NAME").ToString      'just use name of first sheet
 
-        Dim oleExcelCommand As OleDbCommand = oleExcelConnection.CreateCommand()
-        oleExcelCommand.CommandType = CommandType.Text
-        oleExcelCommand.CommandText = String.Format("Select * From [{0}]", sSheetName)      'will this get only non-blank rows?
 
-        Dim oleExcelReader As OleDbDataReader = oleExcelCommand.ExecuteReader
-        Dim engineeringUnitsData As New DataTable
-        engineeringUnitsData.Load(oleExcelReader)
-        For Each row As DataRow In engineeringUnitsData.Rows
-            If row.Item(0).ToString.Trim = "" Then Continue For
-            Try
-                mEngineeringUnits.Add(row.Item(0).ToString, row.Item(1).ToString)
-            Catch ex As ArgumentException
-            End Try
+            'Dim sSheetName = "BACnet Unit Conversion Spreadsh"
 
-        Next
+            Dim oleExcelCommand As OleDbCommand = oleExcelConnection.CreateCommand()
+            oleExcelCommand.CommandType = CommandType.Text
+            oleExcelCommand.CommandText = String.Format("Select * From [{0}]", sSheetName)      'will this get only non-blank rows?
 
-        oleExcelReader.Close()
-        oleExcelConnection.Close()
+            Dim oleExcelReader As OleDbDataReader = oleExcelCommand.ExecuteReader
+            Dim engineeringUnitsData As New DataTable
+            engineeringUnitsData.Load(oleExcelReader)
+            For Each row As DataRow In engineeringUnitsData.Rows
+                If row.Item(0).ToString.Trim = "" Then Continue For
+                Try
+                    mEngineeringUnits.Add(row.Item(0).ToString, row.Item(1).ToString)
+                Catch ex As ArgumentException
+                End Try
+
+            Next
+
+            oleExcelReader.Close()
+            oleExcelConnection.Close()
+        Catch ex As Exception
+            Throw New Exception(ex.Message + " Here " + Directory.GetCurrentDirectory)
+
+
+        End Try
 
     End Sub
 

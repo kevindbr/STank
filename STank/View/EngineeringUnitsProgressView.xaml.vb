@@ -27,25 +27,41 @@ Public Class EngineeringUnitsProgressView
 
     Private Sub IntializeWindow()
         ' updateDefineGrid()
+        BaseMainViewModel.InitUI(Windows.Threading.Dispatcher.CurrentDispatcher, log, progressBar, logFName, mMainViewModel.getProj.LogPath)
 
-        BaseMainViewModel.InitUI(Dispatcher.CurrentDispatcher, log, progressBar, logFName, mMainViewModel.getProj.LogPath)
 
         bw.WorkerReportsProgress = True
         bw.WorkerSupportsCancellation = True
         AddHandler bw.DoWork, AddressOf bw_RunFindAndReplace
         AddHandler bw.RunWorkerCompleted, AddressOf showDone
+
         bw.RunWorkerAsync()
     End Sub
 
+
     Private Sub bw_RunFindAndReplace(ByVal sender As Object, ByVal e As DoWorkEventArgs)
+
         mMainViewModel.getProj.Panel.PanelAttributesDocument.ReplaceAllEngineeringUnits()
     End Sub
 
-    Private Sub showDone()
-        Dim message As GeneralPopupView = New GeneralPopupView("Bacnet unit conversion finished!  A copy of the original document has been created with _new appended to the name of the file.")
+
+    Private Sub showDone(ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs)
+        Dim message = "Bacnet unit conversion finished!  A copy of the original document has been created with _new appended to the name of the file."
+
+        If e.Cancelled = True Then
+            message = "Operation cancelled."
+
+        ElseIf e.Error IsNot Nothing Then
+            message = "Error. " + e.Error.Message
+
+        Else
+
+        End If
+
+        Dim messageWindow As GeneralPopupView = New GeneralPopupView(message)
         doneButton.Content = "Done"
         doneButton.IsEnabled = True
-        message.Show()
+        messageWindow.Show()
         BaseMainViewModel.WriteFile()
         BaseMainViewModel.ResetUI()
     End Sub

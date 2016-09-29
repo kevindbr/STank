@@ -66,11 +66,23 @@ Public Class EnhancedAlarmsProgressView
 
     End Sub
 
-    Private Sub showDone()
-        Dim message As GeneralPopupView = New GeneralPopupView("Enhanced alarm replacement finished!  Please refer to enhanced alarm log file for panel output.")
+    Private Sub showDone(ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs)
+        Dim message = "Enhanced alarm replacement finished!  Please refer to enhanced alarm log file for panel output."
+
+        If e.Cancelled = True Then
+            message = "Operation cancelled."
+
+        ElseIf e.Error IsNot Nothing Then
+            message = "Error. " + e.Error.Message
+
+        Else
+
+        End If
+
+        Dim messageWindow As GeneralPopupView = New GeneralPopupView(message)
         doneButton.Content = "Done"
         doneButton.IsEnabled = True
-        message.Show()
+        messageWindow.Show()
         BaseMainViewModel.WriteFile()
         BaseMainViewModel.ResetUI()
     End Sub

@@ -139,15 +139,26 @@ Public Class StateTextProgressView
 
     'End Sub
 
-    Private Sub showDone()
-        Dim message As GeneralPopupView = New GeneralPopupView("State text tables have been updated! Please refer to state text log file for panel output.")
+    Private Sub showDone(ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs)
+        Dim message = "State text tables have been updated! Please refer to state text log file for panel output."
+
+        If e.Cancelled = True Then
+            message = "Operation cancelled."
+
+        ElseIf e.Error IsNot Nothing Then
+            message = "Error. " + e.Error.Message
+
+        Else
+
+        End If
+
+        Dim messageWindow As GeneralPopupView = New GeneralPopupView(message)
         doneButton.Content = "Done"
         doneButton.IsEnabled = True
-        message.Show()
+        messageWindow.Show()
         BaseMainViewModel.WriteFile()
         BaseMainViewModel.ResetUI()
     End Sub
-
 
     Private Sub exitView(sender As Object, e As RoutedEventArgs)
         Close()

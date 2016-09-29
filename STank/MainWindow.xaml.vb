@@ -24,6 +24,8 @@ Class MainWindow
     ''' 
     ''' </summary>
     ''' <remarks></remarks>
+    ''' 
+    <STAThread()> _
     Private Sub IntializeMainWindow()
         mMainViewModel = New MainViewModel()
         mMainViewModel.IntializeProject()
@@ -31,7 +33,7 @@ Class MainWindow
         bw.WorkerSupportsCancellation = True
         LogDirectory.DataContext = mMainViewModel.getProj()
         ' AddHandler bw.DoWork, AddressOf bw_RunFindAndReplace
-		
+
         'AddHandler bw.ProgressChanged, AddressOf bw_ProgressChanged
         'AddHandler bw.RunWorkerCompleted, AddressOf bw_RunWorkerCompleted
 
