@@ -23,9 +23,9 @@
             </MenuItem>
 
             <MenuItem Header="_Help">
-                <MenuItem x:Name="Help1" Header="_Overview" Click="HelpClicked"></MenuItem>
-                <MenuItem x:Name="Help2" Header="_Name Change" Click="HelpClicked"></MenuItem>
-                <MenuItem x:Name="Help3" Header="_P2 to Bacnet Conversion" Click="HelpClicked"></MenuItem>
+                <MenuItem x:Name="Help1" Header="_Overview Of Tool" Click="HelpClicked"></MenuItem>
+                <MenuItem x:Name="Help2" Header="_Name Change Guide" Click="HelpClicked"></MenuItem>
+                <MenuItem x:Name="Help3" Header="_P2 to Bacnet Conversion Guide" Click="HelpClicked"></MenuItem>
             </MenuItem>
 
             <MenuItem Header="_About">
@@ -52,7 +52,7 @@
                 <Image Width="auto" HorizontalAlignment="Center" Height="45" Margin="100 10 0 0" Source="Images/Siemens_Icons/Siemens_Logo.png" />
             </Border>
 
-            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Content="Shark Tank Find and Replace Tool"/>
+            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Foreground="#788791" Margin="20 0 0 0" FontSize="24" Content="Shark Tank Find and Replace Tool Beta 1.0"/>
 
 
             <StackPanel Grid.Row="1"  Grid.ColumnSpan="2">

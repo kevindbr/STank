@@ -10,6 +10,7 @@ Imports System.Windows.Automation.Provider
 Imports System.Windows.Automation
 Imports System.Data
 Imports System.Collections.ObjectModel
+Imports System.IO
 
 Class MainWindow
 
@@ -525,17 +526,25 @@ Class MainWindow
     End Sub
 
     Private Sub HelpClicked(sender As Object, e As RoutedEventArgs)
+        Dim name = sender.Name
+        Dim path = Directory.GetCurrentDirectory
 
-        Response.ClearHeaders()
-        Response.ContentType = "application/pdf"
-        Response.AddHeader("Content-Disposition", "attachment; filename=pdffile.pdf")
-        Response.TransmitFile(Server.MapPath("~/F:\\pdffile.pdf"))
-        Response.End()
-
+        Select Case name
+            Case "Help1"
+        Process.Start(path + "\Resources\Section 0 - Overview.pdf")
+            Case "Help2"
+                Process.Start(path + "\Resources\Section 1 - Name change.pdf")
+            Case Else
+                Process.Start(path + "\Resources\Section 2 - P2 to Bacnet Conversion.pdf")
+        End Select
     End Sub
 
     Private Sub ExitAppClicked(sender As Object, e As RoutedEventArgs)
         Application.Current.Shutdown()
+    End Sub
+
+    Private Sub AboutClicked(sender As Object, e As RoutedEventArgs)
+        Process.Start("Section 0 - Overview.pdf")
     End Sub
 
 End Class

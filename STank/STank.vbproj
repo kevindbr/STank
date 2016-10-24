@@ -322,6 +322,15 @@
     </None>
     <AppDesigner Include="My Project\" />
     <None Include="packages.config" />
+    <Content Include="Resources\Section 0 - Overview.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Section 1 - Name change.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Section 2 - P2 to Bacnet Conversion.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="STank_TemporaryKey.pfx" />
     <None Include="unitConversions.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

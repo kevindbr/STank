@@ -28,7 +28,7 @@
         </StackPanel>
 
      
-        <ListBox Grid.Row="1" HorizontalAlignment="Left" Height="Auto"  VerticalAlignment="Top" Width="auto" x:Name="log">
+        <ListBox Grid.Row="1" HorizontalAlignment="Left" Height="Auto" SelectionMode="Multiple" VerticalAlignment="Top" Width="auto" x:Name="log">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
                     <Setter Property="Focusable" Value="False"/>
