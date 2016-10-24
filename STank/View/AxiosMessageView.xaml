@@ -1,0 +1,68 @@
+﻿<Controls:MetroWindow 
+    x:Class="AxiosMessageView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    Controls:ButtonHelper.PreserveTextCase="True"
+    FontSize="12"
+    FontFamily="Siemens Sans Roman"
+    Title="Find and Replace - Infomation" Height="300" Width="300"
+    BorderBrush="{DynamicResource AccentColorBrush}"
+                      BorderThickness="1"
+   WindowStartupLocation="CenterScreen"
+    Loaded="IntializeMainWindow"
+    Cursor="{Binding Cursor}">
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="170"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="#788791" Margin="0 0 0 0" FontSize="24" Content="About"/>
+
+
+        <ScrollViewer Grid.Row="1" Grid.Column="0">
+            <StackPanel Grid.Row="2" Grid.Column="0">
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin=" 10 5 0 0" >
+                    <Label>Shark Tank Find and Replace Tool Beta 1.0</Label>
+                   
+                </StackPanel>
+
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin=" 0 0 0 0" >
+                    <Label  >(Build Date Oct 24 2016)</Label>
+                </StackPanel>
+
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin=" 0 5 0 0" >
+                    <Label  >Contact : Andy Minnette</Label>
+                </StackPanel>
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin=" 0 0 0 0" >
+                    <Label  >andy.minnette@siemens.com</Label>
+                </StackPanel>
+
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin=" 0 0 0 0" >
+                    <Image HorizontalAlignment="Center"  Height="25" Width="200" Margin="0 20 0 0" Source="../Images/Siemens_Icons/Axios_Logo_Small.png" />
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+
+        <StackPanel Height="30" Background="#dfe6ed"  Orientation="Horizontal" Grid.Row="4" Grid.ColumnSpan="2" VerticalAlignment="Bottom" >
+            <Label>Siemens.com</Label>
+            <Label>© Siemens AG, 1996 – 2016</Label>
+            <Label>Corporate Information</Label>
+            <Label>Privacy Policy</Label>
+            <Label>Cookie Policy</Label>
+            <Label>Terms of Use</Label>
+            <Label>Digital ID</Label>
+        </StackPanel>
+    </Grid>
+
+</Controls:MetroWindow>

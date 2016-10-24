@@ -127,6 +127,9 @@
     <Compile Include="View\ConnectionView.xaml.vb">
       <DependentUpon>ConnectionView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\AxiosMessageView.xaml.vb">
+      <DependentUpon>AxiosMessageView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\EnhancedAlarmsTextView.xaml.vb">
       <DependentUpon>EnhancedAlarmsTextView.xaml</DependentUpon>
     </Compile>
@@ -191,6 +194,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\ConnectionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\AxiosMessageView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -322,6 +329,10 @@
     </None>
     <AppDesigner Include="My Project\" />
     <None Include="packages.config" />
+    <Resource Include="Images\Siemens_Icons\Axios_Logo_Small.png" />
+    <Content Include="Resources\Axios_Logo_Small.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Section 0 - Overview.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

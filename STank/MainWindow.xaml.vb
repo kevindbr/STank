@@ -544,7 +544,8 @@ Class MainWindow
     End Sub
 
     Private Sub AboutClicked(sender As Object, e As RoutedEventArgs)
-        Process.Start("Section 0 - Overview.pdf")
+        Dim messageWindow As AxiosMessageView = New AxiosMessageView()
+        messageWindow.Show()
     End Sub
 
 End Class
