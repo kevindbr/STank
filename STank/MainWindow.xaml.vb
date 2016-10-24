@@ -520,14 +520,22 @@ Class MainWindow
 
 
     Private Sub connectionClicked(sender As Object, e As RoutedEventArgs)
-
         'Return
 
+    End Sub
 
+    Private Sub HelpClicked(sender As Object, e As RoutedEventArgs)
 
+        Response.ClearHeaders()
+        Response.ContentType = "application/pdf"
+        Response.AddHeader("Content-Disposition", "attachment; filename=pdffile.pdf")
+        Response.TransmitFile(Server.MapPath("~/F:\\pdffile.pdf"))
+        Response.End()
 
+    End Sub
 
-
+    Private Sub ExitAppClicked(sender As Object, e As RoutedEventArgs)
+        Application.Current.Shutdown()
     End Sub
 
 End Class

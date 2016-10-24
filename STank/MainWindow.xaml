@@ -17,21 +17,19 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-            <MenuItem x:Name="LoadData" Header="_Open" Click="LoadData_Click_1"></MenuItem>
-                <MenuItem x:Name="SaveData" Header="_Save" Click="LoadData_Click_1"></MenuItem>
-                <MenuItem x:Name="Exit" Header="_Exit" Click="LoadData_Click_1"></MenuItem>
-            </MenuItem>
-
-            <MenuItem Header="_Documentation">
-                <MenuItem x:Name="ShowDocumentation" Header="_Documentation" Click="LoadData_Click_1"></MenuItem>
+            <!--<MenuItem x:Name="LoadData" Header="_Open" Click="LoadData_Click_1"></MenuItem>
+                <MenuItem x:Name="SaveData" Header="_Save" Click="LoadData_Click_1"></MenuItem>-->
+                <MenuItem x:Name="Exit" Header="_Exit" Click="ExitAppClicked"></MenuItem>
             </MenuItem>
 
             <MenuItem Header="_Help">
-                <MenuItem x:Name="Help" Header="_Help" Click="LoadData_Click_1"></MenuItem>
+                <MenuItem x:Name="Help1" Header="_Overview" Click="HelpClicked"></MenuItem>
+                <MenuItem x:Name="Help2" Header="_Name Change" Click="HelpClicked"></MenuItem>
+                <MenuItem x:Name="Help3" Header="_P2 to Bacnet Conversion" Click="HelpClicked"></MenuItem>
             </MenuItem>
 
             <MenuItem Header="_About">
-                <MenuItem x:Name="About" Header="_About" Click="LoadData_Click_1"></MenuItem>
+                <MenuItem x:Name="About" Header="_About" Click="AboutClicked"></MenuItem>
             </MenuItem>
         </Menu>
 

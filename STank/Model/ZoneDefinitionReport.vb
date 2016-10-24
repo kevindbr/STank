@@ -134,7 +134,6 @@ Public Class ZoneDefinitionReport
         'Return replacementValues
     End Sub
 
-
     Private Sub getNewTemperaturePointNames(zoneName As String)
         'this does require that name change has already happened....
 

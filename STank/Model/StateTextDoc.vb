@@ -182,12 +182,33 @@ Public Class StateTextDoc
     End Function
 
 
-
+    'Static values for AHU_MODE only (Sergey 10/02/16)
+    'VAC     ->         VAC
+    'OCC     ->         OCC1
+    'OCC2   ->         OCC2
+    'OCC3   ->         OCC3
+    'OCC4   ->         OCC4
+    'OCC5   ->         OCC5
+    'WARMUP         ->         WARMUP
+    'COOLDOWN     ->         COOLDOWN
+    'NGT_HTG         ->         NGHT_HTG
+    'NGT_CLG         ->         NGHT_CLG
+    '1              VAC
+    '2              OCC1
+    '3              OCC2
+    '4              OCC3
+    '5              OCC4
+    '6              OCC5
+    '7              WARMUP
+    '8              COOLDOWN
+    '9              NGHT_HTG
+    '10            NGHT_CLG
+    '11            STOP_HTG
+    '12            STOP_CLG
     Public Function ParseStateText(ByVal stateTextData As DataTable) As StateTextTable
 
         Dim tableName As String = stateTextData.Rows(0).Item("Descriptor")
         Dim tableId As String = stateTextData.Rows(0).Item("ID")
-
 
         Dim newData As New DataTable(tableName)
         newData.Columns.Add("Value")
@@ -207,17 +228,35 @@ Public Class StateTextDoc
 
             If data.Trim = "" Then Continue For
 
-            If columnName.StartsWith("Name") Then namesList.Add(data)
+            If columnName.StartsWith("Name") Then 'Sergey email says that if this is AHU_MODE then use static values
+                Dim nameToAdd = data
+                If tableName.ToUpper().Equals("AHU_MODE") Then
+                    nameToAdd = getAhuStaticLookup(data)
+                End If
+                namesList.Add(nameToAdd)
+
+            End If
+
 
             If columnName.StartsWith("Value") Then
                 Dim val As Integer = CInt(data)
                 If val = 0 Then isZeroBased = True
                 If isZeroBased Then val += 1
+
+
+
                 valuesList.Add(CStr(val))
             End If
 
 
         Next
+        'Static values that we add for all lenum points 
+        namesList.Add("NGHT_CLG")
+        valuesList.Add(10)
+        namesList.Add("STOP_HTG")
+        valuesList.Add(11)
+        namesList.Add("STOP_CLG")
+        valuesList.Add(12)
 
         Dim table As StateTextTable
 
@@ -249,6 +288,37 @@ Public Class StateTextDoc
         y.Fill(mPanelAttributesData)
 
     End Sub
+
+    Private Function getAhuStaticLookup(data As String) As String
+        Dim staticValue = data
+
+        Select Case data.ToUpper()
+            Case "VAC"
+                staticValue = "VAC"
+            Case "OCC"
+                staticValue = "OCC1"
+            Case "OCC2"
+                staticValue = "OCC2"
+            Case "OCC3"
+                staticValue = "OCC3"
+            Case "OCC4"
+                staticValue = "OCC4"
+            Case "OCC5"
+                staticValue = "OCC5"
+            Case "WARMUP"
+                staticValue = "WARMUP"
+            Case "COOLDOWN"
+                staticValue = "COOLDOWN"
+            Case "NGT_HTG"
+                staticValue = "NGHT_HTG"
+            Case "NGT_CLG"
+                staticValue = "NGHT_CLG"
+            Case Else
+                staticValue = data
+        End Select
+
+        Return staticValue
+    End Function
 
 
 

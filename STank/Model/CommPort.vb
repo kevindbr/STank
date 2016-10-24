@@ -441,22 +441,22 @@ Public Class CommPort
             resp = SendCommand("1", True)   'Default Value
             resp = SendCommand("u")    'Bool, Real, Enum, Unsigned
             resp = SendCommand("16", True)    'Priority for writing (1-16)
-            SendCommand("", True)   'Start date (MM/DD/YYYY) - would assume blank means forever
-            SendCommand("", True)   'Weekday (m,tu,w,th,f,sa,su,*)   - not sure what this means, but leave blank for now?
-            SendCommand("", True)   'Stop date (MM/DD/YYYY) - would assume blank means forever
-            SendCommand("", True)   'Weekday (m,tu,w,th,f,sa,su,*)   - not sure what this means, but leave blank for now?
-            SendCommand("n")   'Out of service (y/n)
-            SendCommand("y")   'SSTO enabled (y/n)
-            resp = SendCommand("y")   'SI unit (y/n)
+            resp = SendCommand("", True)   'Start date (MM/DD/YYYY) - would assume blank means forever
+            resp = SendCommand("", True)   'Weekday (m,tu,w,th,f,sa,su,*)   - not sure what this means, but leave blank for now?
+            resp = SendCommand("", True)   'Stop date (MM/DD/YYYY) - would assume blank means forever
+            resp = SendCommand("", True)   'Weekday (m,tu,w,th,f,sa,su,*)   - not sure what this means, but leave blank for now?
+            resp = SendCommand("n")   'Out of service (y/n)
+            resp = SendCommand("y")   'SSTO enabled (y/n) tied to version
+            resp = SendCommand("n")   'SI unit (y/n)
             'check that response contains "Command successful"
 
-            SendCommand("#")        'Top of menu
-            SendCommand("a")        'Application
-            SendCommand("b")        'BacNet
-            SendCommand("s")        'Schedule
-            SendCommand("l")        'Log    (or 'd' to Display - Schedule report - lets us see what was done above)
-            SendCommand("", True)   'Field panel
-            SendCommand("", True)   'First Id
+            resp = SendCommand("#")        'Top of menu
+            resp = SendCommand("a")        'Application
+            resp = SendCommand("b")        'BacNet
+            resp = SendCommand("s")        'Schedule
+            resp = SendCommand("l")        'Log    (or 'd' to Display - Schedule report - lets us see what was done above)
+            resp = SendCommand("", True)   'Field panel
+            resp = SendCommand("", True)   'First Id
             resp = SendCommand("", True)   'Last Id
             scheduleId = Regex.Matches(resp, "([0-9]+)\s+" + scheduleName).Item(0).Groups(1).ToString()
             'mMainViewModel.getProj.Panel.SchedulerReport.ScheduleId = scheduleId
@@ -592,6 +592,9 @@ Public Class CommPort
                 SendCommand(replacementValues(zoneData("Zone Temperature")), True)   'Zone temperature
             End If
 
+            If replacementValues.Count = 0 Then
+                Throw New Exception("Please select name replacement document csv file. Located in 'system name change'")
+            End If
 
             SendCommand(zoneData("Heating Setpoint (OCC)"), True)   'Heating setpoint-occupancy
             SendCommand(zoneData("Heating Setpoint (VAC)"), True)   'Heating setpoint-vacancy
@@ -768,6 +771,7 @@ Public Class CommPort
         Try
             sp.ReadLine() 'clear out buffer before program is read
         Catch ex As TimeoutException
+            Throw New Exception("A timeout exception has occured.  Deley between commands needs to increase.  Please edit config file")
         End Try
 
         returnStr = ReadLines(sp)
@@ -833,6 +837,7 @@ Public Class CommPort
                     Dim resp As String
 
                     SendCommand("", True)           'get initial response from panel
+                    Thread.Sleep(1000)
                     SendCommand("h")                'Hello
                     SendCommand(mUserName, True)       'Username
                     resp = SendCommand(mPassword, True)      'Password
@@ -880,9 +885,11 @@ Public Class CommPort
             SendCommand("", True)           'get initial response from panel
             Thread.Sleep(1000)
             SendCommand("h")                'Hello
+            Thread.Sleep(300)
             SendCommand(mUserName, True)       'Username
+            Thread.Sleep(300)
             resp = SendCommand(mPassword, True)      'Password
-
+            Thread.Sleep(300)
             'Dim matches As MatchCollection = Regex.Matches(reRegex.Escape("DEFINE(") & "(.*)" & Regex.Escape(",""") & "(.*)" & """" & "(.*)")
             fieldPanel = Regex.Matches(resp, "Field panel <([0-9]+)>").Item(0).Groups(1).ToString()
 
@@ -979,7 +986,7 @@ Public Class CommPort
         Dim returnStr As String = ""
         Dim str As String
         'sp.NewLine = "\n"
-
+        sp.ReadTimeout = 250
         Try
             If sp.BytesToRead > 0 Then
                 Do
